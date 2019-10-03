@@ -102,7 +102,7 @@
             </objects>
             <point key="canvasLocation" x="0.0" y="0.0"/>
         </scene>
-        <!--Category-->
+        <!--Categories-->
         <scene sceneID="nW5-Pp-w2b">
             <objects>
                 <tableViewController id="3hG-BP-XUb" sceneMemberID="viewController">
@@ -133,7 +133,7 @@
                             <outlet property="delegate" destination="3hG-BP-XUb" id="4Nc-O4-AMI"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Category" id="VYP-I6-lUi">
+                    <navigationItem key="navigationItem" title="Categories" id="VYP-I6-lUi">
                         <barButtonItem key="leftBarButtonItem" title="Menu" id="ajt-Z5-spo"/>
                     </navigationItem>
                 </tableViewController>
@@ -180,7 +180,7 @@
             </objects>
             <point key="canvasLocation" x="4382" y="-56"/>
         </scene>
-        <!--Place-->
+        <!--Places-->
         <scene sceneID="Alx-yp-V7J">
             <objects>
                 <tableViewController id="6G6-P5-2Hc" sceneMemberID="viewController">
@@ -211,7 +211,7 @@
                             <outlet property="delegate" destination="6G6-P5-2Hc" id="Oxz-ws-TFW"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Place" id="8Ga-2c-5zT">
+                    <navigationItem key="navigationItem" title="Places" id="8Ga-2c-5zT">
                         <barButtonItem key="leftBarButtonItem" title="Books" id="n7Q-k6-WbN"/>
                     </navigationItem>
                 </tableViewController>
@@ -219,7 +219,7 @@
             </objects>
             <point key="canvasLocation" x="6222" y="-53"/>
         </scene>
-        <!--Owner-->
+        <!--Owners-->
         <scene sceneID="g8O-hM-cZi">
             <objects>
                 <tableViewController id="SA4-hP-wyj" sceneMemberID="viewController">
@@ -247,7 +247,7 @@
                             <outlet property="delegate" destination="SA4-hP-wyj" id="nfg-1I-nsf"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Owner" id="cST-xM-3DR">
+                    <navigationItem key="navigationItem" title="Owners" id="cST-xM-3DR">
                         <barButtonItem key="leftBarButtonItem" title="Places" id="T9q-Gk-6Il"/>
                     </navigationItem>
                 </tableViewController>
