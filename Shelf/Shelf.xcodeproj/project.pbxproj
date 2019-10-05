@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F170C5C234954E400E357C6 /* AddBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170C5B234954E400E357C6 /* AddBookViewController.swift */; };
 		3F173DA62347CFB800A152CB /* RequestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F173DA52347CFB800A152CB /* RequestTableViewController.swift */; };
 		3F173DA82347D24300A152CB /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F173DA72347D24300A152CB /* Requests.swift */; };
 		3F7C126723427983006ECA15 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7C126623427983006ECA15 /* AppDelegate.swift */; };
 		3F7C126923427983006ECA15 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7C126823427983006ECA15 /* FirstViewController.swift */; };
-		3F7C126B23427983006ECA15 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7C126A23427983006ECA15 /* SecondViewController.swift */; };
 		3F7C126E23427983006ECA15 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F7C126C23427983006ECA15 /* Main.storyboard */; };
 		3F7C127023427984006ECA15 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F7C126F23427984006ECA15 /* Assets.xcassets */; };
 		3F7C127323427984006ECA15 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F7C127123427984006ECA15 /* LaunchScreen.storyboard */; };
@@ -22,12 +22,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3F170C5B234954E400E357C6 /* AddBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBookViewController.swift; sourceTree = "<group>"; };
 		3F173DA52347CFB800A152CB /* RequestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTableViewController.swift; sourceTree = "<group>"; };
 		3F173DA72347D24300A152CB /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
 		3F7C126323427983006ECA15 /* Shelf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shelf.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F7C126623427983006ECA15 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F7C126823427983006ECA15 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
-		3F7C126A23427983006ECA15 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		3F7C126D23427983006ECA15 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3F7C126F23427984006ECA15 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3F7C127223427984006ECA15 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -79,7 +79,6 @@
 			children = (
 				3F7C126623427983006ECA15 /* AppDelegate.swift */,
 				3F7C126823427983006ECA15 /* FirstViewController.swift */,
-				3F7C126A23427983006ECA15 /* SecondViewController.swift */,
 				3F7C126C23427983006ECA15 /* Main.storyboard */,
 				3F7C126F23427984006ECA15 /* Assets.xcassets */,
 				3F7C127123427984006ECA15 /* LaunchScreen.storyboard */,
@@ -94,6 +93,7 @@
 			children = (
 				3F173DA42347CF8C00A152CB /* Request Tab */,
 				3F98B54423457B5B000AC65B /* FindABook */,
+				3F170C5B234954E400E357C6 /* AddBookViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -180,7 +180,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F7C126B23427983006ECA15 /* SecondViewController.swift in Sources */,
+				3F170C5C234954E400E357C6 /* AddBookViewController.swift in Sources */,
 				3F98B53923457967000AC65B /* BooksTableViewController.swift in Sources */,
 				3F98B54123457A52000AC65B /* OwnersTableViewController.swift in Sources */,
 				3F173DA82347D24300A152CB /* Requests.swift in Sources */,
