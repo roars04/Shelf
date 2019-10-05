@@ -210,12 +210,21 @@
                             <textInputTraits key="textInputTraits"/>
                         </searchBar>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Lxq-1J-oAH">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="category" textLabel="91F-em-vhp" style="IBUITableViewCellStyleDefault" id="Lxq-1J-oAH">
                                 <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Lxq-1J-oAH" id="uk5-a9-52C">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="91F-em-vhp">
+                                            <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
                                 <connections>
                                     <segue destination="fPM-1L-w9B" kind="show" id="rMI-yZ-Un3"/>
@@ -227,9 +236,7 @@
                             <outlet property="delegate" destination="3hG-BP-XUb" id="4Nc-O4-AMI"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Categories" id="VYP-I6-lUi">
-                        <barButtonItem key="leftBarButtonItem" title="Menu" id="ajt-Z5-spo"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Categories" id="VYP-I6-lUi"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mMZ-Ed-qcV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -278,12 +285,28 @@
                             <textInputTraits key="textInputTraits"/>
                         </searchBar>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="WSO-Qw-Q0u">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="book" textLabel="PST-aR-12v" detailTextLabel="DdI-Sx-XNB" style="IBUITableViewCellStyleSubtitle" id="WSO-Qw-Q0u">
                                 <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WSO-Qw-Q0u" id="j8W-Hm-XHj">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PST-aR-12v">
+                                            <rect key="frame" x="16" y="5" width="33.5" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="DdI-Sx-XNB">
+                                            <rect key="frame" x="16" y="25.5" width="44" height="14.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
                                 <connections>
                                     <segue destination="6G6-P5-2Hc" kind="show" id="e21-we-Oib"/>
@@ -295,9 +318,7 @@
                             <outlet property="delegate" destination="fPM-1L-w9B" id="FWy-d0-y08"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Books" id="KRf-2i-aSO">
-                        <barButtonItem key="leftBarButtonItem" title="Categories" id="Xee-EI-VnM"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Books" id="KRf-2i-aSO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wo1-6s-gKN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -317,12 +338,28 @@
                             <textInputTraits key="textInputTraits"/>
                         </searchBar>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="dko-Bz-ewg">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="place" textLabel="jUq-HP-ft8" detailTextLabel="qe9-fq-cx4" style="IBUITableViewCellStyleSubtitle" id="dko-Bz-ewg">
                                 <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dko-Bz-ewg" id="dje-NK-prA">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jUq-HP-ft8">
+                                            <rect key="frame" x="16" y="5" width="33.5" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qe9-fq-cx4">
+                                            <rect key="frame" x="16" y="25.5" width="44" height="14.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
                                 <connections>
                                     <segue destination="SA4-hP-wyj" kind="show" id="RyN-sR-Dks"/>
@@ -334,9 +371,7 @@
                             <outlet property="delegate" destination="6G6-P5-2Hc" id="Oxz-ws-TFW"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Places" id="8Ga-2c-5zT">
-                        <barButtonItem key="leftBarButtonItem" title="Books" id="n7Q-k6-WbN"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Places" id="8Ga-2c-5zT"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZSD-TZ-Iry" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -356,12 +391,28 @@
                             <textInputTraits key="textInputTraits"/>
                         </searchBar>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="toH-52-NEI">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="owner" textLabel="5IG-fy-3aI" detailTextLabel="b8g-qS-9ka" style="IBUITableViewCellStyleSubtitle" id="toH-52-NEI">
                                 <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="toH-52-NEI" id="cj6-Pk-ey8">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5IG-fy-3aI">
+                                            <rect key="frame" x="16" y="5" width="33.5" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="b8g-qS-9ka">
+                                            <rect key="frame" x="16" y="25.5" width="44" height="14.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
@@ -370,9 +421,7 @@
                             <outlet property="delegate" destination="SA4-hP-wyj" id="nfg-1I-nsf"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Owners" id="cST-xM-3DR">
-                        <barButtonItem key="leftBarButtonItem" title="Places" id="T9q-Gk-6Il"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Owners" id="cST-xM-3DR"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gol-Jo-X9l" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
