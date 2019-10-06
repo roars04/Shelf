@@ -16,7 +16,7 @@
 		3F173DA62347CFB800A152CB /* RequestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F173DA52347CFB800A152CB /* RequestTableViewController.swift */; };
 		3F173DA82347D24300A152CB /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F173DA72347D24300A152CB /* Requests.swift */; };
 		3F7C126723427983006ECA15 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7C126623427983006ECA15 /* AppDelegate.swift */; };
-		3F7C126923427983006ECA15 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7C126823427983006ECA15 /* FirstViewController.swift */; };
+		3F7C126923427983006ECA15 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7C126823427983006ECA15 /* AccountViewController.swift */; };
 		3F7C126E23427983006ECA15 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F7C126C23427983006ECA15 /* Main.storyboard */; };
 		3F7C127023427984006ECA15 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F7C126F23427984006ECA15 /* Assets.xcassets */; };
 		3F7C127323427984006ECA15 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F7C127123427984006ECA15 /* LaunchScreen.storyboard */; };
@@ -37,7 +37,7 @@
 		3F173DA72347D24300A152CB /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
 		3F7C126323427983006ECA15 /* Shelf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shelf.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F7C126623427983006ECA15 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3F7C126823427983006ECA15 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
+		3F7C126823427983006ECA15 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		3F7C126D23427983006ECA15 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3F7C126F23427984006ECA15 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3F7C127223427984006ECA15 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -101,7 +101,6 @@
 			children = (
 				3F05A9E9234906B200B774E6 /* Model */,
 				3F7C126623427983006ECA15 /* AppDelegate.swift */,
-				3F7C126823427983006ECA15 /* FirstViewController.swift */,
 				3F7C126C23427983006ECA15 /* Main.storyboard */,
 				3F7C126F23427984006ECA15 /* Assets.xcassets */,
 				3F7C127123427984006ECA15 /* LaunchScreen.storyboard */,
@@ -114,6 +113,7 @@
 		3F98B54323457B39000AC65B /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				3F7C126823427983006ECA15 /* AccountViewController.swift */,
 				3F170C5D234963AA00E357C6 /* AddBookViewController.swift */,
 				3F173DA42347CF8C00A152CB /* Request Tab */,
 				3F98B54423457B5B000AC65B /* FindABook */,
@@ -212,7 +212,7 @@
 				3F173DA82347D24300A152CB /* Requests.swift in Sources */,
 				3F173DA62347CFB800A152CB /* RequestTableViewController.swift in Sources */,
 				3F7C126723427983006ECA15 /* AppDelegate.swift in Sources */,
-				3F7C126923427983006ECA15 /* FirstViewController.swift in Sources */,
+				3F7C126923427983006ECA15 /* AccountViewController.swift in Sources */,
 				3F98B53B234579B4000AC65B /* CategoriesTableViewController.swift in Sources */,
 				3F05A9EE2349071300B774E6 /* Book.swift in Sources */,
 				3F98B53D234579ED000AC65B /* PlacesTableViewController.swift in Sources */,
