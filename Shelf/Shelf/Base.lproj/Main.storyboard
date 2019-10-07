@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -271,7 +271,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" misplaced="YES" id="CvB-1c-7c6">
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="CvB-1c-7c6">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
@@ -346,7 +346,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" misplaced="YES" id="t5n-mJ-edd">
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="t5n-mJ-edd">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
@@ -399,7 +399,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" misplaced="YES" id="CRd-fl-AeB">
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="CRd-fl-AeB">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
@@ -452,7 +452,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" misplaced="YES" id="3qG-TO-FMn">
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="3qG-TO-FMn">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
@@ -494,11 +494,11 @@
             </objects>
             <point key="canvasLocation" x="4458" y="0.0"/>
         </scene>
-        <!--Item-->
+        <!--Category-->
         <scene sceneID="tpe-Pg-5T6">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="1dx-lQ-Wcg" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="9Oi-Nz-0Px"/>
+                    <tabBarItem key="tabBarItem" title="Category" image="icons8-category-16" id="9Oi-Nz-0Px"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="tsw-Iy-Plj">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -517,7 +517,7 @@
         <scene sceneID="66g-jG-CYS">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="yAN-Hj-GJI" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Request" id="on4-mS-Y2v"/>
+                    <tabBarItem key="tabBarItem" title="Request" image="icons8-request-service-16" id="on4-mS-Y2v"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="t6p-wV-63L">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -536,7 +536,7 @@
         <scene sceneID="Xew-bY-2vH">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="3ru-iU-dvF" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Add Book" image="second" id="cPa-gy-q4n"/>
+                    <tabBarItem key="tabBarItem" title="Add Book" image="icons8-book-16" id="cPa-gy-q4n"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Uzr-Sc-B6W">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -555,7 +555,7 @@
         <scene sceneID="qcD-Cj-XOf">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hNV-Ag-xaF" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Account" image="first" id="acW-dT-cKf"/>
+                    <tabBarItem key="tabBarItem" title="Account" image="icons8-profile-24" id="acW-dT-cKf"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ufu-Ub-mgm">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -578,7 +578,9 @@
         <image name="Location" width="50" height="50"/>
         <image name="Phone" width="64" height="64"/>
         <image name="ProfileNew" width="100" height="100"/>
-        <image name="first" width="30" height="30"/>
-        <image name="second" width="30" height="30"/>
+        <image name="icons8-book-16" width="16" height="16"/>
+        <image name="icons8-category-16" width="16" height="16"/>
+        <image name="icons8-profile-24" width="24" height="24"/>
+        <image name="icons8-request-service-16" width="16" height="16"/>
     </resources>
 </document>
