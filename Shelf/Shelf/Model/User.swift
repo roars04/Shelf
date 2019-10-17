@@ -1,5 +1,5 @@
 //
-//  Category.swift
+//  Owner.swift
 //  Shelf
 //
 //  Created by Ronny Aretz on 10/5/19.
@@ -8,9 +8,9 @@
 
 import Foundation
 
-class Category {
-    public var title: String
-    public init(title:String){
-        self.title = title
+struct User{
+    var name: String
+    public init(name:String){
+        self.name = name
     }
 }

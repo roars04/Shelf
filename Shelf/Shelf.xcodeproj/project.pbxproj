@@ -8,10 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3F05A9EE2349071300B774E6 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F05A9EC234906B200B774E6 /* Book.swift */; };
-		3F05A9EF2349071600B774E6 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F05A9ED234906B300B774E6 /* Category.swift */; };
 		3F05A9F02349071B00B774E6 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F05A9EB234906B200B774E6 /* Model.swift */; };
-		3F05A9F12349071E00B774E6 /* Owner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F05A9EA234906B200B774E6 /* Owner.swift */; };
-		3F05A9F32349078C00B774E6 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F05A9F22349078C00B774E6 /* Place.swift */; };
+		3F05A9F12349071E00B774E6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F05A9EA234906B200B774E6 /* User.swift */; };
 		3F170C5E234963AA00E357C6 /* AddBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170C5D234963AA00E357C6 /* AddBookViewController.swift */; };
 		3F173DA62347CFB800A152CB /* RequestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F173DA52347CFB800A152CB /* RequestTableViewController.swift */; };
 		3F173DA82347D24300A152CB /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F173DA72347D24300A152CB /* Requests.swift */; };
@@ -27,11 +25,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3F05A9EA234906B200B774E6 /* Owner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Owner.swift; sourceTree = "<group>"; };
+		3F05A9EA234906B200B774E6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		3F05A9EB234906B200B774E6 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		3F05A9EC234906B200B774E6 /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
-		3F05A9ED234906B300B774E6 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
-		3F05A9F22349078C00B774E6 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		3F170C5D234963AA00E357C6 /* AddBookViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBookViewController.swift; sourceTree = "<group>"; };
 		3F173DA52347CFB800A152CB /* RequestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTableViewController.swift; sourceTree = "<group>"; };
 		3F173DA72347D24300A152CB /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
@@ -63,10 +59,9 @@
 			isa = PBXGroup;
 			children = (
 				3F05A9EC234906B200B774E6 /* Book.swift */,
-				3F05A9ED234906B300B774E6 /* Category.swift */,
 				3F05A9EB234906B200B774E6 /* Model.swift */,
-				3F05A9EA234906B200B774E6 /* Owner.swift */,
-				3F05A9F22349078C00B774E6 /* Place.swift */,
+				3F05A9EA234906B200B774E6 /* User.swift */,
+				3F173DA72347D24300A152CB /* Requests.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -75,7 +70,6 @@
 			isa = PBXGroup;
 			children = (
 				3F173DA52347CFB800A152CB /* RequestTableViewController.swift */,
-				3F173DA72347D24300A152CB /* Requests.swift */,
 			);
 			path = "Request Tab";
 			sourceTree = "<group>";
@@ -203,12 +197,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F05A9F12349071E00B774E6 /* Owner.swift in Sources */,
+				3F05A9F12349071E00B774E6 /* User.swift in Sources */,
 				3F98B53923457967000AC65B /* BooksTableViewController.swift in Sources */,
 				3F98B54123457A52000AC65B /* OwnersTableViewController.swift in Sources */,
 				3F170C5E234963AA00E357C6 /* AddBookViewController.swift in Sources */,
 				3F05A9F02349071B00B774E6 /* Model.swift in Sources */,
-				3F05A9F32349078C00B774E6 /* Place.swift in Sources */,
 				3F173DA82347D24300A152CB /* Requests.swift in Sources */,
 				3F173DA62347CFB800A152CB /* RequestTableViewController.swift in Sources */,
 				3F7C126723427983006ECA15 /* AppDelegate.swift in Sources */,
@@ -216,7 +209,6 @@
 				3F98B53B234579B4000AC65B /* CategoriesTableViewController.swift in Sources */,
 				3F05A9EE2349071300B774E6 /* Book.swift in Sources */,
 				3F98B53D234579ED000AC65B /* PlacesTableViewController.swift in Sources */,
-				3F05A9EF2349071600B774E6 /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
