@@ -37,8 +37,8 @@ class PlacesTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "place", for: indexPath)
 
         // Configure the cell...
-        cell.textLabel?.text = Model.shared.books[indexPath.row].owner.place.state
-        cell.detailTextLabel?.text = Model.shared.books[indexPath.row].owner.place.city
+       // cell.textLabel?.text = Model.shared.books[indexPath.row].owner.place.state
+        //cell.detailTextLabel?.text = Model.shared.books[indexPath.row].owner.place.city
         return cell
     }
 

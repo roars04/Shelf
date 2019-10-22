@@ -13,5 +13,6 @@ struct Book {
     var owner: User
     public init(title:String){
         self.title = title
+        owner = User(name:"Test")
     }
 }
