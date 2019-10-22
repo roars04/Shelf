@@ -13,7 +13,7 @@ extension Array {
     }
 }
 extension String {
-    subscript(_ i:Int)->Character {
+    subscript (_ i:Int) -> Character {
         return self[self.index(self.startIndex, offsetBy:i)] // read-only, so no need for get { }
     }
 }
@@ -28,18 +28,19 @@ class Model {
         }
         return _shared
     }
-
-    public func getCategories() -> Array<Category>{
-        return [Category(title:"Syfy"),Category(title:"Fiction")]
+    
+    subscript(i: Int) -> Request {
+        return requests[i]
     }
     
-    public func numRequests() -> Int {
+// For requests
+    private var requests = [
+        Request(bookTitle: "", location: "", city: "", state: "")
+    ]
+    
+    func numRequests() -> Int {
         return requests.count
     }
     
-    public var requests  = [ Request(title: "Hunger Games", category: "Sci-fi"), Request(title: "Harry Potter", category: "Fantasy") ]
-    
-    public var books  = [
-        Book(title: "Hunger Games", category: Category(title:"Syfy"), owner: Owner(name: "Max Mustermann", place: Place(state: "MO", city: "Maryville", postalCode: "64468",street: "9 Syfystreet"))),
-        Book(title: "Hary Potter", category: Category(title:"Fiction"), owner: Owner(name: "Jon Doe", place: Place(state: "MO", city: "Kansas City", postalCode: "64468",street: "500 Kansasstreet"))) ]
 }
+

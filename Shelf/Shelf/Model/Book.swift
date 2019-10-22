@@ -8,13 +8,10 @@
 
 import Foundation
 
-class Book {
+struct Book {
     var title: String
-    var category: Category
-    var owner: Owner
-    public init(title:String,category:Category,owner:Owner){
+    var owner: User
+    public init(title:String){
         self.title = title
-        self.category = category
-        self.owner = owner
     }
 }
