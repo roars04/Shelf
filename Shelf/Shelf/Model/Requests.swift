@@ -9,6 +9,10 @@
 import Foundation
 
 struct Request {
-
+    var bookTitle: String
+    var location: String
+    var city: String
+    var state: String
     
 }
+

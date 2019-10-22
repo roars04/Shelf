@@ -13,7 +13,7 @@ extension Array {
     }
 }
 extension String {
-    subscript(_ i:Int)->Character {
+    subscript (_ i:Int) -> Character {
         return self[self.index(self.startIndex, offsetBy:i)] // read-only, so no need for get { }
     }
 }
@@ -29,4 +29,18 @@ class Model {
         return _shared
     }
     
+    subscript(i: Int) -> Request {
+        return requests[i]
+    }
+    
+// For requests
+    private var requests = [
+        Request(bookTitle: "", location: "", city: "", state: "")
+    ]
+    
+    func numRequests() -> Int {
+        return requests.count
+    }
+    
 }
+

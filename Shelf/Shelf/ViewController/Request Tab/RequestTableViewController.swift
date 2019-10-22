@@ -23,14 +23,14 @@ class RequestTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return Requests.shared.numRequests()
+        return Model.shared.numRequests()
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "requests", for: indexPath)
-        let request = Requests.shared[indexPath.row]
-        cell.textLabel?.text = request.title
-        cell.detailTextLabel?.text = request.category
+        let request = Model.shared[indexPath.row]
+        cell.textLabel?.text = request.bookTitle
+        cell.detailTextLabel?.text = request.location
 
         return cell
     }
