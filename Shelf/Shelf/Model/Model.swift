@@ -52,20 +52,21 @@ class Model {
         return _shared
     }
     
-    subscript(i: Int) -> Request {
-        return requests[i]
-    }
-    
-// For requests
-    private var requests = [
-        Request(bookTitle: "", location: "", city: "", state: "")
+    // For requests
+    public var requests:[Request] = [
+        //i think that is not good as a example because it produce everytime a new object
+        //Request(owner: CKRecord.ID(recordName: "Request_Shelf") ,bookTitle: "", location: "", city: "", state: "")
     ]
+    
     public var books = [
         Book(isbn: "234655435", title: "Bombay", description: "bla", author: "John Doe", illustrator: "John Doe", coverArtist: "John Doe", country: "USA", language: "English", genre: "Fantasy", publisher: "Book Publisher", publicationDate: Date(timeIntervalSince1970: 435243252), pages: 100)
     ]
     
     func numRequests() -> Int {
         return requests.count
+    }
+    func numBooks() -> Int {
+        return books.count
     }
     
 }
@@ -330,6 +331,15 @@ class Request : Equatable, CKRecordValueProtocol{
 
     var record: CKRecord!
 
+    var owner: CKRecord.ID{
+        get {
+            return record["owner"]! as! CKRecord.ID
+        }
+        set(owner){
+            record["owner"] = owner as! __CKRecordObjCValue
+        }
+    }
+    
     var bookTitle: String{
         get {
             return record["bookTitle"]!
@@ -378,15 +388,21 @@ class Request : Equatable, CKRecordValueProtocol{
     init(record:CKRecord){
         self.record = record
     }
-
-    init(bookTitle: String, location: String, city: String, state: String) {
+    
+    init(owner: CKRecord.ID,bookTitle: String, location: String, city: String, state: String) {
+        self.record = CKRecord(recordType: "Request_Shelf")
+        self.owner = owner
         self.bookTitle = bookTitle
         self.location = location
         self.city = city
         self.state = state
         self.date = Date()
     }
-
+    
+    convenience init(owner: CKRecord,bookTitle: String, location: String, city: String, state: String) {
+        self.init(owner: owner.recordID,bookTitle: bookTitle, location: location, city: city, state: state)
+    }
+    
     static func add(request:Request){
         Custodian.publicDatabase.save(request.record){
             (record, error) in
