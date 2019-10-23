@@ -61,7 +61,7 @@ class Model {
         Request(bookTitle: "", location: "", city: "", state: "")
     ]
     public var books = [
-        Book(title:"Bombay")
+        Book(isbn: "234655435", title: "Bombay", description: "bla", author: "John Doe", illustrator: "John Doe", coverArtist: "John Doe", country: "USA", language: "English", genre: "Fantasy", publisher: "Book Publisher", publicationDate: Date(timeIntervalSince1970: 435243252), pages: 100)
     ]
     
     func numRequests() -> Int {
@@ -157,3 +157,264 @@ class User : Equatable, CKRecordValueProtocol, Hashable {    // need Hashable be
 
 }
 
+class Book : Equatable, CKRecordValueProtocol{
+
+    static func == (lhs: Book, rhs: Book) -> Bool {
+        return lhs.record.recordID == rhs.record.recordID
+    }
+
+    var record: CKRecord!
+
+    var isbn: String {
+        get {
+            return record["isbn"]!
+        }
+        set(isbn){
+            record["isbn"] = isbn
+        }
+    }
+
+    var title: String {
+        get {
+            return record["title"]!
+        }
+        set(title){
+            record["title"] = title
+        }
+    }
+
+    var description: String{
+        get {
+            return record["description"]!
+        }
+        set(description){
+            record["description"] = description
+        }
+    }
+
+    var author: String{
+        get {
+            return record["author"]!
+        }
+        set(author){
+            record["author"] = author
+        }
+    }
+
+    var illustrator: String{
+        get {
+            return record["illustrator"]!
+        }
+        set(illustrator){
+            record["illustrator"] = illustrator
+        }
+    }
+
+    var coverArtist: String{
+        get {
+            return record["coverArtist"]!
+        }
+        set(coverArtist){
+            record["coverArtist"] = coverArtist
+        }
+    }
+
+    var country: String{
+        get {
+            return record["country"]!
+        }
+        set(country){
+            record["country"] = country
+        }
+    }
+
+    var language: String{
+        get {
+            return record["language"]!
+        }
+        set(language){
+            record["firstName"] = language
+        }
+    }
+
+    var genre: String{
+        get {
+            return record["genre"]!
+        }
+        set(genre){
+            record["genre"] = genre
+        }
+    }
+
+    var publisher: String{
+        get {
+            return record["publisher"]!
+        }
+        set(publisher){
+            record["publisher"] = publisher
+        }
+    }
+
+    var publicationDate: Date{
+        get {
+            return record["publicationDate"]!
+        }
+        set(publicationDate){
+            record["publicationDate"] = publicationDate
+        }
+    }
+
+    var pages: Int{
+        get {
+            return record["pages"]!
+        }
+        set(pages){
+            record["pages"] = pages
+        }
+    }
+
+    init(record:CKRecord){
+        self.record = record
+    }
+
+    init(isbn: String, title: String, description: String, author: String, illustrator: String, coverArtist: String, country: String, language: String, genre: String, publisher: String, publicationDate: Date, pages: Int){
+        self.record = CKRecord(recordType: "Book_Shelf")
+        self.isbn = isbn
+        self.title = title
+        self.description = description
+        self.author = author
+        self.illustrator = illustrator
+        self.coverArtist = coverArtist
+        self.country = language
+        self.genre = genre
+        self.publisher = publisher
+        self.publicationDate = publicationDate
+        self.pages = pages
+    }
+
+    static func add(book:Book){
+        Custodian.publicDatabase.save(book.record){
+            (record, error) in
+            if let error = error {
+                UIViewController.alert(title:"Something has gone wrong while adding a Book", message:"\(error)")
+            } else {
+                UIViewController.alert(title:"Successfully saved a Book", message:"")
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: NSNotification.Name("Added a New Book"), object: book)
+                    UIViewController.alert(title: "Added a New Book", message:"")
+                }
+            }
+        }
+    }
+
+    func addMyself(){
+        Custodian.publicDatabase.save(self.record){
+            (record, error) in
+            if let error = error {
+                UIViewController.alert(title:"Something has gone wrong while adding a Book", message:"\(error)")
+            } else {
+                UIViewController.alert(title:"Successfully saved a Book", message:"")
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: NSNotification.Name("Added a New Book"), object: self)
+                    UIViewController.alert(title: "Added a New Book", message:"")
+                }
+            }
+        }
+    }
+}
+
+class Request : Equatable, CKRecordValueProtocol{
+    static func == (lhs: Request, rhs: Request) -> Bool {
+        return lhs.record.recordID == rhs.record.recordID
+    }
+
+    var record: CKRecord!
+
+    var bookTitle: String{
+        get {
+            return record["bookTitle"]!
+        }
+        set(bookTitle){
+            record["bookTitle"] = bookTitle
+        }
+    }
+    
+    var location: String{
+        get {
+            return record["location"]!
+        }
+        set(location){
+            record["location"] = location
+        }
+    }
+    
+    var city: String{
+        get {
+            return record["city"]!
+        }
+        set(city){
+            record["city"] = city
+        }
+    }
+    
+    var state: String{
+        get {
+            return record["state"]!
+        }
+        set(state){
+            record["state"] = state
+        }
+    }
+    
+    private var date: Date{
+        get {
+            return record["date"]!
+        }
+        set(date){
+            record["date"] = date
+        }
+    }
+
+    init(record:CKRecord){
+        self.record = record
+    }
+
+    init(bookTitle: String, location: String, city: String, state: String) {
+        self.bookTitle = bookTitle
+        self.location = location
+        self.city = city
+        self.state = state
+        self.date = Date()
+    }
+
+    static func add(request:Request){
+        Custodian.publicDatabase.save(request.record){
+            (record, error) in
+            if let error = error {
+                UIViewController.alert(title:"Something has gone wrong while adding a Request", message:"\(error)")
+            } else {
+                
+                UIViewController.alert(title:"Successfully saved a Request", message:"")
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: NSNotification.Name("Added a New Request"), object: request)
+                    UIViewController.alert(title: "Added a New Request", message:"")
+                }
+            }
+        }
+    }
+
+    func addMyself(){
+        Custodian.publicDatabase.save(self.record){
+            (record, error) in
+            if let error = error {
+                UIViewController.alert(title:"Something has gone wrong while adding a Request", message:"\(error)")
+            } else {
+                UIViewController.alert(title:"Successfully saved a Request", message:"")
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: NSNotification.Name("Added a New Request"), object: self)
+                    UIViewController.alert(title: "Added a New Request", message:"")
+                }
+            }
+        }
+    }
+}
