@@ -29,7 +29,8 @@ class BooksTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return Model.shared.books.count
+       // return Model.shared.books.count
+        return 5;
     }
 
     
@@ -37,7 +38,7 @@ class BooksTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "book", for: indexPath)
 
         // Configure the cell...
-        cell.textLabel?.text = Model.shared.books[indexPath.row].title
+      //  cell.textLabel?.text = Model.shared.books[indexPath.row].title
 
         return cell
     }

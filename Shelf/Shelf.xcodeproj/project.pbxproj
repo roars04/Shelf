@@ -7,12 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3F05A9EE2349071300B774E6 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F05A9EC234906B200B774E6 /* Book.swift */; };
 		3F05A9F02349071B00B774E6 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F05A9EB234906B200B774E6 /* Model.swift */; };
-		3F05A9F12349071E00B774E6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F05A9EA234906B200B774E6 /* User.swift */; };
 		3F170C5E234963AA00E357C6 /* AddBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170C5D234963AA00E357C6 /* AddBookViewController.swift */; };
 		3F173DA62347CFB800A152CB /* RequestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F173DA52347CFB800A152CB /* RequestTableViewController.swift */; };
-		3F173DA82347D24300A152CB /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F173DA72347D24300A152CB /* Requests.swift */; };
+		3F3B6482235FC873003B1C8D /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3B6481235FC873003B1C8D /* UserViewController.swift */; };
 		3F7C126723427983006ECA15 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7C126623427983006ECA15 /* AppDelegate.swift */; };
 		3F7C126923427983006ECA15 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7C126823427983006ECA15 /* AccountViewController.swift */; };
 		3F7C126E23427983006ECA15 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F7C126C23427983006ECA15 /* Main.storyboard */; };
@@ -26,12 +24,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3F05A9EA234906B200B774E6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		3F05A9EB234906B200B774E6 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		3F05A9EC234906B200B774E6 /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 		3F170C5D234963AA00E357C6 /* AddBookViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBookViewController.swift; sourceTree = "<group>"; };
 		3F173DA52347CFB800A152CB /* RequestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTableViewController.swift; sourceTree = "<group>"; };
-		3F173DA72347D24300A152CB /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
+		3F3B6480235FBBB7003B1C8D /* Shelf.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Shelf.entitlements; sourceTree = "<group>"; };
+		3F3B6481235FC873003B1C8D /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		3F7C126323427983006ECA15 /* Shelf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shelf.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F7C126623427983006ECA15 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F7C126823427983006ECA15 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
@@ -60,10 +57,7 @@
 		3F05A9E9234906B200B774E6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				3F05A9EC234906B200B774E6 /* Book.swift */,
 				3F05A9EB234906B200B774E6 /* Model.swift */,
-				3F05A9EA234906B200B774E6 /* User.swift */,
-				3F173DA72347D24300A152CB /* Requests.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -96,6 +90,7 @@
 		3F7C126523427983006ECA15 /* Shelf */ = {
 			isa = PBXGroup;
 			children = (
+				3F3B6480235FBBB7003B1C8D /* Shelf.entitlements */,
 				3F05A9E9234906B200B774E6 /* Model */,
 				3F7C126623427983006ECA15 /* AppDelegate.swift */,
 				3F7C126C23427983006ECA15 /* Main.storyboard */,
@@ -114,6 +109,7 @@
 				3F170C5D234963AA00E357C6 /* AddBookViewController.swift */,
 				3F173DA42347CF8C00A152CB /* Request Tab */,
 				3F98B54423457B5B000AC65B /* FindABook */,
+				3F3B6481235FC873003B1C8D /* UserViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -161,6 +157,11 @@
 				TargetAttributes = {
 					3F7C126223427983006ECA15 = {
 						CreatedOnToolsVersion = 10.0;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -200,18 +201,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F05A9F12349071E00B774E6 /* User.swift in Sources */,
 				3F98B53923457967000AC65B /* BooksTableViewController.swift in Sources */,
 				3F98B54123457A52000AC65B /* OwnersTableViewController.swift in Sources */,
 				3FF9DE6C235F97DC00CF9510 /* AddNewRequestViewController.swift in Sources */,
 				3F170C5E234963AA00E357C6 /* AddBookViewController.swift in Sources */,
 				3F05A9F02349071B00B774E6 /* Model.swift in Sources */,
-				3F173DA82347D24300A152CB /* Requests.swift in Sources */,
+				3F3B6482235FC873003B1C8D /* UserViewController.swift in Sources */,
 				3F173DA62347CFB800A152CB /* RequestTableViewController.swift in Sources */,
 				3F7C126723427983006ECA15 /* AppDelegate.swift in Sources */,
 				3F7C126923427983006ECA15 /* AccountViewController.swift in Sources */,
 				3F98B53B234579B4000AC65B /* CategoriesTableViewController.swift in Sources */,
-				3F05A9EE2349071300B774E6 /* Book.swift in Sources */,
 				3F98B53D234579ED000AC65B /* PlacesTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -358,14 +357,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Shelf/Shelf.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 583N2DJ8B2;
 				INFOPLIST_FILE = Shelf/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = edu.nwmissouri.Shelf;
+				PRODUCT_BUNDLE_IDENTIFIER = "edu.nwmissouri.CloudKit-InvestigationsMR";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -375,14 +378,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Shelf/Shelf.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 583N2DJ8B2;
 				INFOPLIST_FILE = Shelf/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = edu.nwmissouri.Shelf;
+				PRODUCT_BUNDLE_IDENTIFIER = "edu.nwmissouri.CloudKit-InvestigationsMR";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

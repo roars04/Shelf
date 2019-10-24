@@ -29,7 +29,8 @@ class CategoriesTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return Model.shared.getCategories().count
+       // return Model.shared.getCategories().count
+        return 4
     }
 
     
@@ -37,7 +38,7 @@ class CategoriesTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "category", for: indexPath)
 
         // Configure the cell...
-        cell.textLabel?.text = Model.shared.getCategories()[indexPath.row].title
+    //    cell.textLabel?.text = Model.shared.getCategories()[indexPath.row].title
 
         return cell
     }
