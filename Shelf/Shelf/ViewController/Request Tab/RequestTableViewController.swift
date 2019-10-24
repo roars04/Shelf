@@ -10,6 +10,14 @@ import UIKit
 
 class RequestTableViewController: UITableViewController {
 
+    @IBAction func myRequests() {
+        let myRequests = storyboard?.instantiateViewController(withIdentifier: "myRequestsNavCon") as! UINavigationController
+        self.present(myRequests, animated: true, completion: nil)
+    }
+    @IBAction func requestsReceived() {
+        //self.present(<#T##viewControllerToPresent: UIViewController##UIViewController#>, animated: <#T##Bool#>, completion: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Request"
@@ -28,7 +36,7 @@ class RequestTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "requests", for: indexPath)
-        let request = Model.shared[indexPath.row]
+        let request = Model.shared.requests[indexPath.row]
         cell.textLabel?.text = request.bookTitle
         cell.detailTextLabel?.text = request.location
 
