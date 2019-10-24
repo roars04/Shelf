@@ -10,7 +10,11 @@ import UIKit
 
 class AddNewRequestViewController: UIViewController {
 
-    
+    @IBOutlet weak var titleTF: UITextField!
+    @IBOutlet weak var isbnTF: UITextField!
+    @IBOutlet weak var authorTF: UITextField!
+    @IBOutlet weak var cityTF: UITextField!
+    @IBOutlet weak var stateTF: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +33,16 @@ class AddNewRequestViewController: UIViewController {
     }
     
     @objc func add() {
+        let bookTitle = titleTF
+        let isbn = isbnTF
+        let author = authorTF
+        let city = cityTF
+        let state = stateTF
         
+        let request = Request(owner: nil, bookTitle: bookTitle!, location: nil, city: city!, state: state!)
+        Request.add(request: request)
+        
+        self.dismiss(animated: true, completion: nil)
     }
     
 }
