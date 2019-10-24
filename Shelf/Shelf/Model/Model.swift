@@ -58,15 +58,21 @@ class Model {
         //Request(owner: CKRecord.ID(recordName: "Request_Shelf") ,bookTitle: "", location: "", city: "", state: "")
     ]
     
-    public var books = [
-        Book(isbn: "234655435", title: "Bombay", description: "bla", author: "John Doe", illustrator: "John Doe", coverArtist: "John Doe", country: "USA", language: "English", genre: "Fantasy", publisher: "Book Publisher", publicationDate: Date(timeIntervalSince1970: 435243252), pages: 100)
+    public var books:[Book] = [
+        //Book(owner:CKRecord.ID(recordName: "Book_Shelf"),isbn: "234655435", title: "Bombay", description: "bla", author: "John Doe", illustrator: "John Doe", coverArtist: "John Doe", country: "USA", language: "English", genre: "Fantasy", publisher: "Book Publisher", publicationDate: Date(timeIntervalSince1970: 435243252), pages: 100)
     ]
+    public var booksOfACategory:[String:Book] = [:
+        //Book(owner:CKRecord.ID(recordName: "Book_Shelf"),isbn: "234655435", title: "Bombay", description: "bla", author: "John Doe", illustrator: "John Doe", coverArtist: "John Doe", country: "USA", language: "English", genre: "Fantasy", publisher: "Book Publisher", publicationDate: Date(timeIntervalSince1970: 435243252), pages: 100)
+    ]
+    public var ownerOfABook:[User] = []
+    
+    public var users:[User] = []
     
     func numRequests() -> Int {
         return requests.count
     }
     func numBooks() -> Int {
-        return books.count
+        return booksOfACategory.count
     }
     
 }
@@ -220,12 +226,12 @@ class Book : Equatable, CKRecordValueProtocol{
         }
     }
 
-    var country: String{
+    var countryCode: String?{
         get {
-            return record["country"]!
+            return record["countryCode"]!
         }
-        set(country){
-            record["country"] = country
+        set(countryCode){
+            record["countryCode"] = countryCode
         }
     }
 
@@ -238,12 +244,12 @@ class Book : Equatable, CKRecordValueProtocol{
         }
     }
 
-    var genre: String{
+    var category: String{
         get {
-            return record["genre"]!
+            return record["category"]!
         }
         set(genre){
-            record["genre"] = genre
+            record["category"] = genre
         }
     }
 
@@ -273,24 +279,38 @@ class Book : Equatable, CKRecordValueProtocol{
             record["pages"] = pages
         }
     }
+    var owner: CKRecord.ID{
+        get {
+            return record["owner"]! as! CKRecord.ID
+        }
+        set(owner){
+            record["owner"] = owner as! __CKRecordObjCValue
+        }
+    }
 
     init(record:CKRecord){
         self.record = record
     }
 
-    init(isbn: String, title: String, description: String, author: String, illustrator: String, coverArtist: String, country: String, language: String, genre: String, publisher: String, publicationDate: Date, pages: Int){
+    init(owner:CKRecord.ID,isbn: String, title: String, description: String, author: String, illustrator: String, coverArtist: String, country: String, language: String, category: String, publisher: String, publicationDate: Date, pages: Int){
         self.record = CKRecord(recordType: "Book_Shelf")
+        self.owner = owner
         self.isbn = isbn
         self.title = title
         self.description = description
         self.author = author
         self.illustrator = illustrator
         self.coverArtist = coverArtist
-        self.country = language
-        self.genre = genre
+        let locale = NSLocale()
+        self.countryCode = locale.countryCode
+        self.category = category
         self.publisher = publisher
         self.publicationDate = publicationDate
         self.pages = pages
+        self.language = language
+    }
+    convenience init(owner:User, isbn: String, title: String, description: String, author: String, illustrator: String, coverArtist: String, country: String, language: String, category: String, publisher: String, publicationDate: Date, pages: Int,countryCode:String){
+        self.init(owner:owner ,isbn: isbn, title: title, description: description, author: author, illustrator: illustrator, coverArtist: coverArtist, country: country, language: language, category: category, publisher: publisher, publicationDate: publicationDate, pages: pages,countryCode:countryCode)
     }
 
     static func add(book:Book){
@@ -322,7 +342,54 @@ class Book : Equatable, CKRecordValueProtocol{
             }
         }
     }
+    
+    func getAllBooksOfCategory(category:Category, tableView:UITableView){
+        //here we need something like group by
+        let predicate = NSPredicate(format: "category == %@", category)
+        let query = CKQuery(recordType: "Book_Shelf", predicate: predicate)
+        Custodian.publicDatabase.perform(query, inZoneWith: nil){
+            (bookRecords, error) in
+            if let error = error {
+                UIViewController.alert(title: "fetchAllBooksOfACategory() problem getting a Book", message:"\(error)")
+                return
+            }
+            Model.shared.booksOfACategory = [:]
+            if let bookRecords = bookRecords {
+                for bookRecord in bookRecords {
+                    let book = Book(record:bookRecord)
+                    Model.shared.booksOfACategory[book.isbn] = book
+                }
+            }
+            DispatchQueue.main.async { tableView.reloadData()}
+        }
+    }
+    func getAllBooksOfISBN(isbn:String, tableView:UITableView){
+        let predicate = NSPredicate(format: "isbn == %@", isbn)
+        let query = CKQuery(recordType: "Book_Shelf", predicate: predicate)
+        Custodian.publicDatabase.perform(query, inZoneWith: nil){
+            (bookRecords, error) in
+            if let error = error {
+                UIViewController.alert(title: "fetchAllBooksOfISBN() problem getting a Book", message:"\(error)")
+                return
+            }
+            Model.shared.booksOfACategory = [:]
+            if let bookRecords = bookRecords {
+                for bookRecord in bookRecords {
+                    let book = Book(record:bookRecord)
+                    Model.shared.books.append(book)
+                }
+            }
+            DispatchQueue.main.async { tableView.reloadData()}
+        }
+    }
+
+    func getAllOwnerOfABook(book:Book, tableView:UITableView){
+
+    }
+    
+        
 }
+
 
 class Request : Equatable, CKRecordValueProtocol{
     static func == (lhs: Request, rhs: Request) -> Bool {
@@ -375,6 +442,14 @@ class Request : Equatable, CKRecordValueProtocol{
             record["state"] = state
         }
     }
+    var countryCode: String?{
+        get {
+            return record["countryCode"]!
+        }
+        set(state){
+            record["countryCode"] = state
+        }
+    }
     
     private var date: Date{
         get {
@@ -389,18 +464,21 @@ class Request : Equatable, CKRecordValueProtocol{
         self.record = record
     }
     
-    init(owner: CKRecord.ID,bookTitle: String, location: String, city: String, state: String) {
+    init(owner: CKRecord.ID,bookTitle: String, location: String, city: String, state: String, countryCode:String) {
         self.record = CKRecord(recordType: "Request_Shelf")
         self.owner = owner
         self.bookTitle = bookTitle
         self.location = location
         self.city = city
         self.state = state
+        self.countryCode = countryCode
         self.date = Date()
+        let locale = NSLocale()
+        self.countryCode = locale.countryCode
     }
     
-    convenience init(owner: CKRecord,bookTitle: String, location: String, city: String, state: String) {
-        self.init(owner: owner.recordID,bookTitle: bookTitle, location: location, city: city, state: state)
+    convenience init(owner: CKRecord,bookTitle: String, location: String, city: String, state: String, countryCode:String) {
+        self.init(owner: owner.recordID,bookTitle: bookTitle, location: location, city: city, state: state, countryCode:countryCode)
     }
     
     static func add(request:Request){
