@@ -37,7 +37,8 @@ class OwnersTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "owner", for: indexPath)
 
         // Configure the cell...
-        cell.textLabel?.text = Model.shared.books[indexPath.row].owner.name
+        //the owner is only the id of the owner. we can not save the hole owner
+        //cell.textLabel?.text = Model.shared.books[indexPath.row].owner.name
 
         return cell
     }

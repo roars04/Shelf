@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CloudKit
 
 class AddNewRequestViewController: UIViewController {
 
@@ -33,13 +34,13 @@ class AddNewRequestViewController: UIViewController {
     }
     
     @objc func add() {
-        let bookTitle = titleTF
-        let isbn = isbnTF
-        let author = authorTF
-        let city = cityTF
-        let state = stateTF
+        let bookTitle = titleTF.text
+        let isbn = isbnTF.text
+        let author = authorTF.text
+        let city = cityTF.text
+        let state = stateTF.text
         
-        let request = Request(owner: nil, bookTitle: bookTitle!, location: nil, city: city!, state: state!)
+        let request = Request(owner: CKRecord(recordType: "Request_Shelf").recordID, bookTitle: bookTitle!, location: "", city: city!, state: state!)
         Request.add(request: request)
         
         self.dismiss(animated: true, completion: nil)

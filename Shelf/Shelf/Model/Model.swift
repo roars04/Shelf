@@ -468,21 +468,20 @@ class Request : Equatable, CKRecordValueProtocol{
         self.record = record
     }
     
-    init(owner: CKRecord.ID,bookTitle: String, location: String, city: String, state: String, countryCode:String) {
+    init(owner: CKRecord.ID,bookTitle: String, location: String, city: String, state: String) {
         self.record = CKRecord(recordType: "Request_Shelf")
         self.owner = owner
         self.bookTitle = bookTitle
         self.location = location
         self.city = city
         self.state = state
-        self.countryCode = countryCode
         self.date = Date()
         let locale = NSLocale()
         self.countryCode = locale.countryCode
     }
     
-    convenience init(owner: CKRecord,bookTitle: String, location: String, city: String, state: String, countryCode:String) {
-        self.init(owner: owner.recordID,bookTitle: bookTitle, location: location, city: city, state: state, countryCode:countryCode)
+    convenience init(owner: CKRecord,bookTitle: String, location: String, city: String, state: String) {
+        self.init(owner: owner.recordID,bookTitle: bookTitle, location: location, city: city, state: state)
     }
     
     static func add(request:Request){
