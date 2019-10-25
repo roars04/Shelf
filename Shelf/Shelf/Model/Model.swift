@@ -515,4 +515,24 @@ class Request : Equatable, CKRecordValueProtocol{
             }
         }
     }
+    func getAllRequestsOfAOwner(owner: CKRecord.ID, tableView:UITableView){
+        //here we need something like group by
+        let predicate = NSPredicate(format: "id == %@", owner)
+        let query = CKQuery(recordType: "Request_Shelf", predicate: predicate)
+        Custodian.publicDatabase.perform(query, inZoneWith: nil){
+            (requestRecords, error) in
+            if let error = error {
+                UIViewController.alert(title: "fetchAllRequestsOfAOwner() problem getting a Request", message:"\(error)")
+                return
+            }
+            Model.shared.booksOfACategory = [:]
+            if let requestRecords = requestRecords {
+                for requestRecord in requestRecords {
+                    let request = Request(record:requestRecord)
+                    Model.shared.requests.append(request)
+                }
+            }
+            DispatchQueue.main.async { tableView.reloadData()}
+        }
+    }
 }
