@@ -54,7 +54,6 @@ class Model {
     
     // For requests
     public var requests:[Request] = [
-        //i think that is not good as a example because it produce everytime a new object
         //Request(owner: CKRecord.ID(recordName: "Request_Shelf") ,bookTitle: "", location: "", city: "", state: "")
     ]
     
@@ -67,6 +66,11 @@ class Model {
     public var ownerOfABook:[User] = []
     
     public var users:[User] = []
+    
+    enum categories:String {
+        case Action_and_Adventure, Anthology, Classic, Comic_and_Graphic_Novel, Crime_and_Detective, Drama, Fable, Fairy_Tale, Fan_Fiction, Fantasy, Historical_Fiction, Horror, Humor, Legend, Magical_Realism, Mystery, Mythology, Realistic_Fiction, Romance, Satire, Science_Fiction, Short_Story, Suspense_Thriller, Biography_Autobiography, Essay, Memoir, Narrative_Nonfiction, Periodicals, Reference, Self_help, Speech, Textbook, Poetry
+    }
+    
     
     func numRequests() -> Int {
         return requests.count
