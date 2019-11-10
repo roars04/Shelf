@@ -8,8 +8,11 @@
 
 import UIKit
 
-class CategoriesTableViewController: UITableViewController {
-
+class CategoriesTableViewController: UITableViewController, UISearchResultsUpdating {
+    
+    var filteredTableData = Model.shared.categories
+    var resultSearchController:UISearchController? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -18,6 +21,34 @@ class CategoriesTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        // Reload the table
+        tableView.reloadData()
+       
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        resultSearchController = UISearchController(searchResultsController: nil)
+        resultSearchController!.searchResultsUpdater = self
+        resultSearchController!.obscuresBackgroundDuringPresentation = false
+        resultSearchController!.searchBar.sizeToFit()
+
+        tableView.tableHeaderView = resultSearchController!.searchBar
+        
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        
+    }
+
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        if searchController.searchBar.text != "" {
+            let searchPredicate = NSPredicate(format: "SELF CONTAINS[c] %@", searchController.searchBar.text!)
+            let array = (filteredTableData as NSArray).filtered(using: searchPredicate)
+            filteredTableData = array as! [String]
+        } else {
+            filteredTableData = Model.shared.categories
+        }
+        self.tableView.reloadData()
     }
 
     // MARK: - Table view data source
@@ -27,10 +58,9 @@ class CategoriesTableViewController: UITableViewController {
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         // #warning Incomplete implementation, return the number of rows
-       // return Model.shared.getCategories().count
-        return 4
+        return filteredTableData.count
     }
 
     
@@ -38,11 +68,15 @@ class CategoriesTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "category", for: indexPath)
 
         // Configure the cell...
-    //    cell.textLabel?.text = Model.shared.getCategories()[indexPath.row].title
-
+        cell.textLabel?.text = filteredTableData[indexPath.row]
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //tableView.tableHeaderView = nil
+        let booksView = storyboard?.instantiateViewController(withIdentifier: "BooksView")
+        navigationController?.pushViewController(booksView!, animated: false)
+    }
 
     /*
     // Override to support conditional editing of the table view.
