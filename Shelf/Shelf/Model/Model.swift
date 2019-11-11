@@ -324,12 +324,12 @@ class Book : Equatable, CKRecordValueProtocol{
             record["pages"] = pages
         }
     }
-    var owner: CKRecord.ID{
+    var owner: CKRecord.Reference{
         get {
-            return record["owner"]! as! CKRecord.ID
+            return record["owner"]!
         }
         set(owner){
-            record["owner"] = owner as! __CKRecordObjCValue
+            record["owner"] = owner
         }
     }
 
@@ -337,7 +337,7 @@ class Book : Equatable, CKRecordValueProtocol{
         self.record = record
     }
 
-    init(owner:CKRecord.ID,isbn: String, title: String, description: String, author: String, illustrator: String, coverArtist: String, country: String, language: String, category: String, publisher: String, publicationDate: Date, pages: Int){
+    init(owner:CKRecord.Reference,isbn: String, title: String, description: String, author: String, illustrator: String, coverArtist: String, country: String, language: String, category: String, publisher: String, publicationDate: Date, pages: Int){
         self.record = CKRecord(recordType: "Book_Shelf")
         self.owner = owner
         self.isbn = isbn
@@ -432,8 +432,6 @@ class Book : Equatable, CKRecordValueProtocol{
 
     static func getAllOwnerOfABook(book:Book){
 
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllOwnerOfABook Fetched"),
-        object: nil)
     }
     
         
@@ -447,12 +445,12 @@ class Request : Equatable, CKRecordValueProtocol{
 
     var record: CKRecord!
 
-    var owner: CKRecord.ID{
+    var owner: CKRecord.Reference{
         get {
-            return record["owner"]! as! CKRecord.ID
+            return record["owner"]!
         }
         set(owner){
-            record["owner"] = owner as! __CKRecordObjCValue
+            record["owner"] = owner
         }
     }
     
@@ -513,7 +511,7 @@ class Request : Equatable, CKRecordValueProtocol{
         self.record = record
     }
     
-    init(owner: CKRecord.ID,bookTitle: String, location: String, city: String, state: String) {
+    init(owner: CKRecord.Reference,bookTitle: String, location: String, city: String, state: String) {
         self.record = CKRecord(recordType: "Request_Shelf")
         self.owner = owner
         self.bookTitle = bookTitle
@@ -526,7 +524,7 @@ class Request : Equatable, CKRecordValueProtocol{
     }
     
     convenience init(owner: CKRecord,bookTitle: String, location: String, city: String, state: String) {
-        self.init(owner: owner.recordID,bookTitle: bookTitle, location: location, city: city, state: state)
+        self.init(owner: owner,bookTitle: bookTitle, location: location, city: city, state: state)
     }
     
     static func add(request:Request){
@@ -542,6 +540,8 @@ class Request : Equatable, CKRecordValueProtocol{
                     UIViewController.alert(title: "Added a New Request", message:"")
                 }
             }
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Added a New Request"),
+            object: nil)
         }
     }
 
