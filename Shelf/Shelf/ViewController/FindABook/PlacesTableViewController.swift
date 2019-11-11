@@ -8,8 +8,26 @@
 
 import UIKit
 
-class PlacesTableViewController: UITableViewController {
+class PlacesTableViewController: UITableViewController, UISearchBarDelegate {
 
+    @IBOutlet var searchBarPlaces: UITableView!
+    
+    var book:Book? = nil
+    
+    var city:[String] = []
+    
+    var filteredTableData:[String] = []
+    
+    func toUniqueCityArray(_ user:[User]) -> [String] {
+        var result = Set<String>()
+        for elem in user {
+            if !result.contains(elem.city) {
+                result.insert(elem.city)
+            }
+        }
+        return Array(result)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -18,6 +36,29 @@ class PlacesTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        searchBarPlaces.delegate = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: NSNotification.Name("AllOwnerOfABook Fetched"), object: nil)
+    }
+        
+    @objc func reloadData(){
+        city = toUniqueCityArray(Model.shared.ownerOfABook)
+        filteredTableData = toUniqueCityArray(Model.shared.ownerOfABook)
+        tableView.reloadData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        Book.getAllOwnerOfABook(book: book!)
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText != "" {
+            filteredTableData = city.filter({ (city) -> Bool in
+                city.hasPrefix(searchText.lowercased())
+            })
+        } else {
+            filteredTableData = city
+        }
     }
 
     // MARK: - Table view data source
@@ -29,17 +70,23 @@ class PlacesTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return Model.shared.books.count
+        return filteredTableData.count;
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "place", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "book", for: indexPath)
 
         // Configure the cell...
-       // cell.textLabel?.text = Model.shared.books[indexPath.row].owner.place.state
-        //cell.detailTextLabel?.text = Model.shared.books[indexPath.row].owner.place.city
+        cell.textLabel?.text = filteredTableData[indexPath.row]
+
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let ownersView = storyboard?.instantiateViewController(withIdentifier: "OwnersView") as! OwnersTableViewController
+        ownersView.city = filteredTableData[indexPath.row]
+        navigationController?.pushViewController(ownersView, animated: false)
     }
 
     /*

@@ -8,10 +8,11 @@
 
 import UIKit
 
-class CategoriesTableViewController: UITableViewController, UISearchResultsUpdating {
+class CategoriesTableViewController: UITableViewController, UISearchBarDelegate {
+    
+    @IBOutlet weak var searchBarCategory: UISearchBar!
     
     var filteredTableData = Model.shared.categories
-    var resultSearchController:UISearchController? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,33 +23,17 @@ class CategoriesTableViewController: UITableViewController, UISearchResultsUpdat
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-        // Reload the table
-        tableView.reloadData()
-       
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        resultSearchController = UISearchController(searchResultsController: nil)
-        resultSearchController!.searchResultsUpdater = self
-        resultSearchController!.obscuresBackgroundDuringPresentation = false
-        resultSearchController!.searchBar.sizeToFit()
-
-        tableView.tableHeaderView = resultSearchController!.searchBar
-        
-    }
-    override func viewWillDisappear(_ animated: Bool) {
-        
+        searchBarCategory.delegate = self
     }
 
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        if searchController.searchBar.text != "" {
-            let searchPredicate = NSPredicate(format: "SELF CONTAINS[c] %@", searchController.searchBar.text!)
-            let array = (filteredTableData as NSArray).filtered(using: searchPredicate)
-            filteredTableData = array as! [String]
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText != "" {
+            filteredTableData = Model.shared.categories.filter({ (category) -> Bool in
+                category.lowercased().hasPrefix(searchText.lowercased())
+            })
         } else {
             filteredTableData = Model.shared.categories
         }
-        self.tableView.reloadData()
     }
 
     // MARK: - Table view data source
@@ -74,8 +59,9 @@ class CategoriesTableViewController: UITableViewController, UISearchResultsUpdat
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //tableView.tableHeaderView = nil
-        let booksView = storyboard?.instantiateViewController(withIdentifier: "BooksView")
-        navigationController?.pushViewController(booksView!, animated: false)
+        let booksView = storyboard?.instantiateViewController(withIdentifier: "BooksView") as! BooksTableViewController
+        booksView.category = filteredTableData[indexPath.row]
+        navigationController?.pushViewController(booksView, animated: false)
     }
 
     /*

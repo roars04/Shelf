@@ -8,8 +8,14 @@
 
 import UIKit
 
-class BooksTableViewController: UITableViewController {
+class BooksTableViewController: UITableViewController, UISearchBarDelegate {
 
+    @IBOutlet var searchBarBooks: UITableView!
+    
+    var category:String = "Action"
+    
+    var filteredTableData:[Book] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -18,6 +24,30 @@ class BooksTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+                
+        searchBarBooks.delegate = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: NSNotification.Name("AllBooksOfACategory Fetched"), object: nil)
+
+    }
+    
+    @objc func reloadData(){
+        filteredTableData = Array(Model.shared.booksOfACategory.values)
+        tableView.reloadData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        Book.getAllBooksOfCategory(category: category)
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText != "" {
+            filteredTableData = Array(Model.shared.booksOfACategory.values).filter({ (book) -> Bool in
+                book.title.lowercased().hasPrefix(searchText.lowercased())
+            })
+        } else {
+            filteredTableData = Array(Model.shared.booksOfACategory.values)
+        }
     }
 
     // MARK: - Table view data source
@@ -29,8 +59,7 @@ class BooksTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-       // return Model.shared.books.count
-        return 5;
+        return filteredTableData.count;
     }
 
     
@@ -38,11 +67,16 @@ class BooksTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "book", for: indexPath)
 
         // Configure the cell...
-      //  cell.textLabel?.text = Model.shared.books[indexPath.row].title
+        cell.textLabel?.text = filteredTableData[indexPath.row].title
 
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let placesView = storyboard?.instantiateViewController(withIdentifier: "PlacesView") as! PlacesTableViewController
+        placesView.book = filteredTableData[indexPath.row]
+        navigationController?.pushViewController(placesView, animated: false)
+    }
 
     /*
     // Override to support conditional editing of the table view.

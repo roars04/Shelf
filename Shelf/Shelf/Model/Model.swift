@@ -124,11 +124,48 @@ class User : Equatable, CKRecordValueProtocol, Hashable {    // need Hashable be
             record["firstName"] = firstName
         }
     }
+    var city: String{
+        get {
+            return record["city"]!
+        }
+        
+        set(city){
+            record["city"] = city
+        }
+    }
+    var street: String{
+        get {
+            return record["street"]!
+        }
+        
+        set(street){
+            record["street"] = street
+        }
+    }
+    var state: String{
+        get {
+            return record["state"]!
+        }
+        
+        set(state){
+            record["state"] = state
+        }
+    }
+    var postal: String{
+        get {
+            return record["postal"]!
+        }
+        
+        set(postal){
+            record["postal"] = postal
+        }
+    }
+
     init(record:CKRecord){
         self.record = record
     }
     
-    init(email:String,password:String,lastName:String, firstName:String){
+    init(email:String,password:String,lastName:String, firstName:String,city:String,street:String,state:String,postal:String){
         let userRecordId = CKRecord.ID(recordName: "\(email)")                    // 1. create a record ID
         self.record = CKRecord(recordType: "User_Shelf", recordID: userRecordId)  // 2. create a record using that record ID
         self.record["email"] = email
@@ -137,6 +174,10 @@ class User : Equatable, CKRecordValueProtocol, Hashable {    // need Hashable be
         self.email = email
         self.lastName = lastName
         self.firstName = firstName
+        self.city = city
+        self.postal = postal
+        self.state = state
+        self.street = street
     }
     
     // Two teachers are deemed equal if they have the same ssn
@@ -347,7 +388,7 @@ class Book : Equatable, CKRecordValueProtocol{
         }
     }
     
-    func getAllBooksOfCategory(category:Category, tableView:UITableView){
+    static func getAllBooksOfCategory(category:String){
         //here we need something like group by
         let predicate = NSPredicate(format: "category == %@", category)
         let query = CKQuery(recordType: "Book_Shelf", predicate: predicate)
@@ -364,10 +405,11 @@ class Book : Equatable, CKRecordValueProtocol{
                     Model.shared.booksOfACategory[book.isbn] = book
                 }
             }
-            DispatchQueue.main.async { tableView.reloadData()}
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllBooksOfACategory Fetched"),
+            object: nil)
         }
     }
-    func getAllBooksOfISBN(isbn:String, tableView:UITableView){
+    static func getAllBooksOfISBN(isbn:String){
         let predicate = NSPredicate(format: "isbn == %@", isbn)
         let query = CKQuery(recordType: "Book_Shelf", predicate: predicate)
         Custodian.publicDatabase.perform(query, inZoneWith: nil){
@@ -383,12 +425,15 @@ class Book : Equatable, CKRecordValueProtocol{
                     Model.shared.books.append(book)
                 }
             }
-            DispatchQueue.main.async { tableView.reloadData()}
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllBooksOfISBN Fetched"),
+            object: nil)
         }
     }
 
-    func getAllOwnerOfABook(book:Book, tableView:UITableView){
+    static func getAllOwnerOfABook(book:Book){
 
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllOwnerOfABook Fetched"),
+        object: nil)
     }
     
         
@@ -514,7 +559,7 @@ class Request : Equatable, CKRecordValueProtocol{
             }
         }
     }
-    func getAllRequestsOfAOwner(owner: CKRecord.ID, tableView:UITableView){
+    func getAllRequestsOfAOwner(owner: CKRecord.ID){
         //here we need something like group by
         let predicate = NSPredicate(format: "id == %@", owner)
         let query = CKQuery(recordType: "Request_Shelf", predicate: predicate)
@@ -531,7 +576,8 @@ class Request : Equatable, CKRecordValueProtocol{
                     Model.shared.requests.append(request)
                 }
             }
-            DispatchQueue.main.async { tableView.reloadData()}
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllRequestsOfAOwner Fetched"),
+            object: nil)
         }
     }
 }

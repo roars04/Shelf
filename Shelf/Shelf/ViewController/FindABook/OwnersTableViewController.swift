@@ -8,8 +8,26 @@
 
 import UIKit
 
-class OwnersTableViewController: UITableViewController {
+class OwnersTableViewController: UITableViewController, UISearchBarDelegate {
 
+    @IBOutlet var searchBarOwner: UITableView!
+    
+    var city:String = ""
+    
+    var user:[User] = []
+       
+    var filteredTableData:[User] = []
+    
+    func userOfACity(_ user:[User]) -> [User] {
+        var result:[User] = []
+        for elem in user {
+            if elem.city == city {
+                result.append(elem)
+            }
+        }
+        return result
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -18,6 +36,22 @@ class OwnersTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        searchBarOwner.delegate = self
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        user = userOfACity(Model.shared.ownerOfABook)
+        filteredTableData = userOfACity(Model.shared.ownerOfABook)
+        tableView.reloadData()
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText != "" {
+            filteredTableData = user.filter({ (user) -> Bool in
+                (user.firstName.lowercased() + " " + user.lastName.lowercased()).hasPrefix(searchText.lowercased())
+            })
+        } else {
+            filteredTableData = user
+        }
     }
 
     // MARK: - Table view data source
@@ -29,16 +63,15 @@ class OwnersTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return Model.shared.books.count
+        return filteredTableData.count;
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "owner", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "book", for: indexPath)
 
         // Configure the cell...
-        //the owner is only the id of the owner. we can not save the hole owner
-        //cell.textLabel?.text = Model.shared.books[indexPath.row].owner.name
+        cell.textLabel?.text = filteredTableData[indexPath.row].firstName + " " + filteredTableData[indexPath.row].lastName
 
         return cell
     }
