@@ -39,7 +39,6 @@ class AddNewRequestViewController: UIViewController {
         let author = authorTF.text
         let city = cityTF.text
         let state = stateTF.text
-        
         let request = Request(owner: CKRecord(recordType: "Request_Shelf").recordID, bookTitle: bookTitle!, location: "", city: city!, state: state!)
         Request.add(request: request)
         

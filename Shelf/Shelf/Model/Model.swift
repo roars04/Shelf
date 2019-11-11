@@ -53,8 +53,12 @@ class Model {
     }
     
     // For requests
-    public var requests:[Request] = [
+    public var myRequests:[Request] = [
         //Request(owner: CKRecord.ID(recordName: "Request_Shelf") ,bookTitle: "", location: "", city: "", state: "")
+    ]
+    
+    public var requestsRecieved:[Request] = [
+        //
     ]
     
     public var books:[Book] = [
@@ -72,8 +76,11 @@ class Model {
     ]
     
     
-    func numRequests() -> Int {
-        return requests.count
+    func numMyRequests() -> Int {
+        return myRequests.count
+    }
+    func numRequestsRecieved() -> Int {
+        return requestsRecieved.count
     }
     func numBooks() -> Int {
         return booksOfACategory.count
@@ -573,7 +580,7 @@ class Request : Equatable, CKRecordValueProtocol{
             if let requestRecords = requestRecords {
                 for requestRecord in requestRecords {
                     let request = Request(record:requestRecord)
-                    Model.shared.requests.append(request)
+                    Model.shared.myRequests.append(request)
                 }
             }
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllRequestsOfAOwner Fetched"),

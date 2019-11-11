@@ -9,13 +9,41 @@
 import UIKit
 
 class RequestTableViewController: UITableViewController {
-
-    @IBAction func myRequests() {
-        let myRequests = storyboard?.instantiateViewController(withIdentifier: "myRequestsNavCon") as! UINavigationController
-        self.present(myRequests, animated: true, completion: nil)
-    }
-    @IBAction func requestsReceived() {
-        //self.present(<#T##viewControllerToPresent: UIViewController##UIViewController#>, animated: <#T##Bool#>, completion: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>)
+    
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    
+    @IBAction func indexChange(_ sender: Any) {
+        switch segmentedControl.selectedSegmentIndex
+        {
+        case 0:
+            func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "requests", for: indexPath)
+                let request = Model.shared.myRequests[indexPath.row]
+                cell.textLabel?.text = request.bookTitle
+                cell.detailTextLabel?.text = request.location
+                
+                return cell
+            }
+            func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+                
+                return Model.shared.numMyRequests()
+            }
+        case 1:
+            func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "requests", for: indexPath)
+                let request = Model.shared.requestsRecieved[indexPath.row]
+                cell.textLabel?.text = request.bookTitle
+                cell.detailTextLabel?.text = request.location
+                
+                return cell
+            }
+            func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+                
+                return Model.shared.numRequestsRecieved()
+            }
+        default:
+            break
+        }
     }
     
     override func viewDidLoad() {
@@ -29,19 +57,19 @@ class RequestTableViewController: UITableViewController {
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+/*    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return Model.shared.numRequests()
+        return Model.shared.numMyRequests()
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "requests", for: indexPath)
-        let request = Model.shared.requests[indexPath.row]
+        let request = Model.shared.myRequests[indexPath.row]
         cell.textLabel?.text = request.bookTitle
         cell.detailTextLabel?.text = request.location
 
         return cell
-    }
+    } */
 
     /*
     // Override to support conditional editing of the table view.
