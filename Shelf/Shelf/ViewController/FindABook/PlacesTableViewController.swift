@@ -48,7 +48,7 @@ class PlacesTableViewController: UITableViewController, UISearchBarDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        Book.getAllOwnerOfABook(book: book!)
+        Book.getAllOwnerOfABook(isbn: book!.isbn)
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -59,6 +59,7 @@ class PlacesTableViewController: UITableViewController, UISearchBarDelegate {
         } else {
             filteredTableData = city
         }
+        self.tableView.reloadData()
     }
 
     // MARK: - Table view data source

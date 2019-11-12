@@ -34,6 +34,7 @@ class CategoriesTableViewController: UITableViewController, UISearchBarDelegate 
         } else {
             filteredTableData = Model.shared.categories
         }
+        self.tableView.reloadData()
     }
 
     // MARK: - Table view data source

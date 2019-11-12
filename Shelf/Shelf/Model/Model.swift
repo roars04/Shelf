@@ -65,10 +65,10 @@ class Model {
     ]
     public var ownerOfABook:[User] = []
     
-    public var users:[User] = []
+    //public var users:[User] = []
     
     public var categories:[String] = [
-        "Action_and_Adventure", "Anthology", "Classic", "Comic_and_Graphic_Novel", "Crime_and_Detective", "Drama", "Fable", "Fairy_Tale", "Fan_Fiction", "Fantasy", "Historical_Fiction", "Horror", "Humor", "Legend", "Magical_Realism", "Mystery", "Mythology", "Realistic_Fiction", "Romance", "Satire", "Science_Fiction", "Short_Story", "Suspense_Thriller", "Biography_Autobiography", "Essay", "Memoir", "Narrative_Nonfiction", "Periodicals", "Reference", "Self_help", "Speech", "Textbook", "Poetry"
+        "Action and Adventure", "Anthology", "Classic", "Comic and Graphic_Novel", "Crime and Detective", "Drama", "Fable", "Fairy Tale", "Fan Fiction", "Fantasy", "Historical Fiction", "Horror", "Humor", "Legend", "Magical Realism", "Mystery", "Mythology", "Realistic Fiction", "Romance", "Satire", "Science Fiction", "Short Story", "Suspense Thriller", "Biography Autobiography", "Essay", "Memoir", "Narrative Nonfiction", "Periodicals", "Reference", "Self help", "Speech", "Textbook", "Poetry"
     ]
     
     
@@ -398,6 +398,13 @@ class Book : Equatable, CKRecordValueProtocol{
                 UIViewController.alert(title: "fetchAllBooksOfACategory() problem getting a Book", message:"\(error)")
                 return
             }
+            Model.shared.books = []
+            if let bookRecords = bookRecords {
+                for bookRecord in bookRecords {
+                    let book = Book(record:bookRecord)
+                    Model.shared.books.append(book)
+                }
+            }
             Model.shared.booksOfACategory = [:]
             if let bookRecords = bookRecords {
                 for bookRecord in bookRecords {
@@ -409,29 +416,32 @@ class Book : Equatable, CKRecordValueProtocol{
             object: nil)
         }
     }
-    static func getAllBooksOfISBN(isbn:String){
-        let predicate = NSPredicate(format: "isbn == %@", isbn)
-        let query = CKQuery(recordType: "Book_Shelf", predicate: predicate)
+
+    static func getAllOwnerOfABook(isbn:String){
+        var owner:[CKRecord.Reference] = []
+        for book in Model.shared.books{
+            if book.isbn == isbn {
+                owner.append(book.owner)
+            }
+        }
+        let predicate = NSPredicate(format: "recordID IN %@", argumentArray: owner)
+        let query = CKQuery(recordType: "User_Shelf", predicate: predicate)
         Custodian.publicDatabase.perform(query, inZoneWith: nil){
-            (bookRecords, error) in
+            (userRecords, error) in
             if let error = error {
-                UIViewController.alert(title: "fetchAllBooksOfISBN() problem getting a Book", message:"\(error)")
+                UIViewController.alert(title: "getAllOwnerOfABook() problem getting a User", message:"\(error)")
                 return
             }
             Model.shared.booksOfACategory = [:]
-            if let bookRecords = bookRecords {
-                for bookRecord in bookRecords {
-                    let book = Book(record:bookRecord)
-                    Model.shared.books.append(book)
+            if let userRecords = userRecords {
+                for userRecord in userRecords {
+                    let user = User(record:userRecord)
+                    Model.shared.ownerOfABook.append(user)
                 }
             }
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllBooksOfISBN Fetched"),
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllOwnerOfABook Fetched"),
             object: nil)
         }
-    }
-
-    static func getAllOwnerOfABook(book:Book){
-
     }
     
         
@@ -559,9 +569,9 @@ class Request : Equatable, CKRecordValueProtocol{
             }
         }
     }
-    func getAllRequestsOfAOwner(owner: CKRecord.ID){
+    func getAllRequestsOfAOwner(owner: CKRecord.Reference){
         //here we need something like group by
-        let predicate = NSPredicate(format: "id == %@", owner)
+        let predicate = NSPredicate(format: "recordID == %@", owner)
         let query = CKQuery(recordType: "Request_Shelf", predicate: predicate)
         Custodian.publicDatabase.perform(query, inZoneWith: nil){
             (requestRecords, error) in

@@ -48,6 +48,7 @@ class BooksTableViewController: UITableViewController, UISearchBarDelegate {
         } else {
             filteredTableData = Array(Model.shared.booksOfACategory.values)
         }
+        self.tableView.reloadData()
     }
 
     // MARK: - Table view data source

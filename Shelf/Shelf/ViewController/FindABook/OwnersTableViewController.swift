@@ -52,6 +52,7 @@ class OwnersTableViewController: UITableViewController, UISearchBarDelegate {
         } else {
             filteredTableData = user
         }
+        self.tableView.reloadData()
     }
 
     // MARK: - Table view data source

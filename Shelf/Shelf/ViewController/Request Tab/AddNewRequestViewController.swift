@@ -40,7 +40,7 @@ class AddNewRequestViewController: UIViewController {
         let city = cityTF.text
         let state = stateTF.text
         
-        let request = Request(owner: CKRecord(recordType: "Request_Shelf").recordID, bookTitle: bookTitle!, location: "", city: city!, state: state!)
+        let request = Request(owner: CKRecord(recordType: "Request_Shelf"), bookTitle: bookTitle!, location: "", city: city!, state: state!)
         Request.add(request: request)
         
         self.dismiss(animated: true, completion: nil)
