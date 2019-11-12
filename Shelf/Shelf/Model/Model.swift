@@ -53,8 +53,12 @@ class Model {
     }
     
     // For requests
-    public var requests:[Request] = [
+    public var myRequests:[Request] = [
         //Request(owner: CKRecord.ID(recordName: "Request_Shelf") ,bookTitle: "", location: "", city: "", state: "")
+    ]
+    
+    public var requestsRecieved:[Request] = [
+        //
     ]
     
     public var books:[Book] = [
@@ -67,16 +71,82 @@ class Model {
     
     //public var users:[User] = []
     
+    public var LoggedInUser : User!
+    
     public var categories:[String] = [
         "Action and Adventure", "Anthology", "Classic", "Comic and Graphic_Novel", "Crime and Detective", "Drama", "Fable", "Fairy Tale", "Fan Fiction", "Fantasy", "Historical Fiction", "Horror", "Humor", "Legend", "Magical Realism", "Mystery", "Mythology", "Realistic Fiction", "Romance", "Satire", "Science Fiction", "Short Story", "Suspense Thriller", "Biography Autobiography", "Essay", "Memoir", "Narrative Nonfiction", "Periodicals", "Reference", "Self help", "Speech", "Textbook", "Poetry"
     ]
     
     
-    func numRequests() -> Int {
-        return requests.count
+    func numMyRequests() -> Int {
+        return myRequests.count
+    }
+    func numRequestsRecieved() -> Int {
+        return requestsRecieved.count
     }
     func numBooks() -> Int {
         return booksOfACategory.count
+    }
+    
+    func sha256(data : Data) -> Data {
+        var hash = [UInt8](repeating: 0,  count: 10)
+        return Data(hash)
+    }
+    
+    func Login(username:String, Password:String) -> Void {
+        
+        let predicate = NSPredicate(format:"email = %@ AND password = %@",username,Password)
+        let query = CKQuery(recordType: "User_Shelf", predicate: predicate)
+        // this gets *all * teachers
+        var isValid = false;
+        Custodian.publicDatabase.perform(query, inZoneWith: nil){
+            (userrecord, error) in
+            if let error = error {
+                //self.alert(title: "Disaster while fetching all teachers:", message: "\(error)")
+                UIViewController.alert(title: "Invalid Credentials", message:"\(error)")
+                isValid = false;
+            } else {
+                        // note the studentRecord -> student
+                if(userrecord!.count>0){
+                    let userDetails = User(record: userrecord![0])
+                    self.LoggedInUser = userDetails
+                    isValid = true;
+                    
+                     NotificationCenter.default.post(name: NSNotification.Name(rawValue:"Login Sucess"), object: nil)
+                    
+                }
+                else{
+                    UIViewController.alert(title: "Invalid Credentials", message:"Please enter valid Credentials")
+                    isValid = false;
+                }
+                
+                
+                
+            }
+        }
+        //return isValid;
+    }
+    
+    /// Adds a User to CloudKit *and* locally
+    ///
+    /// - Parameter user: the user to add to the database
+    func add(user:User){
+        
+        Custodian.publicDatabase.save(user.record){
+            (record, error) in
+            if let error = error {
+                UIViewController.alert(title:"Something has gone wrong while adding a User", message:"\(error)")
+            } else {
+                //users.append(user)
+                UIViewController.alert(title:"Successfully saved user", message:"")
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: NSNotification.Name("Added New User"), object: user)
+                    UIViewController.alert(title: "Added New User", message:"")
+                }
+            }
+            
+        }
+        
     }
     
 }
@@ -160,12 +230,21 @@ class User : Equatable, CKRecordValueProtocol, Hashable {    // need Hashable be
             record["postal"] = postal
         }
     }
+    var phone: String{
+        get {
+            return record["phone"]!
+        }
+        
+        set(phone){
+            record["phone"] = phone
+        }
+    }
 
     init(record:CKRecord){
         self.record = record
     }
     
-    init(email:String,password:String,lastName:String, firstName:String,city:String,street:String,state:String,postal:String){
+    init(email:String,password:String,lastName:String, firstName:String,city:String,street:String,state:String,postal:String,phone:String){
         let userRecordId = CKRecord.ID(recordName: "\(email)")                    // 1. create a record ID
         self.record = CKRecord(recordType: "User_Shelf", recordID: userRecordId)  // 2. create a record using that record ID
         self.record["email"] = email
@@ -178,6 +257,7 @@ class User : Equatable, CKRecordValueProtocol, Hashable {    // need Hashable be
         self.postal = postal
         self.state = state
         self.street = street
+        self.phone = phone
     }
     
     // Two teachers are deemed equal if they have the same ssn
@@ -185,27 +265,7 @@ class User : Equatable, CKRecordValueProtocol, Hashable {    // need Hashable be
         return lhs.email == rhs.email
     }
     
-    /// Adds a teacher to CloudKit *and* locally
-    ///
-    /// - Parameter user: the user to add to the database
-    func add(user:User){
-        
-        Custodian.publicDatabase.save(user.record){
-            (record, error) in
-            if let error = error {
-                UIViewController.alert(title:"Something has gone wrong while adding a User", message:"\(error)")
-            } else {
-                //users.append(user)
-                UIViewController.alert(title:"Successfully saved user", message:"")
-                DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: NSNotification.Name("Added New User"), object: user)
-                    UIViewController.alert(title: "Added New User", message:"")
-                }
-            }
-            
-        }
-        
-    }
+    
 
 }
 
@@ -594,7 +654,7 @@ class Request : Equatable, CKRecordValueProtocol{
     }
     func getAllRequestsOfAOwner(owner: CKRecord.Reference){
         //here we need something like group by
-        let predicate = NSPredicate(format: "recordID == %@", owner)
+        let predicate = NSPredicate(format: "owner == %@", owner)
         let query = CKQuery(recordType: "Request_Shelf", predicate: predicate)
         Custodian.publicDatabase.perform(query, inZoneWith: nil){
             (requestRecords, error) in
@@ -606,7 +666,7 @@ class Request : Equatable, CKRecordValueProtocol{
             if let requestRecords = requestRecords {
                 for requestRecord in requestRecords {
                     let request = Request(record:requestRecord)
-                    Model.shared.requests.append(request)
+                    Model.shared.myRequests.append(request)
                 }
             }
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllRequestsOfAOwner Fetched"),

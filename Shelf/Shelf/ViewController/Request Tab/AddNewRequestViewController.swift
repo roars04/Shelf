@@ -12,8 +12,7 @@ import CloudKit
 class AddNewRequestViewController: UIViewController {
 
     @IBOutlet weak var titleTF: UITextField!
-    @IBOutlet weak var isbnTF: UITextField!
-    @IBOutlet weak var authorTF: UITextField!
+    @IBOutlet weak var locationTF: UITextField!
     @IBOutlet weak var cityTF: UITextField!
     @IBOutlet weak var stateTF: UITextField!
     
@@ -35,14 +34,11 @@ class AddNewRequestViewController: UIViewController {
     
     @objc func add() {
         let bookTitle = titleTF.text
-        let isbn = isbnTF.text
-        let author = authorTF.text
+        let location = locationTF.text
         let city = cityTF.text
         let state = stateTF.text
-        
-        let request = Request(owner: CKRecord(recordType: "Request_Shelf"), bookTitle: bookTitle!, location: "", city: city!, state: state!)
+        let request = Request(owner: CKRecord(recordType:"Request_Shelf"), bookTitle: bookTitle!, location: location!, city: city!, state: state!)
         Request.add(request: request)
-        
         self.dismiss(animated: true, completion: nil)
     }
     
