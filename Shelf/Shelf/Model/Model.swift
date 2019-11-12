@@ -464,6 +464,24 @@ class Request : Equatable, CKRecordValueProtocol{
         }
     }
     
+    var requestByUser: CKRecord.Reference{
+        get {
+            return record["requestByUser"]!
+        }
+        set(owner){
+            record["requestByUser"] = owner
+        }
+    }
+
+    var requestForBook: CKRecord.Reference{
+        get {
+            return record["requestForBook"]!
+        }
+        set(owner){
+            record["requestForBook"] = owner
+        }
+    }
+
     var bookTitle: String{
         get {
             return record["bookTitle"]!
@@ -519,6 +537,11 @@ class Request : Equatable, CKRecordValueProtocol{
 
     init(record:CKRecord){
         self.record = record
+    }
+    
+    init(requestByUser: CKRecord.Reference,requestForBook: CKRecord.Reference){
+        self.requestByUser = requestByUser
+        self.requestForBook = requestForBook
     }
     
     init(owner: CKRecord.Reference,bookTitle: String, location: String, city: String, state: String) {
