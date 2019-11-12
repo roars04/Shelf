@@ -568,7 +568,7 @@ class Request : Equatable, CKRecordValueProtocol{
     }
     func getAllRequestsOfAOwner(owner: CKRecord.ID){
         //here we need something like group by
-        let predicate = NSPredicate(format: "id == %@", owner)
+        let predicate = NSPredicate(format: "owner == %@", owner)
         let query = CKQuery(recordType: "Request_Shelf", predicate: predicate)
         Custodian.publicDatabase.perform(query, inZoneWith: nil){
             (requestRecords, error) in
