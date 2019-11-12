@@ -10,6 +10,7 @@
 		3F05A9F02349071B00B774E6 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F05A9EB234906B200B774E6 /* Model.swift */; };
 		3F170C5E234963AA00E357C6 /* AddBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170C5D234963AA00E357C6 /* AddBookViewController.swift */; };
 		3F173DA62347CFB800A152CB /* RequestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F173DA52347CFB800A152CB /* RequestTableViewController.swift */; };
+		3F352C63237A355700CE4254 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F352C62237A355700CE4254 /* RegistrationViewController.swift */; };
 		3F3B6482235FC873003B1C8D /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3B6481235FC873003B1C8D /* UserViewController.swift */; };
 		3F7C126723427983006ECA15 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7C126623427983006ECA15 /* AppDelegate.swift */; };
 		3F7C126923427983006ECA15 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7C126823427983006ECA15 /* AccountViewController.swift */; };
@@ -28,6 +29,7 @@
 		3F05A9EB234906B200B774E6 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		3F170C5D234963AA00E357C6 /* AddBookViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBookViewController.swift; sourceTree = "<group>"; };
 		3F173DA52347CFB800A152CB /* RequestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTableViewController.swift; sourceTree = "<group>"; };
+		3F352C62237A355700CE4254 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		3F3B6480235FBBB7003B1C8D /* Shelf.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Shelf.entitlements; sourceTree = "<group>"; };
 		3F3B6481235FC873003B1C8D /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		3F7C126323427983006ECA15 /* Shelf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shelf.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -122,6 +124,7 @@
 				3F173DA42347CF8C00A152CB /* Request Tab */,
 				3F98B54423457B5B000AC65B /* FindABook */,
 				3F3B6481235FC873003B1C8D /* UserViewController.swift */,
+				3F352C62237A355700CE4254 /* RegistrationViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -222,6 +225,7 @@
 				3F170C5E234963AA00E357C6 /* AddBookViewController.swift in Sources */,
 				3F05A9F02349071B00B774E6 /* Model.swift in Sources */,
 				3F3B6482235FC873003B1C8D /* UserViewController.swift in Sources */,
+				3F352C63237A355700CE4254 /* RegistrationViewController.swift in Sources */,
 				3F173DA62347CFB800A152CB /* RequestTableViewController.swift in Sources */,
 				3F7C126723427983006ECA15 /* AppDelegate.swift in Sources */,
 				3F7C126923427983006ECA15 /* AccountViewController.swift in Sources */,
