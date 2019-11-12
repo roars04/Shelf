@@ -230,12 +230,21 @@ class User : Equatable, CKRecordValueProtocol, Hashable {    // need Hashable be
             record["postal"] = postal
         }
     }
+    var phone: String{
+        get {
+            return record["phone"]!
+        }
+        
+        set(phone){
+            record["phone"] = phone
+        }
+    }
 
     init(record:CKRecord){
         self.record = record
     }
     
-    init(email:String,password:String,lastName:String, firstName:String,city:String,street:String,state:String,postal:String){
+    init(email:String,password:String,lastName:String, firstName:String,city:String,street:String,state:String,postal:String,phone:String){
         let userRecordId = CKRecord.ID(recordName: "\(email)")                    // 1. create a record ID
         self.record = CKRecord(recordType: "User_Shelf", recordID: userRecordId)  // 2. create a record using that record ID
         self.record["email"] = email
@@ -248,6 +257,7 @@ class User : Equatable, CKRecordValueProtocol, Hashable {    // need Hashable be
         self.postal = postal
         self.state = state
         self.street = street
+        self.phone = phone
     }
     
     // Two teachers are deemed equal if they have the same ssn

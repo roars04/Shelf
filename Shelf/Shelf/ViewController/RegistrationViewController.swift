@@ -18,6 +18,8 @@ class RegistrationViewController: UIViewController {
     @IBOutlet weak var CityTF: UITextField!
     @IBOutlet weak var StateTF: UITextField!
     @IBOutlet weak var PostalTF: UITextField!
+    @IBOutlet weak var PhoneTF: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -33,7 +35,7 @@ class RegistrationViewController: UIViewController {
         
         
         let userdata = User(email: EmailTF.text!, password: PasswordTF.text!, lastName: LastNameTF.text!, firstName: FirstNameTF.text!, city: CityTF.text!, street: StreetTF.text!
-            , state: StateTF.text!, postal: PostalTF.text!)
+            , state: StateTF.text!, postal: PostalTF.text!, phone: PhoneTF.text!)
         
         Model.shared.add(user: userdata)
         
