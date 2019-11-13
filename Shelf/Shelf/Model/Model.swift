@@ -384,7 +384,7 @@ class Book : Equatable, CKRecordValueProtocol{
             record["pages"] = pages
         }
     }
-    var owner: CKRecord.Reference{
+    var owner: CKRecord.Reference!{
         get {
             return record["owner"]!
         }
@@ -397,8 +397,10 @@ class Book : Equatable, CKRecordValueProtocol{
         self.record = record
     }
 
-    init(owner:CKRecord.Reference,isbn: String, title: String, description: String, author: String, illustrator: String, coverArtist: String, country: String, language: String, category: String, publisher: String, publicationDate: Date, pages: Int){
-        self.record = CKRecord(recordType: "Book_Shelf")
+    init(owner:CKRecord.Reference?,isbn: String, title: String, description: String, author: String, illustrator: String, coverArtist: String, country: String, language: String, category: String, publisher: String, publicationDate: Date, pages: Int){
+        
+        let bookRecordID = CKRecord.ID(recordName: "\(title)")
+        self.record = CKRecord(recordType: "Book_Shelf", recordID: bookRecordID)
         self.owner = owner
         self.isbn = isbn
         self.title = title
@@ -414,9 +416,9 @@ class Book : Equatable, CKRecordValueProtocol{
         self.pages = pages
         self.language = language
     }
-    convenience init(owner:User, isbn: String, title: String, description: String, author: String, illustrator: String, coverArtist: String, country: String, language: String, category: String, publisher: String, publicationDate: Date, pages: Int,countryCode:String){
-        self.init(owner:owner ,isbn: isbn, title: title, description: description, author: author, illustrator: illustrator, coverArtist: coverArtist, country: country, language: language, category: category, publisher: publisher, publicationDate: publicationDate, pages: pages,countryCode:countryCode)
-    }
+//    convenience init(owner:User, isbn: String, title: String, description: String, author: String, illustrator: String, coverArtist: String, country: String, language: String, category: String, publisher: String, publicationDate: Date, pages: Int,countryCode:String){
+//        self.init(owner:owner ,isbn: isbn, title: title, description: description, author: author, illustrator: illustrator, coverArtist: coverArtist, country: country, language: language, category: category, publisher: publisher, publicationDate: publicationDate, pages: pages,countryCode:countryCode)
+//    }
 
     static func add(book:Book){
         Custodian.publicDatabase.save(book.record){
@@ -424,7 +426,8 @@ class Book : Equatable, CKRecordValueProtocol{
             if let error = error {
                 UIViewController.alert(title:"Something has gone wrong while adding a Book", message:"\(error)")
             } else {
-                UIViewController.alert(title:"Successfully saved a Book", message:"")
+                //UIViewController.alert(title:"Successfully saved a Book", message:"")
+                
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: NSNotification.Name("Added a New Book"), object: book)
                     UIViewController.alert(title: "Added a New Book", message:"")

@@ -12,12 +12,22 @@ class MyBooksTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationItem.title = "My Books"
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title:"Back",style:.plain, target: self, action: #selector(Back))
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    @objc func Back(){
+        let navCon = storyboard?.instantiateViewController(withIdentifier: "TabBarController") as! UITabBarController
+        
+        self.present(navCon, animated: true, completion: nil)
     }
 
     // MARK: - Table view data source
