@@ -42,9 +42,11 @@ class PlacesTableViewController: UITableViewController, UISearchBarDelegate {
     }
         
     @objc func reloadData(){
-        city = toUniqueCityArray(Model.shared.ownerOfABook)
-        filteredTableData = toUniqueCityArray(Model.shared.ownerOfABook)
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.city = self.toUniqueCityArray(Model.shared.ownerOfABook)
+            self.filteredTableData = self.toUniqueCityArray(Model.shared.ownerOfABook)
+            self.tableView.reloadData()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

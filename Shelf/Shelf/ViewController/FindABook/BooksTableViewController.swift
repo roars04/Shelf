@@ -32,8 +32,10 @@ class BooksTableViewController: UITableViewController, UISearchBarDelegate {
     }
     
     @objc func reloadData(){
-        filteredTableData = Array(Model.shared.booksOfACategory.values)
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.filteredTableData = Array(Model.shared.booksOfACategory.values)
+            self.tableView.reloadData()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

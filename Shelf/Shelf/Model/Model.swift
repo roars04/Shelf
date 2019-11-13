@@ -399,8 +399,7 @@ class Book : Equatable, CKRecordValueProtocol{
 
     init(owner:CKRecord.Reference?,isbn: String, title: String, description: String, author: String, illustrator: String, coverArtist: String, country: String, language: String, category: String, publisher: String, publicationDate: Date, pages: Int){
         
-        let bookRecordID = CKRecord.ID(recordName: "\(title)")
-        self.record = CKRecord(recordType: "Book_Shelf", recordID: bookRecordID)
+        self.record = CKRecord(recordType: "Book_Shelf")
         self.owner = owner
         self.isbn = isbn
         self.title = title
@@ -424,14 +423,9 @@ class Book : Equatable, CKRecordValueProtocol{
         Custodian.publicDatabase.save(book.record){
             (record, error) in
             if let error = error {
-                UIViewController.alert(title:"Something has gone wrong while adding a Book", message:"\(error)")
+                NotificationCenter.default.post(name: NSNotification.Name("Error with New Book"), object: nil)
             } else {
-                //UIViewController.alert(title:"Successfully saved a Book", message:"")
-                
-                DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: NSNotification.Name("Added a New Book"), object: book)
-                    UIViewController.alert(title: "Added a New Book", message:"")
-                }
+                NotificationCenter.default.post(name: NSNotification.Name("Added a New Book"), object: nil)
             }
         }
     }
@@ -440,13 +434,9 @@ class Book : Equatable, CKRecordValueProtocol{
         Custodian.publicDatabase.save(self.record){
             (record, error) in
             if let error = error {
-                UIViewController.alert(title:"Something has gone wrong while adding a Book", message:"\(error)")
+                NotificationCenter.default.post(name: NSNotification.Name("Error with New Book"), object: nil)
             } else {
-                UIViewController.alert(title:"Successfully saved a Book", message:"")
-                DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: NSNotification.Name("Added a New Book"), object: self)
-                    UIViewController.alert(title: "Added a New Book", message:"")
-                }
+                NotificationCenter.default.post(name: NSNotification.Name("Added a New Book"), object: nil)
             }
         }
     }
