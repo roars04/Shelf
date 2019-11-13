@@ -49,7 +49,12 @@ class RequestTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Request"
-        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add))
+    }
+    
+    @objc func add() {
+        let AddNewRequestVCNavCon = storyboard?.instantiateViewController(withIdentifier: "AddNewRequestVCNavCon") as! UINavigationController
+        self.present(AddNewRequestVCNavCon, animated: true, completion: nil)
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
