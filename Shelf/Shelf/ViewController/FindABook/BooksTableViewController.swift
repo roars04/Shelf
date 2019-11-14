@@ -10,9 +10,9 @@ import UIKit
 
 class BooksTableViewController: UITableViewController, UISearchBarDelegate {
 
-    @IBOutlet var searchBarBooks: UITableView!
+    @IBOutlet weak var searchBarBooks: UISearchBar!
     
-    var category:String = "Action"
+    var category:String = "Action and Adventure"
     
     var filteredTableData:[Book] = []
     
@@ -62,7 +62,7 @@ class BooksTableViewController: UITableViewController, UISearchBarDelegate {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return filteredTableData.count;
+        return filteredTableData.count
     }
 
     
@@ -74,11 +74,10 @@ class BooksTableViewController: UITableViewController, UISearchBarDelegate {
 
         return cell
     }
-
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let citiesView = storyboard?.instantiateViewController(withIdentifier: "CitiesView") as! CitiesTableViewController
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let citiesView = storyboard!.instantiateViewController(withIdentifier: "CitiesView") as! CitiesTableViewController
         citiesView.book = filteredTableData[indexPath.row]
-        navigationController?.pushViewController(citiesView, animated: false)
+        navigationController!.pushViewController(citiesView, animated: false)
     }
 
     /*

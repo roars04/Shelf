@@ -10,7 +10,8 @@ import UIKit
 
 class CitiesTableViewController: UITableViewController, UISearchBarDelegate {
 
-    @IBOutlet var searchBarPlaces: UITableView!
+
+    @IBOutlet weak var searchBarCities: UISearchBar!
     
     var book:Book? = nil
     
@@ -36,7 +37,7 @@ class CitiesTableViewController: UITableViewController, UISearchBarDelegate {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        searchBarPlaces.delegate = self
+        searchBarCities.delegate = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: NSNotification.Name("AllOwnerOfABook Fetched"), object: nil)
     }
@@ -56,7 +57,7 @@ class CitiesTableViewController: UITableViewController, UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText != "" {
             filteredTableData = city.filter({ (city) -> Bool in
-                city.hasPrefix(searchText.lowercased())
+                city.lowercased().hasPrefix(searchText.lowercased())
             })
         } else {
             filteredTableData = city
@@ -86,9 +87,10 @@ class CitiesTableViewController: UITableViewController, UISearchBarDelegate {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let ownersView = storyboard?.instantiateViewController(withIdentifier: "OwnersView") as! OwnersTableViewController
         ownersView.city = filteredTableData[indexPath.row]
+        ownersView.isbn = self.book!.isbn
         navigationController?.pushViewController(ownersView, animated: false)
     }
 

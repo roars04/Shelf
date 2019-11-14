@@ -482,8 +482,6 @@ class Book : Equatable, CKRecordValueProtocol{
         }
         Model.shared.fetchOwner = FetchHelper(ownerIDs: owner)
     }
-    
-        
 }
 
 
@@ -578,7 +576,8 @@ class Request : Equatable, CKRecordValueProtocol{
         self.record = record
     }
     
-    init(requestByUser: CKRecord.Reference,requestForBook: CKRecord.Reference){
+    init(requestByUser: CKRecord.Reference, requestForBook: CKRecord.Reference){
+        self.record = CKRecord(recordType: "Request_Shelf")
         self.requestByUser = requestByUser
         self.requestForBook = requestForBook
     }
