@@ -42,13 +42,15 @@ class PlacesTableViewController: UITableViewController, UISearchBarDelegate {
     }
         
     @objc func reloadData(){
-        city = toUniqueCityArray(Model.shared.ownerOfABook)
-        filteredTableData = toUniqueCityArray(Model.shared.ownerOfABook)
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.city = self.toUniqueCityArray(Model.shared.ownerOfABook)
+            self.filteredTableData = self.toUniqueCityArray(Model.shared.ownerOfABook)
+            self.tableView.reloadData()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        Book.getAllOwnerOfABook(book: book!)
+        Book.getAllOwnerOfABook(isbn: book!.isbn)
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -59,6 +61,7 @@ class PlacesTableViewController: UITableViewController, UISearchBarDelegate {
         } else {
             filteredTableData = city
         }
+        self.tableView.reloadData()
     }
 
     // MARK: - Table view data source

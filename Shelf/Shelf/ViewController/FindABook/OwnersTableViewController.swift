@@ -39,9 +39,11 @@ class OwnersTableViewController: UITableViewController, UISearchBarDelegate {
         searchBarOwner.delegate = self
     }
     override func viewWillAppear(_ animated: Bool) {
-        user = userOfACity(Model.shared.ownerOfABook)
-        filteredTableData = userOfACity(Model.shared.ownerOfABook)
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.user = self.userOfACity(Model.shared.ownerOfABook)
+            self.filteredTableData = self.userOfACity(Model.shared.ownerOfABook)
+            self.tableView.reloadData()
+        }
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -52,6 +54,7 @@ class OwnersTableViewController: UITableViewController, UISearchBarDelegate {
         } else {
             filteredTableData = user
         }
+        self.tableView.reloadData()
     }
 
     // MARK: - Table view data source
