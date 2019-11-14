@@ -69,7 +69,7 @@ class AddBookViewController: UIViewController, UIPickerViewDelegate,UIPickerView
             present(ac, animated: true, completion: nil)
             return
         }
-        guard let isbn = isbnTF.text else {
+        if isbnTF.text! == "" {
             let ac = UIAlertController(title: "Pages is not numeric", message: nil, preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             ac.addAction(okAction)
@@ -77,7 +77,7 @@ class AddBookViewController: UIViewController, UIPickerViewDelegate,UIPickerView
             return
         }
         
-         Book.add(book: Book(owner: CKRecord.Reference(recordID: Model.shared.LoggedInUser.record.recordID, action: .none), isbn: isbn, title: titleTF.text!, description: descriptionTF.text!, author: authorTF.text!, illustrator: illustratorTF.text!, coverArtist: coverArtistTF.text!, country: countryTF.text!, language: languageTF.text!, category: self.selectedCategory, publisher: publisherTF.text!, publicationDate: Date(), pages: pages))
+         Book.add(book: Book(owner: CKRecord.Reference(recordID: Model.shared.LoggedInUser.record.recordID, action: .none), isbn: isbnTF.text!, title: titleTF.text!, description: descriptionTF.text!, author: authorTF.text!, illustrator: illustratorTF.text!, coverArtist: coverArtistTF.text!, country: countryTF.text!, language: languageTF.text!, category: self.selectedCategory, publisher: publisherTF.text!, publicationDate: Date(), pages: pages))
         
         // self.dismiss(animated: true, completion: nil)
  
@@ -89,14 +89,17 @@ class AddBookViewController: UIViewController, UIPickerViewDelegate,UIPickerView
             let action = UIAlertAction(title: "OK", style:.default, handler: nil)
             ac.addAction(action)
             self.present(ac,animated: true)
+            self.tabBarController?.selectedIndex = 0
         }
     }
     
     @objc func errorAddingBook(){
-        let ac = UIAlertController(title: "Book could not be Added", message: nil, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        ac.addAction(okAction)
-        present(ac, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            let ac = UIAlertController(title: "Book could not be Added", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            ac.addAction(okAction)
+            self.present(ac, animated: true, completion: nil)
+        }
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -111,7 +114,7 @@ class AddBookViewController: UIViewController, UIPickerViewDelegate,UIPickerView
         return Model.shared.categories[row]
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         self.selectedCategory = Model.shared.categories[row]
     }
 

@@ -67,6 +67,9 @@ class Model {
     public var booksOfACategory:[String:Book] = [:
         //Book(owner:CKRecord.ID(recordName: "Book_Shelf"),isbn: "234655435", title: "Bombay", description: "bla", author: "John Doe", illustrator: "John Doe", coverArtist: "John Doe", country: "USA", language: "English", genre: "Fantasy", publisher: "Book Publisher", publicationDate: Date(timeIntervalSince1970: 435243252), pages: 100)
     ]
+    
+    var fetchOwner:FetchHelper? = nil
+    
     public var ownerOfABook:[User] = []
     
     //public var users:[User] = []
@@ -397,7 +400,7 @@ class Book : Equatable, CKRecordValueProtocol{
         self.record = record
     }
 
-    init(owner:CKRecord.Reference?,isbn: String, title: String, description: String, author: String, illustrator: String, coverArtist: String, country: String, language: String, category: String, publisher: String, publicationDate: Date, pages: Int){
+    init(owner:CKRecord.Reference,isbn: String, title: String, description: String, author: String, illustrator: String, coverArtist: String, country: String, language: String, category: String, publisher: String, publicationDate: Date, pages: Int){
         
         self.record = CKRecord(recordType: "Book_Shelf")
         self.owner = owner
@@ -471,30 +474,15 @@ class Book : Equatable, CKRecordValueProtocol{
     }
 
     static func getAllOwnerOfABook(isbn:String){
-        var owner:[CKRecord.Reference] = []
+        var owner:[CKRecord.ID] = []
         for book in Model.shared.books{
             if book.isbn == isbn {
-                owner.append(book.owner)
+                owner.append(book.owner.recordID)
             }
         }
-        let predicate = NSPredicate(format: "recordID IN %@", argumentArray: owner)
-        let query = CKQuery(recordType: "User_Shelf", predicate: predicate)
-        Custodian.publicDatabase.perform(query, inZoneWith: nil){
-            (userRecords, error) in
-            if let error = error {
-                UIViewController.alert(title: "getAllOwnerOfABook() problem getting a User", message:"\(error)")
-                return
-            }
-            Model.shared.booksOfACategory = [:]
-            if let userRecords = userRecords {
-                for userRecord in userRecords {
-                    let user = User(record:userRecord)
-                    Model.shared.ownerOfABook.append(user)
-                }
-            }
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllOwnerOfABook Fetched"),
-            object: nil)
-        }
+        
+        Model.shared.fetchOwner = FetchHelper(ownerIDs: owner)
+        
     }
     
         
@@ -665,5 +653,38 @@ class Request : Equatable, CKRecordValueProtocol{
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllRequestsOfAOwner Fetched"),
             object: nil)
         }
+    }
+}
+
+class FetchHelper{
+    var ownerIDs:[CKRecord.ID]
+    var count:Int = 0
+    var result:[User] = []
+    init(ownerIDs:[CKRecord.ID]) {
+        self.ownerIDs = ownerIDs
+        NotificationCenter.default.addObserver(self, selector: #selector(increment), name: NSNotification.Name("OneOwnerOfABook Fetched"), object: nil)
+        fetchAllOwnerOfABook()
+    }
+    @objc func increment(){
+        count += 1
+        if count == ownerIDs.count {
+            Model.shared.ownerOfABook = result
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllOwnerOfABook Fetched"),
+            object: nil)
+        }
+    }
+    func fetchAllOwnerOfABook(){
+        for owner in ownerIDs{
+            Custodian.publicDatabase.fetch(withRecordID: owner, completionHandler: {
+                (userRecord, error) in
+                if let error = error {
+                    return
+                }
+                self.result.append(User(record: userRecord!))
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "OneOwnerOfABook Fetched"),
+                object: nil)
+            })
+        }
+
     }
 }
