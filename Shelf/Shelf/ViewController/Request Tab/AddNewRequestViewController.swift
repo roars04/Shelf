@@ -39,6 +39,7 @@ class AddNewRequestViewController: UIViewController {
         let state = stateTF.text
         let request = Request(owner: CKRecord.Reference(recordID: Model.shared.LoggedInUser.record.recordID, action: .none), bookTitle: bookTitle!, location: location!, city: city!, state: state!)
         Request.add(request: request)
+        Model.shared.myRequests.append(request)
         self.dismiss(animated: true, completion: nil)
     }
     

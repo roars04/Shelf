@@ -44,7 +44,7 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
         if index == 0 {
             let request = Model.shared.myRequests[indexPath.row]
             cell.textLabel?.text = request.bookTitle
-            
+            cell.detailTextLabel?.text = request.city
             
         } else if index == 1 {
             let request = Model.shared.requestsRecieved[indexPath.row]
