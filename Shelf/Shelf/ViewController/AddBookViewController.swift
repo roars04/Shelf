@@ -100,11 +100,11 @@ class AddBookViewController: UIViewController, UIPickerViewDelegate,UIPickerView
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        1
+        return 1
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        Model.shared.categories.count
+        return Model.shared.categories.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {

@@ -9,6 +9,7 @@
 import UIKit
 
 class RequestTableViewController: UITableViewController {
+    var index = 0
     
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
@@ -16,31 +17,9 @@ class RequestTableViewController: UITableViewController {
         switch segmentedControl.selectedSegmentIndex
         {
         case 0:
-            func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "requests", for: indexPath)
-                let request = Model.shared.myRequests[indexPath.row]
-                cell.textLabel?.text = request.bookTitle
-                cell.detailTextLabel?.text = request.location
-                
-                return cell
-            }
-            func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-                
-                return Model.shared.numMyRequests()
-            }
+            index = 0
         case 1:
-            func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "requests", for: indexPath)
-                let request = Model.shared.requestsRecieved[indexPath.row]
-                cell.textLabel?.text = request.bookTitle
-                cell.detailTextLabel?.text = request.location
-                
-                return cell
-            }
-            func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-                
-                return Model.shared.numRequestsRecieved()
-            }
+            index = 1
         default:
             break
         }
@@ -52,6 +31,32 @@ class RequestTableViewController: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add))
     }
     
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "requests", for: indexPath)
+        if index == 0 {
+            let request = Model.shared.myRequests[indexPath.row]
+            cell.textLabel?.text = request.bookTitle
+            cell.detailTextLabel?.text = request.location
+        
+        } else if index == 1 {
+            let request = Model.shared.requestsRecieved[indexPath.row]
+            cell.textLabel?.text = request.bookTitle
+            cell.detailTextLabel?.text = request.location
+            
+        }
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        var num = 0
+        if index == 0 {
+            num = Model.shared.numMyRequests()
+        } else if index == 1 {
+            num = Model.shared.numRequestsRecieved()
+        }
+        return num
+    }
+    
     @objc func add() {
         let AddNewRequestVCNavCon = storyboard?.instantiateViewController(withIdentifier: "AddNewRequestVCNavCon") as! UINavigationController
         self.present(AddNewRequestVCNavCon, animated: true, completion: nil)
@@ -60,6 +65,10 @@ class RequestTableViewController: UITableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         
         return 1
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tableView.reloadData()
     }
 
 /*    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

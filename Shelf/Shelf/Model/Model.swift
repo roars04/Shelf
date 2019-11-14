@@ -54,11 +54,11 @@ class Model {
     
     // For requests
     public var myRequests:[Request] = [
-        //Request(owner: CKRecord.ID(recordName: "Request_Shelf") ,bookTitle: "", location: "", city: "", state: "")
+        //Request(owner: CKRecord.Reference(recordID: Model.shared.LoggedInUser.record.recordID, action: .none) ,bookTitle: "Hi", location: "1", city: "", state: "")
     ]
     
     public var requestsRecieved:[Request] = [
-        //
+        //Request(owner: CKRecord.Reference(recordID: Model.shared.LoggedInUser.record.recordID, action: .none) ,bookTitle: "", location: "", city: "", state: "")
     ]
     
     public var books:[Book] = [
