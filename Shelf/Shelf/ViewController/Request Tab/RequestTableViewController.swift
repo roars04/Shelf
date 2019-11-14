@@ -8,9 +8,10 @@
 
 import UIKit
 
-class RequestTableViewController: UITableViewController {
+class RequestViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var index = 0
     
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     @IBAction func indexChange(_ sender: Any) {
@@ -27,27 +28,33 @@ class RequestTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
         navigationItem.title = "Request"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add))
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    @objc func add() {
+        let AddNewRequestVCNavCon = storyboard?.instantiateViewController(withIdentifier: "AddNewRequestVCNavCon") as! UINavigationController
+        self.present(AddNewRequestVCNavCon, animated: true, completion: nil)
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "requests", for: indexPath)
         if index == 0 {
             let request = Model.shared.myRequests[indexPath.row]
             cell.textLabel?.text = request.bookTitle
-            cell.detailTextLabel?.text = request.location
+            
             
         } else if index == 1 {
             let request = Model.shared.requestsRecieved[indexPath.row]
             cell.textLabel?.text = request.bookTitle
-            cell.detailTextLabel?.text = request.location
-            
+            cell.detailTextLabel?.text = request.city
         }
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var num = 0
         if index == 0 {
             num = Model.shared.numMyRequests()
@@ -57,12 +64,7 @@ class RequestTableViewController: UITableViewController {
         return num
     }
     
-    @objc func add() {
-        let AddNewRequestVCNavCon = storyboard?.instantiateViewController(withIdentifier: "AddNewRequestVCNavCon") as! UINavigationController
-        self.present(AddNewRequestVCNavCon, animated: true, completion: nil)
-    }
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         
         return 1
     }
