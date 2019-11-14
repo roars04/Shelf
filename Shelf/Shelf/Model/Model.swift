@@ -64,6 +64,8 @@ class Model {
     public var books:[Book] = [
         //Book(owner:CKRecord.ID(recordName: "Book_Shelf"),isbn: "234655435", title: "Bombay", description: "bla", author: "John Doe", illustrator: "John Doe", coverArtist: "John Doe", country: "USA", language: "English", genre: "Fantasy", publisher: "Book Publisher", publicationDate: Date(timeIntervalSince1970: 435243252), pages: 100)
     ]
+    public var myBooks:[Book] = []
+    public var booksOfAUser:[String:Book] = [:]
     public var booksOfACategory:[String:Book] = [:
         //Book(owner:CKRecord.ID(recordName: "Book_Shelf"),isbn: "234655435", title: "Bombay", description: "bla", author: "John Doe", illustrator: "John Doe", coverArtist: "John Doe", country: "USA", language: "English", genre: "Fantasy", publisher: "Book Publisher", publicationDate: Date(timeIntervalSince1970: 435243252), pages: 100)
     ]
@@ -441,6 +443,35 @@ class Book : Equatable, CKRecordValueProtocol{
             } else {
                 NotificationCenter.default.post(name: NSNotification.Name("Added a New Book"), object: nil)
             }
+        }
+    }
+    
+    static func getAllBooksOfUser(user:User){
+        
+        let predicate = NSPredicate(format: "owner == %@", Model.shared.LoggedInUser!.record.recordID)
+        let query = CKQuery(recordType: "Book_Shelf", predicate: predicate)
+        Custodian.publicDatabase.perform(query, inZoneWith: nil){
+            (bookR, error) in
+            if let error = error {
+                UIViewController.alert(title: "fetchAllBooksOfACategory() problem getting a Book", message:"\(error)")
+                return
+            }
+            Model.shared.myBooks = []
+            if let bookR = bookR {
+                for bookRecord in bookR {
+                    let book = Book(record:bookRecord)
+                    Model.shared.myBooks.append(book)
+                }
+            }
+            Model.shared.booksOfAUser = [:]
+            if let bookR = bookR {
+                for bookRecord in bookR {
+                    let book = Book(record:bookRecord)
+                    Model.shared.booksOfAUser[book.title] = book
+                }
+            }
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllBooksOfAUser Fetched"),
+                                            object: nil)
         }
     }
     

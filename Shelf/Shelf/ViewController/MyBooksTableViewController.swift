@@ -9,6 +9,8 @@
 import UIKit
 
 class MyBooksTableViewController: UITableViewController {
+    
+    var filteredTableData:[Book] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,12 +18,25 @@ class MyBooksTableViewController: UITableViewController {
         navigationItem.title = "My Books"
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title:"Back",style:.plain, target: self, action: #selector(Back))
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: NSNotification.Name("AllBooksOfAUser Fetched"), object: nil)
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    @objc func reloadData(){
+        DispatchQueue.main.async {
+            self.filteredTableData = Array(Model.shared.booksOfAUser.values)
+            self.tableView.reloadData()
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        Book.getAllBooksOfUser(user: Model.shared.LoggedInUser!)
     }
     
     @objc func Back(){
@@ -34,23 +49,25 @@ class MyBooksTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return filteredTableData.count
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "myBookTVC", for: indexPath)
+        
+        cell.textLabel?.text = filteredTableData[indexPath.row].title
 
         // Configure the cell...
 
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.
