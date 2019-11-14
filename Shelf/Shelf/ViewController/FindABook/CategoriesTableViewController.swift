@@ -16,14 +16,14 @@ class CategoriesTableViewController: UITableViewController, UISearchBarDelegate 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        searchBarCategory.delegate = self
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        
-        searchBarCategory.delegate = self
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -55,6 +55,7 @@ class CategoriesTableViewController: UITableViewController, UISearchBarDelegate 
 
         // Configure the cell...
         cell.textLabel?.text = filteredTableData[indexPath.row]
+        
         return cell
     }
     

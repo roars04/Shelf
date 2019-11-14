@@ -14,6 +14,7 @@ class OwnersTableViewController: UITableViewController, UISearchBarDelegate {
     @IBOutlet weak var searchBarOwner: UISearchBar!
     
     var isbn:String = ""
+    
     var city:String = ""
     
     var user:[User] = []
@@ -38,6 +39,7 @@ class OwnersTableViewController: UITableViewController, UISearchBarDelegate {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
         searchBarOwner.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(addedRequest), name: NSNotification.Name("Added a New Request"), object: nil)
     }

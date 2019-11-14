@@ -10,7 +10,7 @@ import UIKit
 import CloudKit
 
 class AddBookViewController: UIViewController, UIPickerViewDelegate,UIPickerViewDataSource {
-
+    
     
     @IBOutlet weak var titleTF: UITextField!
     @IBOutlet weak var isbnTF: UITextField!
@@ -29,12 +29,11 @@ class AddBookViewController: UIViewController, UIPickerViewDelegate,UIPickerView
     @IBOutlet weak var text: UITextView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Add Book"
-        //navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style:.plain, target:nil, action: nil)
-         navigationItem.rightBarButtonItem = UIBarButtonItem(title:"Add",style:.plain, target: self, action: #selector(addBook))
         
-//        text!.layer.borderWidth = 0.5
-//        text!.layer.borderColor = UIColor.black.cgColor
+        navigationItem.title = "Add Book"
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title:"Add",style:.plain, target: self, action: #selector(addBook))
+
         // Do any additional setup after loading the view.
         categoryPV.delegate = self
         categoryPV.dataSource = self
@@ -55,13 +54,10 @@ class AddBookViewController: UIViewController, UIPickerViewDelegate,UIPickerView
         coverArtistTF.text = ""
         languageTF.text = ""
         countryTF.text = ""
-        
     }
     
     @objc func addBook(){
-        //let book = Book(owner: user.record.share!, isbn: isbnTF.text!, title: titleTF.text!, description: descriptionTF.text!, author: authorTF.text!, illustrator: "", coverArtist: "", country: "", language: "", category: categoryTF.text!, publisher: publisherTF.text!, publicationDate: Date(), pages: 0, countryCode: "US")
-        
-        //Model.shared.addBook(book: book)
+ 
         guard let pages = Int(pagesTF.text!) else {
             let ac = UIAlertController(title: "Pages is not numeric", message: nil, preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
@@ -77,10 +73,7 @@ class AddBookViewController: UIViewController, UIPickerViewDelegate,UIPickerView
             return
         }
         
-         Book.add(book: Book(owner: CKRecord.Reference(recordID: Model.shared.LoggedInUser.record.recordID, action: .none), isbn: isbnTF.text!, title: titleTF.text!, description: descriptionTF.text!, author: authorTF.text!, illustrator: illustratorTF.text!, coverArtist: coverArtistTF.text!, country: countryTF.text!, language: languageTF.text!, category: self.selectedCategory, publisher: publisherTF.text!, publicationDate: Date(), pages: pages))
-        
-        // self.dismiss(animated: true, completion: nil)
- 
+        Book.add(book: Book(owner: CKRecord.Reference(recordID: Model.shared.LoggedInUser.record.recordID, action: .none), isbn: isbnTF.text!, title: titleTF.text!, description: descriptionTF.text!, author: authorTF.text!, illustrator: illustratorTF.text!, coverArtist: coverArtistTF.text!, country: countryTF.text!, language: languageTF.text!, category: self.selectedCategory, publisher: publisherTF.text!, publicationDate: Date(), pages: pages))
     }
     
     @objc func addedBook(){
@@ -88,6 +81,7 @@ class AddBookViewController: UIViewController, UIPickerViewDelegate,UIPickerView
             let ac = UIAlertController(title: "Book Added", message: "Successfully Added a Book", preferredStyle: .alert)
             let action = UIAlertAction(title: "OK", style:.default, handler: nil)
             ac.addAction(action)
+            
             self.present(ac,animated: true)
             self.tabBarController?.selectedIndex = 0
         }
@@ -98,6 +92,7 @@ class AddBookViewController: UIViewController, UIPickerViewDelegate,UIPickerView
             let ac = UIAlertController(title: "Book could not be Added", message: nil, preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             ac.addAction(okAction)
+            
             self.present(ac, animated: true, completion: nil)
         }
     }
@@ -117,15 +112,15 @@ class AddBookViewController: UIViewController, UIPickerViewDelegate,UIPickerView
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         self.selectedCategory = Model.shared.categories[row]
     }
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

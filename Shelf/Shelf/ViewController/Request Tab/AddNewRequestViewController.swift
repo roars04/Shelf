@@ -10,7 +10,7 @@ import UIKit
 import CloudKit
 
 class AddNewRequestViewController: UIViewController {
-
+    
     @IBOutlet weak var titleTF: UITextField!
     @IBOutlet weak var locationTF: UITextField!
     @IBOutlet weak var cityTF: UITextField!
@@ -27,7 +27,7 @@ class AddNewRequestViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add))
     }
-
+    
     @objc func cancel() {
         self.dismiss(animated: true, completion: nil)
     }

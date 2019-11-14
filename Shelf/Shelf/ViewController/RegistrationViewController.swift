@@ -9,7 +9,7 @@
 import UIKit
 
 class RegistrationViewController: UIViewController {
-
+    
     @IBOutlet weak var EmailTF: UITextField!
     @IBOutlet weak var FirstNameTF: UITextField!
     @IBOutlet weak var LastNameTF: UITextField!
@@ -23,34 +23,27 @@ class RegistrationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-          navigationItem.title = "Registration"
-          navigationItem.rightBarButtonItem = UIBarButtonItem(title:"Save",style:.plain, target: self, action: #selector(SaveUser))
-
-        // Do any additional setup after loading the view.
+        navigationItem.title = "Registration"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title:"Save",style:.plain, target: self, action: #selector(SaveUser))
     }
     
-
+    
     @objc func SaveUser(){
-        
-        
-        
         let userdata = User(email: EmailTF.text!, password: PasswordTF.text!, lastName: LastNameTF.text!, firstName: FirstNameTF.text!, city: CityTF.text!, street: StreetTF.text!
             , state: StateTF.text!, postal: PostalTF.text!, phone: PhoneTF.text!)
         
         Model.shared.add(user: userdata)
         
-       self.dismiss(animated: true, completion: nil)
-        
-        
+        self.dismiss(animated: true, completion: nil)
     }
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
