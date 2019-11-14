@@ -509,7 +509,7 @@
         <!--Places-->
         <scene sceneID="Alx-yp-V7J">
             <objects>
-                <tableViewController storyboardIdentifier="PlacesView" id="6G6-P5-2Hc" customClass="PlacesTableViewController" customModule="Shelf" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="PlacesView" id="6G6-P5-2Hc" customClass="CitiesTableViewController" customModule="Shelf" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="4Ux-sv-oKl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -520,7 +520,7 @@
                             <textInputTraits key="textInputTraits"/>
                         </searchBar>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="place" textLabel="jUq-HP-ft8" detailTextLabel="qe9-fq-cx4" style="IBUITableViewCellStyleSubtitle" id="dko-Bz-ewg">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="city" textLabel="jUq-HP-ft8" detailTextLabel="qe9-fq-cx4" style="IBUITableViewCellStyleSubtitle" id="dko-Bz-ewg">
                                 <rect key="frame" x="0.0" y="72" width="375" height="55.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dko-Bz-ewg" id="dje-NK-prA">

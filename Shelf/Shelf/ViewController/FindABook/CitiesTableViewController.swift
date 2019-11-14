@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PlacesTableViewController: UITableViewController, UISearchBarDelegate {
+class CitiesTableViewController: UITableViewController, UISearchBarDelegate {
 
     @IBOutlet var searchBarPlaces: UITableView!
     
@@ -78,7 +78,7 @@ class PlacesTableViewController: UITableViewController, UISearchBarDelegate {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "book", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "city", for: indexPath)
 
         // Configure the cell...
         cell.textLabel?.text = filteredTableData[indexPath.row]

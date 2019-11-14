@@ -480,9 +480,7 @@ class Book : Equatable, CKRecordValueProtocol{
                 owner.append(book.owner.recordID)
             }
         }
-        
         Model.shared.fetchOwner = FetchHelper(ownerIDs: owner)
-        
     }
     
         

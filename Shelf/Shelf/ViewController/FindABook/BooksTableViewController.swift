@@ -76,7 +76,7 @@ class BooksTableViewController: UITableViewController, UISearchBarDelegate {
     }
     
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let placesView = storyboard?.instantiateViewController(withIdentifier: "PlacesView") as! PlacesTableViewController
+        let placesView = storyboard?.instantiateViewController(withIdentifier: "PlacesView") as! CitiesTableViewController
         placesView.book = filteredTableData[indexPath.row]
         navigationController?.pushViewController(placesView, animated: false)
     }
