@@ -74,11 +74,11 @@ class BooksTableViewController: UITableViewController, UISearchBarDelegate {
 
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let placesView = storyboard?.instantiateViewController(withIdentifier: "PlacesView") as! CitiesTableViewController
-        placesView.book = filteredTableData[indexPath.row]
-        navigationController?.pushViewController(placesView, animated: false)
+        let citiesView = storyboard?.instantiateViewController(withIdentifier: "CitiesView") as! CitiesTableViewController
+        citiesView.book = filteredTableData[indexPath.row]
+        navigationController?.pushViewController(citiesView, animated: false)
     }
 
     /*

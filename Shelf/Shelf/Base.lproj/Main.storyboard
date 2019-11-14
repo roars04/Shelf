@@ -506,10 +506,10 @@
             </objects>
             <point key="canvasLocation" x="2690" y="0.0"/>
         </scene>
-        <!--Places-->
+        <!--Cities-->
         <scene sceneID="Alx-yp-V7J">
             <objects>
-                <tableViewController storyboardIdentifier="PlacesView" id="6G6-P5-2Hc" customClass="CitiesTableViewController" customModule="Shelf" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="CitiesView" title="Cities" id="6G6-P5-2Hc" customClass="CitiesTableViewController" customModule="Shelf" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="4Ux-sv-oKl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
