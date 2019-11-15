@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import CloudKit
 
 class OwnersTableViewController: UITableViewController, UISearchBarDelegate {
 
-    @IBOutlet var searchBarOwner: UITableView!
+    @IBOutlet weak var searchBarOwner: UISearchBar!
+    
+    var isbn:String = ""
     
     var city:String = ""
     
@@ -36,12 +39,25 @@ class OwnersTableViewController: UITableViewController, UISearchBarDelegate {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
         searchBarOwner.delegate = self
+        NotificationCenter.default.addObserver(self, selector: #selector(addedRequest), name: NSNotification.Name("Added a New Request"), object: nil)
     }
+    @objc func addedRequest(){
+        let ac = UIAlertController(title: "Added a New Request", message: nil, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .cancel, handler: {alert in
+            self.navigationController?.popToRootViewController(animated: false)
+        })
+        ac.addAction(okAction)
+        self.present(ac, animated: true, completion: nil)
+    }
+
     override func viewWillAppear(_ animated: Bool) {
-        user = userOfACity(Model.shared.ownerOfABook)
-        filteredTableData = userOfACity(Model.shared.ownerOfABook)
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.user = self.userOfACity(Model.shared.ownerOfABook)
+            self.filteredTableData = self.userOfACity(Model.shared.ownerOfABook)
+            self.tableView.reloadData()
+        }
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -52,6 +68,7 @@ class OwnersTableViewController: UITableViewController, UISearchBarDelegate {
         } else {
             filteredTableData = user
         }
+        self.tableView.reloadData()
     }
 
     // MARK: - Table view data source
@@ -68,7 +85,7 @@ class OwnersTableViewController: UITableViewController, UISearchBarDelegate {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "book", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "owner", for: indexPath)
 
         // Configure the cell...
         cell.textLabel?.text = filteredTableData[indexPath.row].firstName + " " + filteredTableData[indexPath.row].lastName
@@ -77,13 +94,26 @@ class OwnersTableViewController: UITableViewController, UISearchBarDelegate {
     }
     
 
-    /*
+    
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
-    */
+    override func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
+        let more = UITableViewRowAction(style: .normal, title: "Send Book Request") { action, index in
+            var decidedBook:Book? = nil
+            for book in Model.shared.books {
+                if book.owner.recordID == self.filteredTableData[editActionsForRowAt.row].record.recordID && book.isbn == self.isbn{
+                    decidedBook = book
+                }
+            }
+            let request = Request(requestByUser: CKRecord.Reference(recordID: Model.shared.LoggedInUser.record.recordID, action: .none), requestForBook: CKRecord.Reference(recordID: decidedBook!.record.recordID, action: .none) )
+            Request.add(request: request)
+        }
+        more.backgroundColor = .lightGray
+        return [more]
+    }
 
     /*
     // Override to support editing the table view.

@@ -53,28 +53,23 @@ class Model {
     }
     
     // For requests
-    public var myRequests:[Request] = [
-        //Request(owner: CKRecord.ID(recordName: "Request_Shelf") ,bookTitle: "", location: "", city: "", state: "")
-    ]
+    public var myRequests:[Request] = []
+    public var requestsRecieved:[Request] = []
+    public var books:[Book] = []
+    public var myBooks:[Book] = []
+    public var booksOfAUser:[String:Book] = [:]
+    public var booksOfACategory:[String:Book] = [:]
     
-    public var requestsRecieved:[Request] = [
-        //
-    ]
+    var fetchOwner:FetchHelper? = nil
     
-    public var books:[Book] = [
-        //Book(owner:CKRecord.ID(recordName: "Book_Shelf"),isbn: "234655435", title: "Bombay", description: "bla", author: "John Doe", illustrator: "John Doe", coverArtist: "John Doe", country: "USA", language: "English", genre: "Fantasy", publisher: "Book Publisher", publicationDate: Date(timeIntervalSince1970: 435243252), pages: 100)
-    ]
-    public var booksOfACategory:[String:Book] = [:
-        //Book(owner:CKRecord.ID(recordName: "Book_Shelf"),isbn: "234655435", title: "Bombay", description: "bla", author: "John Doe", illustrator: "John Doe", coverArtist: "John Doe", country: "USA", language: "English", genre: "Fantasy", publisher: "Book Publisher", publicationDate: Date(timeIntervalSince1970: 435243252), pages: 100)
-    ]
     public var ownerOfABook:[User] = []
     
-    public var users:[User] = []
+    //public var users:[User] = []
     
     public var LoggedInUser : User!
     
     public var categories:[String] = [
-        "Action_and_Adventure", "Anthology", "Classic", "Comic_and_Graphic_Novel", "Crime_and_Detective", "Drama", "Fable", "Fairy_Tale", "Fan_Fiction", "Fantasy", "Historical_Fiction", "Horror", "Humor", "Legend", "Magical_Realism", "Mystery", "Mythology", "Realistic_Fiction", "Romance", "Satire", "Science_Fiction", "Short_Story", "Suspense_Thriller", "Biography_Autobiography", "Essay", "Memoir", "Narrative_Nonfiction", "Periodicals", "Reference", "Self_help", "Speech", "Textbook", "Poetry"
+        "Action and Adventure", "Anthology", "Classic", "Comic and Graphic_Novel", "Crime and Detective", "Drama", "Fable", "Fairy Tale", "Fan Fiction", "Fantasy", "Historical Fiction", "Horror", "Humor", "Legend", "Magical Realism", "Mystery", "Mythology", "Realistic Fiction", "Romance", "Satire", "Science Fiction", "Short Story", "Suspense Thriller", "Biography Autobiography", "Essay", "Memoir", "Narrative Nonfiction", "Periodicals", "Reference", "Self help", "Speech", "Textbook", "Poetry"
     ]
     
     
@@ -89,7 +84,7 @@ class Model {
     }
     
     func sha256(data : Data) -> Data {
-        var hash = [UInt8](repeating: 0,  count: 10)
+        let hash = [UInt8](repeating: 0,  count: 10)
         return Data(hash)
     }
     
@@ -106,13 +101,13 @@ class Model {
                 UIViewController.alert(title: "Invalid Credentials", message:"\(error)")
                 isValid = false;
             } else {
-                        // note the studentRecord -> student
+                // note the studentRecord -> student
                 if(userrecord!.count>0){
                     let userDetails = User(record: userrecord![0])
                     self.LoggedInUser = userDetails
                     isValid = true;
                     
-                     NotificationCenter.default.post(name: NSNotification.Name(rawValue:"Login Sucess"), object: nil)
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue:"Login Sucess"), object: nil)
                     
                 }
                 else{
@@ -151,8 +146,6 @@ class Model {
     
 }
 
-
-/// Models a teacher
 class User : Equatable, CKRecordValueProtocol, Hashable {    // need Hashable because we will build a dictionary of
     var record: CKRecord! // this is the only stored property, basically this class is a wrapper class for CKRecord
     
@@ -175,7 +168,7 @@ class User : Equatable, CKRecordValueProtocol, Hashable {    // need Hashable be
             record["password"] = ssn
         }
     }
-
+    
     var lastName: String{
         get {
             return record["lastName"]!
@@ -239,7 +232,7 @@ class User : Equatable, CKRecordValueProtocol, Hashable {    // need Hashable be
             record["phone"] = phone
         }
     }
-
+    
     init(record:CKRecord){
         self.record = record
     }
@@ -264,19 +257,16 @@ class User : Equatable, CKRecordValueProtocol, Hashable {    // need Hashable be
     static func==(lhs:User,rhs:User)->Bool {
         return lhs.email == rhs.email
     }
-    
-    
-
 }
 
 class Book : Equatable, CKRecordValueProtocol{
-
+    
     static func == (lhs: Book, rhs: Book) -> Bool {
         return lhs.record.recordID == rhs.record.recordID
     }
-
+    
     var record: CKRecord!
-
+    
     var isbn: String {
         get {
             return record["isbn"]!
@@ -285,7 +275,7 @@ class Book : Equatable, CKRecordValueProtocol{
             record["isbn"] = isbn
         }
     }
-
+    
     var title: String {
         get {
             return record["title"]!
@@ -294,7 +284,7 @@ class Book : Equatable, CKRecordValueProtocol{
             record["title"] = title
         }
     }
-
+    
     var description: String{
         get {
             return record["description"]!
@@ -303,7 +293,7 @@ class Book : Equatable, CKRecordValueProtocol{
             record["description"] = description
         }
     }
-
+    
     var author: String{
         get {
             return record["author"]!
@@ -312,7 +302,7 @@ class Book : Equatable, CKRecordValueProtocol{
             record["author"] = author
         }
     }
-
+    
     var illustrator: String{
         get {
             return record["illustrator"]!
@@ -321,7 +311,7 @@ class Book : Equatable, CKRecordValueProtocol{
             record["illustrator"] = illustrator
         }
     }
-
+    
     var coverArtist: String{
         get {
             return record["coverArtist"]!
@@ -330,7 +320,7 @@ class Book : Equatable, CKRecordValueProtocol{
             record["coverArtist"] = coverArtist
         }
     }
-
+    
     var countryCode: String?{
         get {
             return record["countryCode"]!
@@ -339,7 +329,7 @@ class Book : Equatable, CKRecordValueProtocol{
             record["countryCode"] = countryCode
         }
     }
-
+    
     var language: String{
         get {
             return record["language"]!
@@ -348,7 +338,7 @@ class Book : Equatable, CKRecordValueProtocol{
             record["firstName"] = language
         }
     }
-
+    
     var category: String{
         get {
             return record["category"]!
@@ -357,7 +347,7 @@ class Book : Equatable, CKRecordValueProtocol{
             record["category"] = genre
         }
     }
-
+    
     var publisher: String{
         get {
             return record["publisher"]!
@@ -366,7 +356,7 @@ class Book : Equatable, CKRecordValueProtocol{
             record["publisher"] = publisher
         }
     }
-
+    
     var publicationDate: Date{
         get {
             return record["publicationDate"]!
@@ -375,7 +365,7 @@ class Book : Equatable, CKRecordValueProtocol{
             record["publicationDate"] = publicationDate
         }
     }
-
+    
     var pages: Int{
         get {
             return record["pages"]!
@@ -384,7 +374,7 @@ class Book : Equatable, CKRecordValueProtocol{
             record["pages"] = pages
         }
     }
-    var owner: CKRecord.Reference{
+    var owner: CKRecord.Reference!{
         get {
             return record["owner"]!
         }
@@ -392,12 +382,13 @@ class Book : Equatable, CKRecordValueProtocol{
             record["owner"] = owner
         }
     }
-
+    
     init(record:CKRecord){
         self.record = record
     }
-
+    
     init(owner:CKRecord.Reference,isbn: String, title: String, description: String, author: String, illustrator: String, coverArtist: String, country: String, language: String, category: String, publisher: String, publicationDate: Date, pages: Int){
+        
         self.record = CKRecord(recordType: "Book_Shelf")
         self.owner = owner
         self.isbn = isbn
@@ -414,37 +405,55 @@ class Book : Equatable, CKRecordValueProtocol{
         self.pages = pages
         self.language = language
     }
-    convenience init(owner:User, isbn: String, title: String, description: String, author: String, illustrator: String, coverArtist: String, country: String, language: String, category: String, publisher: String, publicationDate: Date, pages: Int,countryCode:String){
-        self.init(owner:owner ,isbn: isbn, title: title, description: description, author: author, illustrator: illustrator, coverArtist: coverArtist, country: country, language: language, category: category, publisher: publisher, publicationDate: publicationDate, pages: pages,countryCode:countryCode)
-    }
-
+    
     static func add(book:Book){
         Custodian.publicDatabase.save(book.record){
             (record, error) in
             if let error = error {
-                UIViewController.alert(title:"Something has gone wrong while adding a Book", message:"\(error)")
+                NotificationCenter.default.post(name: NSNotification.Name("Error with New Book"), object: nil)
             } else {
-                UIViewController.alert(title:"Successfully saved a Book", message:"")
-                DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: NSNotification.Name("Added a New Book"), object: book)
-                    UIViewController.alert(title: "Added a New Book", message:"")
-                }
+                NotificationCenter.default.post(name: NSNotification.Name("Added a New Book"), object: nil)
             }
         }
     }
-
+    
     func addMyself(){
         Custodian.publicDatabase.save(self.record){
             (record, error) in
             if let error = error {
-                UIViewController.alert(title:"Something has gone wrong while adding a Book", message:"\(error)")
+                NotificationCenter.default.post(name: NSNotification.Name("Error with New Book"), object: nil)
             } else {
-                UIViewController.alert(title:"Successfully saved a Book", message:"")
-                DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: NSNotification.Name("Added a New Book"), object: self)
-                    UIViewController.alert(title: "Added a New Book", message:"")
+                NotificationCenter.default.post(name: NSNotification.Name("Added a New Book"), object: nil)
+            }
+        }
+    }
+    
+    static func getAllBooksOfUser(user:User){
+        
+        let predicate = NSPredicate(format: "owner == %@", Model.shared.LoggedInUser!.record.recordID)
+        let query = CKQuery(recordType: "Book_Shelf", predicate: predicate)
+        Custodian.publicDatabase.perform(query, inZoneWith: nil){
+            (bookR, error) in
+            if let error = error {
+                UIViewController.alert(title: "fetchAllBooksOfACategory() problem getting a Book", message:"\(error)")
+                return
+            }
+            Model.shared.myBooks = []
+            if let bookR = bookR {
+                for bookRecord in bookR {
+                    let book = Book(record:bookRecord)
+                    Model.shared.myBooks.append(book)
                 }
             }
+            Model.shared.booksOfAUser = [:]
+            if let bookR = bookR {
+                for bookRecord in bookR {
+                    let book = Book(record:bookRecord)
+                    Model.shared.booksOfAUser[book.title] = book
+                }
+            }
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllBooksOfAUser Fetched"),
+                                            object: nil)
         }
     }
     
@@ -458,6 +467,13 @@ class Book : Equatable, CKRecordValueProtocol{
                 UIViewController.alert(title: "fetchAllBooksOfACategory() problem getting a Book", message:"\(error)")
                 return
             }
+            Model.shared.books = []
+            if let bookRecords = bookRecords {
+                for bookRecord in bookRecords {
+                    let book = Book(record:bookRecord)
+                    Model.shared.books.append(book)
+                }
+            }
             Model.shared.booksOfACategory = [:]
             if let bookRecords = bookRecords {
                 for bookRecord in bookRecords {
@@ -466,35 +482,19 @@ class Book : Equatable, CKRecordValueProtocol{
                 }
             }
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllBooksOfACategory Fetched"),
-            object: nil)
+                                            object: nil)
         }
-    }
-    static func getAllBooksOfISBN(isbn:String){
-        let predicate = NSPredicate(format: "isbn == %@", isbn)
-        let query = CKQuery(recordType: "Book_Shelf", predicate: predicate)
-        Custodian.publicDatabase.perform(query, inZoneWith: nil){
-            (bookRecords, error) in
-            if let error = error {
-                UIViewController.alert(title: "fetchAllBooksOfISBN() problem getting a Book", message:"\(error)")
-                return
-            }
-            Model.shared.booksOfACategory = [:]
-            if let bookRecords = bookRecords {
-                for bookRecord in bookRecords {
-                    let book = Book(record:bookRecord)
-                    Model.shared.books.append(book)
-                }
-            }
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllBooksOfISBN Fetched"),
-            object: nil)
-        }
-    }
-
-    static func getAllOwnerOfABook(book:Book){
-
     }
     
-        
+    static func getAllOwnerOfABook(isbn:String){
+        var owner:[CKRecord.ID] = []
+        for book in Model.shared.books{
+            if book.isbn == isbn {
+                owner.append(book.owner.recordID)
+            }
+        }
+        Model.shared.fetchOwner = FetchHelper(ownerIDs: owner)
+    }
 }
 
 
@@ -502,15 +502,33 @@ class Request : Equatable, CKRecordValueProtocol{
     static func == (lhs: Request, rhs: Request) -> Bool {
         return lhs.record.recordID == rhs.record.recordID
     }
-
+    
     var record: CKRecord!
-
+    
     var owner: CKRecord.Reference{
         get {
             return record["owner"]!
         }
         set(owner){
             record["owner"] = owner
+        }
+    }
+    
+    var requestByUser: CKRecord.Reference{
+        get {
+            return record["requestByUser"]!
+        }
+        set(owner){
+            record["requestByUser"] = owner
+        }
+    }
+    
+    var requestForBook: CKRecord.Reference{
+        get {
+            return record["requestForBook"]!
+        }
+        set(owner){
+            record["requestForBook"] = owner
         }
     }
     
@@ -566,9 +584,15 @@ class Request : Equatable, CKRecordValueProtocol{
             record["date"] = date
         }
     }
-
+    
     init(record:CKRecord){
         self.record = record
+    }
+    
+    init(requestByUser: CKRecord.Reference, requestForBook: CKRecord.Reference){
+        self.record = CKRecord(recordType: "Request_Shelf")
+        self.requestByUser = requestByUser
+        self.requestForBook = requestForBook
     }
     
     init(owner: CKRecord.Reference,bookTitle: String, location: String, city: String, state: String) {
@@ -581,10 +605,6 @@ class Request : Equatable, CKRecordValueProtocol{
         self.date = Date()
         let locale = NSLocale()
         self.countryCode = locale.countryCode
-    }
-    
-    convenience init(owner: CKRecord,bookTitle: String, location: String, city: String, state: String) {
-        self.init(owner: owner,bookTitle: bookTitle, location: location, city: city, state: state)
     }
     
     static func add(request:Request){
@@ -601,10 +621,10 @@ class Request : Equatable, CKRecordValueProtocol{
                 }
             }
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Added a New Request"),
-            object: nil)
+                                            object: nil)
         }
     }
-
+    
     func addMyself(){
         Custodian.publicDatabase.save(self.record){
             (record, error) in
@@ -619,7 +639,7 @@ class Request : Equatable, CKRecordValueProtocol{
             }
         }
     }
-    func getAllRequestsOfAOwner(owner: CKRecord.ID){
+    func getAllRequestsOfAOwner(owner: CKRecord.Reference){
         //here we need something like group by
         let predicate = NSPredicate(format: "owner == %@", owner)
         let query = CKQuery(recordType: "Request_Shelf", predicate: predicate)
@@ -637,7 +657,40 @@ class Request : Equatable, CKRecordValueProtocol{
                 }
             }
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllRequestsOfAOwner Fetched"),
-            object: nil)
+                                            object: nil)
         }
+    }
+}
+
+class FetchHelper{
+    var ownerIDs:[CKRecord.ID]
+    var count:Int = 0
+    var result:[User] = []
+    init(ownerIDs:[CKRecord.ID]) {
+        self.ownerIDs = ownerIDs
+        NotificationCenter.default.addObserver(self, selector: #selector(increment), name: NSNotification.Name("OneOwnerOfABook Fetched"), object: nil)
+        fetchAllOwnerOfABook()
+    }
+    @objc func increment(){
+        count += 1
+        if count == ownerIDs.count {
+            Model.shared.ownerOfABook = result
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllOwnerOfABook Fetched"),
+                                            object: nil)
+        }
+    }
+    func fetchAllOwnerOfABook(){
+        for owner in ownerIDs{
+            Custodian.publicDatabase.fetch(withRecordID: owner, completionHandler: {
+                (userRecord, error) in
+                if let error = error {
+                    return
+                }
+                self.result.append(User(record: userRecord!))
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "OneOwnerOfABook Fetched"),
+                                                object: nil)
+            })
+        }
+        
     }
 }

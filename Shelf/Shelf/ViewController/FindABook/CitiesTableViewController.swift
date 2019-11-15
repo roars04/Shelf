@@ -1,5 +1,5 @@
 //
-//  BooksTableViewController.swift
+//  PlacesTableViewController.swift
 //  Shelf
 //
 //  Created by Student on 10/2/19.
@@ -8,13 +8,26 @@
 
 import UIKit
 
-class BooksTableViewController: UITableViewController, UISearchBarDelegate {
+class CitiesTableViewController: UITableViewController, UISearchBarDelegate {
     
-    @IBOutlet weak var searchBarBooks: UISearchBar!
     
-    var category:String = "Action and Adventure"
+    @IBOutlet weak var searchBarCities: UISearchBar!
     
-    var filteredTableData:[Book] = []
+    var book:Book? = nil
+    
+    var city:[String] = []
+    
+    var filteredTableData:[String] = []
+    
+    func toUniqueCityArray(_ user:[User]) -> [String] {
+        var result = Set<String>()
+        for elem in user {
+            if !result.contains(elem.city) {
+                result.insert(elem.city)
+            }
+        }
+        return Array(result)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,30 +38,30 @@ class BooksTableViewController: UITableViewController, UISearchBarDelegate {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-        searchBarBooks.delegate = self
+        searchBarCities.delegate = self
         
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: NSNotification.Name("AllBooksOfACategory Fetched"), object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: NSNotification.Name("AllOwnerOfABook Fetched"), object: nil)
     }
     
     @objc func reloadData(){
         DispatchQueue.main.async {
-            self.filteredTableData = Array(Model.shared.booksOfACategory.values)
+            self.city = self.toUniqueCityArray(Model.shared.ownerOfABook)
+            self.filteredTableData = self.toUniqueCityArray(Model.shared.ownerOfABook)
             self.tableView.reloadData()
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        Book.getAllBooksOfCategory(category: category)
+        Book.getAllOwnerOfABook(isbn: book!.isbn)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText != "" {
-            filteredTableData = Array(Model.shared.booksOfACategory.values).filter({ (book) -> Bool in
-                book.title.lowercased().hasPrefix(searchText.lowercased())
+            filteredTableData = city.filter({ (city) -> Bool in
+                city.lowercased().hasPrefix(searchText.lowercased())
             })
         } else {
-            filteredTableData = Array(Model.shared.booksOfACategory.values)
+            filteredTableData = city
         }
         self.tableView.reloadData()
     }
@@ -62,22 +75,24 @@ class BooksTableViewController: UITableViewController, UISearchBarDelegate {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return filteredTableData.count
+        return filteredTableData.count;
     }
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "book", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "city", for: indexPath)
         
         // Configure the cell...
-        cell.textLabel?.text = filteredTableData[indexPath.row].title
+        cell.textLabel?.text = filteredTableData[indexPath.row]
         
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let citiesView = storyboard!.instantiateViewController(withIdentifier: "CitiesView") as! CitiesTableViewController
-        citiesView.book = filteredTableData[indexPath.row]
-        navigationController!.pushViewController(citiesView, animated: false)
+        let ownersView = storyboard?.instantiateViewController(withIdentifier: "OwnersView") as! OwnersTableViewController
+        ownersView.city = filteredTableData[indexPath.row]
+        ownersView.isbn = self.book!.isbn
+        navigationController?.pushViewController(ownersView, animated: false)
     }
     
     /*
