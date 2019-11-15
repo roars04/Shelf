@@ -70,7 +70,7 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        tableView.reloadData()
+        self.tableView.reloadData()
     }
     
     /*
