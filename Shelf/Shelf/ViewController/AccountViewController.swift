@@ -16,8 +16,8 @@ class AccountViewController: UIViewController {
     @IBOutlet weak var NameLB: UILabel!    
     @IBAction func MyBooks(_ sender: Any) {
         
-        let navCon = storyboard?.instantiateViewController(withIdentifier: "MyBooksTVC") as! UINavigationController
-        self.present(navCon, animated: true, completion: nil)
+        let navCon = storyboard?.instantiateViewController(withIdentifier: "MyBooksTVC") as! MyBooksTableViewController
+        self.navigationController?.pushViewController(navCon, animated: true)
     }
     
     override func viewDidLoad() {
