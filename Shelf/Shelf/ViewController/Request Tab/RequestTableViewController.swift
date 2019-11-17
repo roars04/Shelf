@@ -55,12 +55,12 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
         case 0:
             let request = Model.shared.myRequests[indexPath.row]
             cell.textLabel?.text = request.bookTitle
-            cell.detailTextLabel?.text = request.city
+            cell.detailTextLabel?.text = "\(request.location), \(request.city), \(request.state)"
             return cell
         case 1:
             let request = Model.shared.requestsRecieved[indexPath.row]
             cell2.textLabel?.text = request.bookTitle
-            cell2.detailTextLabel?.text = request.city
+            cell2.detailTextLabel?.text = "\(request.location), \(request.city), \(request.state)"
             return cell2
         default:
             break
