@@ -41,9 +41,10 @@ class MyBooksTableViewController: UITableViewController {
     
     @objc func Back(){
         
-        let navCon = storyboard?.instantiateViewController(withIdentifier: "TabBarController") as! UITabBarController
-        
-        self.present(navCon, animated: true, completion: nil)
+//        let navCon = storyboard?.instantiateViewController(withIdentifier: "TabBarController") as! UITabBarController
+//
+//        self.present(navCon, animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
     
     // MARK: - Table view data source
