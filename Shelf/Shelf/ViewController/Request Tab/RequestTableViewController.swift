@@ -18,9 +18,13 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
         switch segmentedControl.selectedSegmentIndex
         {
         case 0:
+            tableView.reloadData()
             index = 0
+            break
         case 1:
+            tableView.reloadData()
             index = 1
+            break
         default:
             break
         }
@@ -39,27 +43,43 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.present(AddNewRequestVCNavCon, animated: true, completion: nil)
     }
     
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "requests", for: indexPath)
-        if index == 0 {
+        let cell2 = tableView.dequeueReusableCell(withIdentifier: "recieved", for: indexPath)
+        switch segmentedControl.selectedSegmentIndex
+        {
+        case 0:
             let request = Model.shared.myRequests[indexPath.row]
             cell.textLabel?.text = request.bookTitle
             cell.detailTextLabel?.text = request.city
-            
-        } else if index == 1 {
+            return cell
+        case 1:
             let request = Model.shared.requestsRecieved[indexPath.row]
-            cell.textLabel?.text = request.bookTitle
-            cell.detailTextLabel?.text = request.city
+            cell2.textLabel?.text = request.bookTitle
+            cell2.detailTextLabel?.text = request.city
+            return cell2
+        default:
+            break
         }
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var num = 0
-        if index == 0 {
+        switch segmentedControl.selectedSegmentIndex
+        {
+        case 0:
             num = Model.shared.numMyRequests()
-        } else if index == 1 {
+            break
+        case 1:
             num = Model.shared.numRequestsRecieved()
+            break
+        default:
+            break
         }
         return num
     }
