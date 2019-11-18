@@ -635,9 +635,9 @@ class Request : Equatable, CKRecordValueProtocol{
             }
         }
     }
-    func getAllRequestsOfAOwner(owner: CKRecord.Reference){
+    static func getAllRequestsOfAOwner(owner: User){
         //here we need something like group by
-        let predicate = NSPredicate(format: "owner == %@", owner)
+        let predicate = NSPredicate(format: "owner == %@", Model.shared.LoggedInUser!.record.recordID)
         let query = CKQuery(recordType: "Request_Shelf", predicate: predicate)
         Custodian.publicDatabase.perform(query, inZoneWith: nil){
             (requestRecords, error) in

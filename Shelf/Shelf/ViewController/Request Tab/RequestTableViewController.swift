@@ -91,6 +91,7 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        Request.getAllRequestsOfAOwner(owner: Model.shared.LoggedInUser!)
         self.tableView.reloadData()
     }
     
