@@ -108,7 +108,7 @@ class OwnersTableViewController: UITableViewController, UISearchBarDelegate {
                     decidedBook = book
                 }
             }
-            let request = Request(requestByUser: CKRecord.Reference(recordID: Model.shared.LoggedInUser.record.recordID, action: .none), requestForBook: CKRecord.Reference(recordID: decidedBook!.record.recordID, action: .none) )
+            let request = Request(owner: CKRecord.Reference(recordID: Model.shared.LoggedInUser.record.recordID, action: .none), requestForBook: CKRecord.Reference(recordID: decidedBook!.record.recordID, action: .none), bookTitle: decidedBook!.title, location: Model.shared.LoggedInUser.street , city: Model.shared.LoggedInUser.city, state: Model.shared.LoggedInUser.state)
             Request.add(request: request)
         }
         more.backgroundColor = .lightGray
