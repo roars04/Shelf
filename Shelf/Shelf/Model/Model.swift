@@ -64,8 +64,6 @@ class Model {
     
     public var ownerOfABook:[User] = []
     
-    //public var users:[User] = []
-    
     public var LoggedInUser : User!
     
     public var categories:[String] = [
@@ -514,15 +512,6 @@ class Request : Equatable, CKRecordValueProtocol{
         }
     }
     
-    var requestByUser: CKRecord.Reference{
-        get {
-            return record["requestByUser"]!
-        }
-        set(owner){
-            record["requestByUser"] = owner
-        }
-    }
-    
     var requestForBook: CKRecord.Reference{
         get {
             return record["requestForBook"]!
@@ -589,10 +578,17 @@ class Request : Equatable, CKRecordValueProtocol{
         self.record = record
     }
     
-    init(requestByUser: CKRecord.Reference, requestForBook: CKRecord.Reference){
+    init(owner: CKRecord.Reference, requestForBook: CKRecord.Reference, bookTitle: String, location: String, city: String, state: String){
         self.record = CKRecord(recordType: "Request_Shelf")
-        self.requestByUser = requestByUser
+        self.owner = owner
         self.requestForBook = requestForBook
+        self.bookTitle = bookTitle
+        self.location = location
+        self.city = city
+        self.state = state
+        self.date = Date()
+        let locale = NSLocale()
+        self.countryCode = locale.countryCode
     }
     
     init(owner: CKRecord.Reference,bookTitle: String, location: String, city: String, state: String) {
