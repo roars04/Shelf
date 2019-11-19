@@ -85,6 +85,24 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
         return num
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            switch segmentedControl.selectedSegmentIndex
+            {
+            case 0:
+                Model.shared.deleteRequest(index: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                break
+            case 1:
+                break
+            default:
+                break
+            }
+        } else if editingStyle == .insert {
+            
+        }
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         
         return 1
@@ -92,6 +110,7 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func viewWillAppear(_ animated: Bool) {
         Request.getAllRequestsOfAOwner(owner: Model.shared.LoggedInUser!)
+        Request.getAllRequestsForAnOwner(owner: Model.shared.LoggedInUser!)
         self.tableView.reloadData()
     }
     
@@ -100,18 +119,6 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
      override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
      // Return false if you do not want the specified item to be editable.
      return true
-     }
-     */
-    
-    /*
-     // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     } else if editingStyle == .insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
      }
      */
     

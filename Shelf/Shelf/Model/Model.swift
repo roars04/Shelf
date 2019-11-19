@@ -77,6 +77,10 @@ class Model {
     func numRequestsRecieved() -> Int {
         return requestsRecieved.count
     }
+    func deleteRequest(index:Int) {
+        Request.deleteRequest(request: myRequests[index])
+        myRequests.remove(at: index)
+    }
     func numBooks() -> Int {
         return booksOfACategory.count
     }
@@ -621,6 +625,24 @@ class Request : Equatable, CKRecordValueProtocol{
         }
     }
     
+    static func deleteRequest(request:Request){
+        Custodian.publicDatabase.delete(withRecordID: request.record.recordID) {
+            (record, error) in
+            if let error = error {
+                UIViewController.alert(title:"Something has gone wrong while deleting a Request", message:"\(error)")
+            } else {
+                
+                UIViewController.alert(title:"Successfully deleted a Request", message:"")
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: NSNotification.Name("Deleted a Request"), object: request)
+                    UIViewController.alert(title: "Deleted a Request", message:"")
+                }
+            }
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Deleted a Request"),
+                                            object: nil)
+        }
+    }
+    
     func addMyself(){
         Custodian.publicDatabase.save(self.record){
             (record, error) in
@@ -656,6 +678,36 @@ class Request : Equatable, CKRecordValueProtocol{
                                             object: nil)
         }
     }
+    
+    static func getAllRequestsForAnOwner(owner: User){
+        let predicate = NSPredicate(format: "owner == %@", Model.shared.LoggedInUser!.record.recordID)
+        let query = CKQuery(recordType: "Request_Shelf", predicate: predicate)
+        Custodian.publicDatabase.perform(query, inZoneWith: nil){
+            (requestRecords, error) in
+            if let error = error {
+                UIViewController.alert(title: "fetchAllRequestsForAnOwner() problem getting a Request", message:"\(error)")
+                return
+            }
+            Model.shared.booksOfACategory = [:]
+            if let requestRecords = requestRecords {
+                for requestRecord in requestRecords {
+                    let request = Request(record:requestRecord)
+                    for book in Model.shared.myBooks {
+                        if book.title == request.bookTitle {
+                            if request.owner == Model.shared.LoggedInUser.record.recordID {
+                                
+                            } else {
+                                Model.shared.requestsRecieved.append(request)
+                            }
+                        }
+                    }
+                }
+            }
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllRequestsForAOwner Fetched"),
+                                            object: nil)
+        }
+    }
+    
 }
 
 class FetchHelper{
