@@ -668,6 +668,7 @@ class Request : Equatable, CKRecordValueProtocol{
                 return
             }
             Model.shared.booksOfACategory = [:]
+            //Model.shared.myRequests = []
             if let requestRecords = requestRecords {
                 for requestRecord in requestRecords {
                     let request = Request(record:requestRecord)
@@ -689,6 +690,7 @@ class Request : Equatable, CKRecordValueProtocol{
                 return
             }
             Model.shared.booksOfACategory = [:]
+            //Model.shared.requestsRecieved = []
             if let requestRecords = requestRecords {
                 for requestRecord in requestRecords {
                     let request = Request(record:requestRecord)
@@ -697,6 +699,7 @@ class Request : Equatable, CKRecordValueProtocol{
                             if request.owner == Model.shared.LoggedInUser.record.recordID {
                                 
                             } else {
+                                
                                 Model.shared.requestsRecieved.append(request)
                             }
                         }

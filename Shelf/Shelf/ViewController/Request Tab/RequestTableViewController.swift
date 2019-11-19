@@ -36,7 +36,6 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableView.dataSource = self
         navigationItem.title = "Request"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add))
-        
     }
     
     @objc func add() {
