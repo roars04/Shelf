@@ -36,6 +36,8 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableView.dataSource = self
         navigationItem.title = "Request"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add))
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(showRequestUserView), name: NSNotification.Name("Fetched RequestUserInfo"), object: nil)
     }
     
     @objc func add() {
@@ -74,8 +76,15 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
         case 0:
             break
         case 1:
-            let RequestRecievedInfoVCNavCon = storyboard?.instantiateViewController(withIdentifier: "RequestRecievedInfoVCNavCon") as! UINavigationController
-            self.present(RequestRecievedInfoVCNavCon, animated: true, completion: nil)
+            let ownerID = Model.shared.requestsRecieved[indexPath.row].owner.recordID
+            Custodian.publicDatabase.fetch(withRecordID: ownerID, completionHandler: { (userRecord, error) in
+                if let error = error {
+                    return
+                }
+                Model.shared.userOfRequest = User(record: userRecord!)
+                NotificationCenter.default.post(name: NSNotification.Name("Fetched RequestUserInfo"), object: nil)
+            })
+            
             break
         default:
             break
@@ -126,6 +135,10 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
         Request.getAllRequestsOfAOwner(owner: Model.shared.LoggedInUser!)
         Book.getAllBooksOfUser(user: Model.shared.LoggedInUser!)
         self.tableView.reloadData()
+    }
+    @objc func showRequestUserView(){
+        let RequestRecievedInfoVCNavCon = storyboard?.instantiateViewController(withIdentifier: "RequestRecievedInfoVCNavCon") as! UINavigationController
+        self.present(RequestRecievedInfoVCNavCon, animated: true, completion: nil)
     }
     
     /*

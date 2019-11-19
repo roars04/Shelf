@@ -19,15 +19,14 @@ class RequestRecievedInfoViewController: UIViewController {
         super.viewDidLoad()
         navigationItem.title = "Request Recieved From:"
         navigationItem.leftBarButtonItem = UIBarButtonItem(title:"Back", style:.plain, target: self, action: #selector(back))
-        let LoggedInUser = Model.shared.LoggedInUser!
-        UsersNameLBL.text = "\(LoggedInUser.firstName), \(LoggedInUser.lastName)"
-        PhoneNumLBL.text = LoggedInUser.phone
-        EmailLBL.text = LoggedInUser.email
-        LocationLBL.text = "\(LoggedInUser.city), \(LoggedInUser.state)"
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidLoad()
+        UsersNameLBL.text = "\(Model.shared.userOfRequest!.firstName) \(Model.shared.userOfRequest!.lastName)"
+        PhoneNumLBL.text = "\(Model.shared.userOfRequest!.phone)"
+        EmailLBL.text = "\(Model.shared.userOfRequest!.email)"
+        LocationLBL.text = "\(Model.shared.userOfRequest!.city), \(Model.shared.userOfRequest!.state)"
     }
     
     @objc func back() {

@@ -55,6 +55,7 @@ class Model {
     // For requests
     public var myRequests:[Request] = []
     public var requestsRecieved:[Request] = []
+    public var userOfRequest: User?
     public var books:[Book] = []
     public var myBooks:[Book] = []
     public var booksOfAUser:[String:Book] = [:]
@@ -123,7 +124,6 @@ class Model {
         }
         //return isValid;
     }
-    
     /// Adds a User to CloudKit *and* locally
     ///
     /// - Parameter user: the user to add to the database
