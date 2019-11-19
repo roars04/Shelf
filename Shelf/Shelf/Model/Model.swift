@@ -703,7 +703,7 @@ class Request : Equatable, CKRecordValueProtocol{
                     }
                 }
             }
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllRequestsForAOwner Fetched"),
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllRequestsForAnOwner Fetched"),
                                             object: nil)
         }
     }
