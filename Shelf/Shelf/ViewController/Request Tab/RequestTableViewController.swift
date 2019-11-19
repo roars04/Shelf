@@ -71,6 +71,20 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch segmentedControl.selectedSegmentIndex
+        {
+        case 0:
+            break
+        case 1:
+            let RequestRecievedInfoVCNavCon = storyboard?.instantiateViewController(withIdentifier: "RequestRecievedInfoVCNavCon") as! UINavigationController
+            self.present(RequestRecievedInfoVCNavCon, animated: true, completion: nil)
+            break
+        default:
+            break
+        }
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var num = 0
         switch segmentedControl.selectedSegmentIndex

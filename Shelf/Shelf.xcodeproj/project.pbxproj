@@ -23,6 +23,7 @@
 		3F98B53B234579B4000AC65B /* CategoriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F98B53A234579B4000AC65B /* CategoriesTableViewController.swift */; };
 		3F98B53D234579ED000AC65B /* CitiesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F98B53C234579ED000AC65B /* CitiesTableViewController.swift */; };
 		3F98B54123457A52000AC65B /* OwnersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F98B54023457A52000AC65B /* OwnersTableViewController.swift */; };
+		3FCB3B4C2383FC010025D5AD /* RequestRecievedInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCB3B4B2383FC010025D5AD /* RequestRecievedInfoViewController.swift */; };
 		3FF9DE6C235F97DC00CF9510 /* AddNewRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF9DE6B235F97DC00CF9510 /* AddNewRequestViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +47,7 @@
 		3F98B53A234579B4000AC65B /* CategoriesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesTableViewController.swift; sourceTree = "<group>"; };
 		3F98B53C234579ED000AC65B /* CitiesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitiesTableViewController.swift; sourceTree = "<group>"; };
 		3F98B54023457A52000AC65B /* OwnersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnersTableViewController.swift; sourceTree = "<group>"; };
+		3FCB3B4B2383FC010025D5AD /* RequestRecievedInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestRecievedInfoViewController.swift; sourceTree = "<group>"; };
 		3FF9DE6B235F97DC00CF9510 /* AddNewRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewRequestViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -74,6 +76,7 @@
 			children = (
 				3F173DA52347CFB800A152CB /* RequestTableViewController.swift */,
 				3FF9DE6B235F97DC00CF9510 /* AddNewRequestViewController.swift */,
+				3FCB3B4B2383FC010025D5AD /* RequestRecievedInfoViewController.swift */,
 			);
 			path = "Request Tab";
 			sourceTree = "<group>";
@@ -233,6 +236,7 @@
 				3F173DA62347CFB800A152CB /* RequestTableViewController.swift in Sources */,
 				3F7C126723427983006ECA15 /* AppDelegate.swift in Sources */,
 				3F7C126923427983006ECA15 /* AccountViewController.swift in Sources */,
+				3FCB3B4C2383FC010025D5AD /* RequestRecievedInfoViewController.swift in Sources */,
 				3F98B53B234579B4000AC65B /* CategoriesTableViewController.swift in Sources */,
 				3F98B53D234579ED000AC65B /* CitiesTableViewController.swift in Sources */,
 			);
