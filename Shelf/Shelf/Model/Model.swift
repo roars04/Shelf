@@ -707,7 +707,6 @@ class Request : Equatable, CKRecordValueProtocol{
                                             object: nil)
         }
     }
-    
 }
 
 class FetchHelper{
