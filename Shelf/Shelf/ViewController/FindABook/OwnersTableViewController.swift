@@ -56,6 +56,9 @@ class OwnersTableViewController: UITableViewController, UISearchBarDelegate {
         DispatchQueue.main.async {
             self.user = self.userOfACity(Model.shared.ownerOfABook)
             self.filteredTableData = self.userOfACity(Model.shared.ownerOfABook)
+            self.filteredTableData.sort { (firstUser, secondUser) -> Bool in
+                firstUser.firstName < secondUser.firstName
+            }
             self.tableView.reloadData()
         }
     }

@@ -34,6 +34,9 @@ class BooksTableViewController: UITableViewController, UISearchBarDelegate {
     @objc func reloadData(){
         DispatchQueue.main.async {
             self.filteredTableData = Array(Model.shared.booksOfACategory.values)
+            self.filteredTableData.sort { (firstBook, secondBook) -> Bool in
+                firstBook.title < secondBook.title
+            }
             self.tableView.reloadData()
         }
     }

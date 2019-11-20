@@ -47,6 +47,9 @@ class CitiesTableViewController: UITableViewController, UISearchBarDelegate {
         DispatchQueue.main.async {
             self.city = self.toUniqueCityArray(Model.shared.ownerOfABook)
             self.filteredTableData = self.toUniqueCityArray(Model.shared.ownerOfABook)
+            self.filteredTableData.sort { (firstCity, secondCity) -> Bool in
+                firstCity < secondCity
+            }
             self.tableView.reloadData()
         }
     }
