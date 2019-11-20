@@ -728,19 +728,31 @@ class FetchHelper{
     var ownerIDs:[CKRecord.ID]
     var count:Int = 0
     var result:[User] = []
+    private let counterQueue = DispatchQueue(label: "AtomicCounterQueue", attributes: .concurrent)
+    private let resultQueue = DispatchQueue(label: "AtomicResultQueue", attributes: .concurrent)
+    
     init(ownerIDs:[CKRecord.ID]) {
         self.ownerIDs = ownerIDs
-        NotificationCenter.default.addObserver(self, selector: #selector(increment), name: NSNotification.Name("OneOwnerOfABook Fetched"), object: nil)
         fetchAllOwnerOfABook()
     }
-    @objc func increment(){
-        count += 1
-        if count == ownerIDs.count {
-            Model.shared.ownerOfABook = result
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllOwnerOfABook Fetched"),
-                                            object: nil)
+    func append(user: CKRecord){
+        self.counterQueue.async(flags:.barrier) {
+            self.result.append(User(record: user))
         }
     }
+    func increment(){
+        self.counterQueue.async(flags:.barrier) {
+            self.count += 1
+        }
+        self.counterQueue.sync {
+            if count == ownerIDs.count {
+                Model.shared.ownerOfABook = result
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllOwnerOfABook Fetched"),
+                                                object: nil)
+            }
+        }
+    }
+    
     func fetchAllOwnerOfABook(){
         for owner in ownerIDs{
             Custodian.publicDatabase.fetch(withRecordID: owner, completionHandler: {
@@ -748,9 +760,8 @@ class FetchHelper{
                 if let error = error {
                     return
                 }
-                self.result.append(User(record: userRecord!))
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "OneOwnerOfABook Fetched"),
-                                                object: nil)
+                self.append(user: userRecord!)
+                self.increment()
             })
         }
         
