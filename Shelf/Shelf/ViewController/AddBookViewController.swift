@@ -66,7 +66,14 @@ class AddBookViewController: UIViewController, UIPickerViewDelegate,UIPickerView
             return
         }
         if isbnTF.text! == "" {
-            let ac = UIAlertController(title: "Pages is not numeric", message: nil, preferredStyle: .alert)
+            let ac = UIAlertController(title: "No new Book without a ISBN", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            ac.addAction(okAction)
+            present(ac, animated: true, completion: nil)
+            return
+        }
+        if titleTF.text == "" {
+            let ac = UIAlertController(title: "No new Book without a Title", message: nil, preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             ac.addAction(okAction)
             present(ac, animated: true, completion: nil)

@@ -609,6 +609,7 @@ class Request : Equatable, CKRecordValueProtocol{
         self.record = CKRecord(recordType: "Request_Shelf")
         self.owner = owner
         self.bookTitle = bookTitle
+        self.isbn = isbn
         self.location = location
         self.city = city
         self.state = state
@@ -693,7 +694,7 @@ class Request : Equatable, CKRecordValueProtocol{
     
     static func getAllRequestsForAnOwner(owner: User){
         Model.shared.requestsRecieved=[]
-        let predicate = NSPredicate(format: "owner == %@", Model.shared.LoggedInUser!.record.recordID)
+        let predicate = NSPredicate(value:true)
         let query = CKQuery(recordType: "Request_Shelf", predicate: predicate)
         Custodian.publicDatabase.perform(query, inZoneWith: nil){
             (requestRecords, error) in
@@ -711,7 +712,6 @@ class Request : Equatable, CKRecordValueProtocol{
                             if request.owner == Model.shared.LoggedInUser.record.recordID {
                                 
                             } else {
-                                
                                 Model.shared.requestsRecieved.append(request)
                             }
                         }
