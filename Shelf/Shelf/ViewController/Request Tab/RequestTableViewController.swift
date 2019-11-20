@@ -38,6 +38,7 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add))
         
         NotificationCenter.default.addObserver(self, selector: #selector(showRequestUserView), name: NSNotification.Name("Fetched RequestUserInfo"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reload), name: NSNotification.Name("Fetched allData"), object: nil)
     }
     
     @objc func add() {
@@ -82,9 +83,9 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
                     return
                 }
                 Model.shared.userOfRequest = User(record: userRecord!)
-                NotificationCenter.default.post(name: NSNotification.Name("Fetched RequestUserInfo"), object: nil)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Fetched RequestUserInfo"),
+                object: nil)
             })
-            
             break
         default:
             break
@@ -134,6 +135,10 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
         Request.getAllRequestsForAnOwner(owner: Model.shared.LoggedInUser!)
         Request.getAllRequestsOfAOwner(owner: Model.shared.LoggedInUser!)
         Book.getAllBooksOfUser(user: Model.shared.LoggedInUser!)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Fetched allData"),
+        object: nil)
+    }
+    @objc func reload(){
         self.tableView.reloadData()
     }
     @objc func showRequestUserView(){
