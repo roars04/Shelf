@@ -669,6 +669,7 @@ class Request : Equatable, CKRecordValueProtocol{
     }
     static func getAllRequestsOfAOwner(owner: User){
         //here we need something like group by
+        Model.shared.myRequests=[]
         let predicate = NSPredicate(format: "owner == %@", Model.shared.LoggedInUser!.record.recordID)
         let query = CKQuery(recordType: "Request_Shelf", predicate: predicate)
         Custodian.publicDatabase.perform(query, inZoneWith: nil){
@@ -691,6 +692,7 @@ class Request : Equatable, CKRecordValueProtocol{
     }
     
     static func getAllRequestsForAnOwner(owner: User){
+        Model.shared.requestsRecieved=[]
         let predicate = NSPredicate(format: "owner == %@", Model.shared.LoggedInUser!.record.recordID)
         let query = CKQuery(recordType: "Request_Shelf", predicate: predicate)
         Custodian.publicDatabase.perform(query, inZoneWith: nil){
@@ -728,6 +730,7 @@ class FetchHelper{
     var result:[User] = []
     init(ownerIDs:[CKRecord.ID]) {
         self.ownerIDs = ownerIDs
+        NotificationCenter.default.addObserver(self, selector: #selector(increment), name: NSNotification.Name("OneOwnerOfABook Fetched"), object: nil)
         fetchAllOwnerOfABook()
     }
     @objc func increment(){
