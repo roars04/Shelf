@@ -728,7 +728,6 @@ class FetchHelper{
     var result:[User] = []
     init(ownerIDs:[CKRecord.ID]) {
         self.ownerIDs = ownerIDs
-        NotificationCenter.default.addObserver(self, selector: #selector(increment), name: NSNotification.Name("OneOwnerOfABook Fetched"), object: nil)
         fetchAllOwnerOfABook()
     }
     @objc func increment(){
