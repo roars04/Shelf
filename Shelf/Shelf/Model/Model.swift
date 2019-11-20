@@ -534,6 +534,15 @@ class Request : Equatable, CKRecordValueProtocol{
         }
     }
     
+    var isbn: String {
+        get {
+            return record["isbn"]!
+        }
+        set(isbn){
+            record["isbn"] = isbn
+        }
+    }
+    
     var location: String{
         get {
             return record["location"]!
@@ -595,7 +604,7 @@ class Request : Equatable, CKRecordValueProtocol{
         self.countryCode = locale.countryCode
     }
     
-    init(owner: CKRecord.Reference,bookTitle: String, location: String, city: String, state: String) {
+    init(owner: CKRecord.Reference,bookTitle: String, isbn: String, location: String, city: String, state: String) {
         self.record = CKRecord(recordType: "Request_Shelf")
         self.owner = owner
         self.bookTitle = bookTitle
@@ -695,7 +704,7 @@ class Request : Equatable, CKRecordValueProtocol{
                 for requestRecord in requestRecords {
                     let request = Request(record:requestRecord)
                     for book in Model.shared.myBooks {
-                        if book.title == request.bookTitle {
+                        if book.isbn == request.isbn {
                             if request.owner == Model.shared.LoggedInUser.record.recordID {
                                 
                             } else {
