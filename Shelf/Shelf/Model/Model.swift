@@ -591,11 +591,12 @@ class Request : Equatable, CKRecordValueProtocol{
         self.record = record
     }
     
-    init(owner: CKRecord.Reference, requestForBook: CKRecord.Reference, bookTitle: String, location: String, city: String, state: String){
+    init(owner: CKRecord.Reference, requestForBook: CKRecord.Reference, bookTitle: String,isbn: String, location: String, city: String, state: String){
         self.record = CKRecord(recordType: "Request_Shelf")
         self.owner = owner
         self.requestForBook = requestForBook
         self.bookTitle = bookTitle
+        self.isbn = isbn
         self.location = location
         self.city = city
         self.state = state
