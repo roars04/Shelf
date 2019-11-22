@@ -52,6 +52,7 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "requests", for: indexPath)
+        cell.selectionStyle = .none;
         let cell2 = tableView.dequeueReusableCell(withIdentifier: "recieved", for: indexPath)
         switch segmentedControl.selectedSegmentIndex
         {
@@ -141,8 +142,10 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     @objc func showRequestUserView(){
-        let RequestRecievedInfoVCNavCon = storyboard?.instantiateViewController(withIdentifier: "RequestRecievedInfoVCNavCon") as! UINavigationController
-        self.present(RequestRecievedInfoVCNavCon, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            let RequestRecievedInfoVCNavCon = self.storyboard?.instantiateViewController(withIdentifier: "RequestRecievedInfoVCNavCon") as! UINavigationController
+            self.present(RequestRecievedInfoVCNavCon, animated: true, completion: nil)
+        }
     }
     
     /*

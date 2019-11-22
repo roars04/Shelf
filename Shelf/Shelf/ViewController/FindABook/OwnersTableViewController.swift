@@ -117,6 +117,17 @@ class OwnersTableViewController: UITableViewController, UISearchBarDelegate {
         let swipeConfig = UISwipeActionsConfiguration(actions: [action])
         return swipeConfig
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        var decidedBook:Book? = nil
+        for book in Model.shared.books {
+            if book.owner.recordID == self.filteredTableData[indexPath.row].record.recordID && book.isbn == self.isbn{
+                decidedBook = book
+            }
+        }
+        let request = Request(owner: CKRecord.Reference(recordID: Model.shared.LoggedInUser.record.recordID, action: .none), requestForBook: CKRecord.Reference(recordID: decidedBook!.record.recordID, action: .none), bookTitle: decidedBook!.title, isbn: decidedBook!.isbn ,location: Model.shared.LoggedInUser.street , city: Model.shared.LoggedInUser.city, state: Model.shared.LoggedInUser.state)
+        Model.shared.addARequest(request: request)
+    }
 
     /*
     // Override to support editing the table view.
