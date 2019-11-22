@@ -668,56 +668,6 @@ class Request : Equatable, CKRecordValueProtocol{
             }
         }
     }
-    static func getAllRequestsOfAOwner(owner: User){
-        //here we need something like group by
-        Model.shared.myRequests=[]
-        let predicate = NSPredicate(format: "owner == %@", Model.shared.LoggedInUser!.record.recordID)
-        let query = CKQuery(recordType: "Request_Shelf", predicate: predicate)
-        Custodian.publicDatabase.perform(query, inZoneWith: nil){
-            (requestRecords, error) in
-            if let error = error {
-                UIViewController.alert(title: "Problem getting a Request", message:"\(error)")
-                return
-            }
-            if let requestRecords = requestRecords {
-                for requestRecord in requestRecords {
-                    let request = Request(record:requestRecord)
-                    Model.shared.myRequests.append(request)
-                }
-            }
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllRequestsOfAOwner Fetched"),
-                                            object: nil)
-        }
-    }
-    
-    static func getAllRequestsForAnOwner(owner: User){
-        Model.shared.requestsRecieved=[]
-        let predicate = NSPredicate(value:true)
-        let query = CKQuery(recordType: "Request_Shelf", predicate: predicate)
-        Custodian.publicDatabase.perform(query, inZoneWith: nil){
-            (requestRecords, error) in
-            if let error = error {
-                UIViewController.alert(title: "Problem getting a Request", message:"\(error)")
-                return
-            }
-            if let requestRecords = requestRecords {
-                for requestRecord in requestRecords {
-                    let request = Request(record:requestRecord)
-                    for book in Model.shared.myBooks {
-                        if book.isbn == request.isbn {
-                            if request.owner == Model.shared.LoggedInUser.record.recordID {
-                                
-                            } else {
-                                Model.shared.requestsRecieved.append(request)
-                            }
-                        }
-                    }
-                }
-            }
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllRequestsForAnOwner Fetched"),
-                                            object: nil)
-        }
-    }
 }
 
 class GetAllOwnerOfBooksFetchHelper{
