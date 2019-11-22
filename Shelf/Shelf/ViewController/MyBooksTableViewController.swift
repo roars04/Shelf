@@ -36,7 +36,7 @@ class MyBooksTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        Book.getAllBooksOfUser(user: Model.shared.LoggedInUser!)
+        Model.shared.getAllBooksOfUser(user: Model.shared.LoggedInUser!)
     }
     
     @objc func Back(){

@@ -79,7 +79,7 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
         case 1:
             let ownerID = Model.shared.requestsRecieved[indexPath.row].owner.recordID
             Custodian.publicDatabase.fetch(withRecordID: ownerID, completionHandler: { (userRecord, error) in
-                if let error = error {
+                if error != nil {
                     return
                 }
                 Model.shared.userOfRequest = User(record: userRecord!)

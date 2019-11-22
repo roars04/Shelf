@@ -127,55 +127,5 @@ class Request : Equatable, CKRecordValueProtocol{
         let locale = NSLocale()
         self.countryCode = locale.countryCode
     }
-    
-    static func add(request:Request){
-        Custodian.publicDatabase.save(request.record){
-            (record, error) in
-            if let error = error {
-                UIViewController.alert(title:"Something has gone wrong while adding a Request", message:"\(error)")
-            } else {
-                
-                UIViewController.alert(title:"Successfully saved a Request", message:"")
-                DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: NSNotification.Name("Added a New Request"), object: request)
-                    UIViewController.alert(title: "Added a New Request", message:"")
-                }
-            }
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Added a New Request"),
-                                            object: nil)
-        }
-    }
-    
-    static func deleteRequest(request:Request){
-        Custodian.publicDatabase.delete(withRecordID: request.record.recordID) {
-            (record, error) in
-            if let error = error {
-                UIViewController.alert(title:"Something has gone wrong while deleting a Request", message:"\(error)")
-            } else {
-                UIViewController.alert(title:"Successfully deleted a Request", message:"")
-                DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: NSNotification.Name("Deleted a Request"), object: request)
-                    UIViewController.alert(title: "Deleted a Request", message:"")
-                }
-            }
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Deleted a Request"),
-                                            object: nil)
-        }
-    }
-    
-    func addMyself(){
-        Custodian.publicDatabase.save(self.record){
-            (record, error) in
-            if let error = error {
-                UIViewController.alert(title:"Something has gone wrong while adding a Request", message:"\(error)")
-            } else {
-                UIViewController.alert(title:"Successfully saved a Request", message:"")
-                DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: NSNotification.Name("Added a New Request"), object: self)
-                    UIViewController.alert(title: "Added a New Request", message:"")
-                }
-            }
-        }
-    }
 }
 

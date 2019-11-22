@@ -33,7 +33,7 @@ class RegistrationViewController: UIViewController {
         let userdata = User(email: EmailTF.text!, password: PasswordTF.text!, lastName: LastNameTF.text!, firstName: FirstNameTF.text!, city: CityTF.text!, street: StreetTF.text!
             , state: StateTF.text!, postal: PostalTF.text!, phone: PhoneTF.text!)
         
-        Model.shared.add(user: userdata)
+        Model.shared.addAUser(user: userdata)
         
         self.dismiss(animated: true, completion: nil)
     }

@@ -112,7 +112,7 @@ class OwnersTableViewController: UITableViewController, UISearchBarDelegate {
                 }
             }
             let request = Request(owner: CKRecord.Reference(recordID: Model.shared.LoggedInUser.record.recordID, action: .none), requestForBook: CKRecord.Reference(recordID: decidedBook!.record.recordID, action: .none), bookTitle: decidedBook!.title, isbn: decidedBook!.isbn ,location: Model.shared.LoggedInUser.street , city: Model.shared.LoggedInUser.city, state: Model.shared.LoggedInUser.state)
-            Request.add(request: request)
+            Model.shared.addARequest(request: request)
         }
         let swipeConfig = UISwipeActionsConfiguration(actions: [action])
         return swipeConfig

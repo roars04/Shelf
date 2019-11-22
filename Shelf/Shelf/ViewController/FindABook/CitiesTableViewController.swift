@@ -55,7 +55,7 @@ class CitiesTableViewController: UITableViewController, UISearchBarDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        Book.getAllOwnerOfABook(isbn: book!.isbn)
+        Model.shared.getAllOwnerOfABook(isbn: book!.isbn)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

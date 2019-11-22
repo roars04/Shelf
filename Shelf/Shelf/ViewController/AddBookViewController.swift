@@ -80,7 +80,7 @@ class AddBookViewController: UIViewController, UIPickerViewDelegate,UIPickerView
             return
         }
         
-        Book.add(book: Book(owner: CKRecord.Reference(recordID: Model.shared.LoggedInUser.record.recordID, action: .none), isbn: isbnTF.text!, title: titleTF.text!, description: descriptionTF.text!, author: authorTF.text!, illustrator: illustratorTF.text!, coverArtist: coverArtistTF.text!, country: countryTF.text!, language: languageTF.text!, category: self.selectedCategory, publisher: publisherTF.text!, publicationDate: Date(), pages: pages))
+        Model.shared.addABook(book: Book(owner: CKRecord.Reference(recordID: Model.shared.LoggedInUser.record.recordID, action: .none), isbn: isbnTF.text!, title: titleTF.text!, description: descriptionTF.text!, author: authorTF.text!, illustrator: illustratorTF.text!, coverArtist: coverArtistTF.text!, country: countryTF.text!, language: languageTF.text!, category: self.selectedCategory, publisher: publisherTF.text!, publicationDate: Date(), pages: pages))
     }
     
     @objc func addedBook(){

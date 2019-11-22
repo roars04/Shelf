@@ -61,9 +61,6 @@ class Model {
     public var booksOfAUser:[String:Book] = [:]
     public var booksOfACategory:[String:Book] = [:]
     
-    var fetchOwner:GetAllOwnerOfBooksFetchHelper? = nil
-    var fetchRequest:GetAllRequestsOfLoggedInUserFetchHelper? = nil
-    
     public var ownerOfABook:[User] = []
     
     public var LoggedInUser : User!
@@ -72,6 +69,8 @@ class Model {
         "Action and Adventure", "Anthology", "Classic", "Comic and Graphic Novel", "Crime and Detective", "Drama", "Fable", "Fairy Tale", "Fan Fiction", "Fantasy", "Historical Fiction", "Horror", "Humor", "Legend", "Magical Realism", "Mystery", "Mythology", "Realistic Fiction", "Romance", "Satire", "Science Fiction", "Short Story", "Suspense Thriller", "Biography Autobiography", "Essay", "Memoir", "Narrative Nonfiction", "Periodicals", "Reference", "Self help", "Speech", "Textbook", "Poetry"
     ]
     
+    var fetchOwner:GetAllOwnerOfBooksFetchHelper? = nil
+    var fetchRequest:GetAllRequestsOfLoggedInUserFetchHelper? = nil
     
     func numMyRequests() -> Int {
         return myRequests.count
@@ -80,7 +79,7 @@ class Model {
         return requestsRecieved.count
     }
     func deleteRequest(index:Int) {
-        Request.deleteRequest(request: myRequests[index])
+        Model.shared.deleteRequest(request: myRequests[index])
         myRequests.remove(at: index)
     }
     func numBooks() -> Int {
@@ -124,7 +123,7 @@ class Model {
     /// Adds a User to CloudKit *and* locally
     ///
     /// - Parameter user: the user to add to the database
-    func add(user:User){
+    func addAUser(user:User){
         
         Custodian.publicDatabase.save(user.record){
             (record, error) in
@@ -138,6 +137,118 @@ class Model {
                     UIViewController.alert(title: "Added New User", message:"")
                 }
             }
+        }
+    }
+    func addABook(book:Book){
+        Custodian.publicDatabase.save(book.record){
+            (record, error) in
+            if error != nil {
+                NotificationCenter.default.post(name: NSNotification.Name("Error with New Book"), object: nil)
+            } else {
+                NotificationCenter.default.post(name: NSNotification.Name("Added a New Book"), object: nil)
+            }
+        }
+    }
+    
+    func getAllBooksOfUser(user:User){
+        
+        let predicate = NSPredicate(format: "owner == %@", Model.shared.LoggedInUser!.record.recordID)
+        let query = CKQuery(recordType: "Book_Shelf", predicate: predicate)
+        Custodian.publicDatabase.perform(query, inZoneWith: nil){
+            (bookR, error) in
+            if let error = error {
+                UIViewController.alert(title: "Problem getting a Book", message:"\(error)")
+                return
+            }
+            Model.shared.myBooks = []
+            if let bookR = bookR {
+                for bookRecord in bookR {
+                    let book = Book(record:bookRecord)
+                    Model.shared.myBooks.append(book)
+                }
+            }
+            Model.shared.booksOfAUser = [:]
+            if let bookR = bookR {
+                for bookRecord in bookR {
+                    let book = Book(record:bookRecord)
+                    Model.shared.booksOfAUser[book.title] = book
+                }
+            }
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllBooksOfAUser Fetched"),
+                                            object: nil)
+        }
+    }
+    
+    func getAllBooksOfCategory(category:String){
+        //here we need something like group by
+        let predicate = NSPredicate(format: "category == %@", category)
+        let query = CKQuery(recordType: "Book_Shelf", predicate: predicate)
+        Custodian.publicDatabase.perform(query, inZoneWith: nil){
+            (bookRecords, error) in
+            if let error = error {
+                UIViewController.alert(title: "Problem getting a Book", message:"\(error)")
+                return
+            }
+            Model.shared.books = []
+            if let bookRecords = bookRecords {
+                for bookRecord in bookRecords {
+                    let book = Book(record:bookRecord)
+                    Model.shared.books.append(book)
+                }
+            }
+            Model.shared.booksOfACategory = [:]
+            if let bookRecords = bookRecords {
+                for bookRecord in bookRecords {
+                    let book = Book(record:bookRecord)
+                    Model.shared.booksOfACategory[book.isbn] = book
+                }
+            }
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllBooksOfACategory Fetched"),
+                                            object: nil)
+        }
+    }
+    
+    func getAllOwnerOfABook(isbn:String){
+        var owner:[CKRecord.ID] = []
+        for book in Model.shared.books{
+            if book.isbn == isbn {
+                owner.append(book.owner.recordID)
+            }
+        }
+        Model.shared.fetchOwner = GetAllOwnerOfBooksFetchHelper(ownerIDs: owner)
+    }
+    func addARequest(request:Request){
+        Custodian.publicDatabase.save(request.record){
+            (record, error) in
+            if let error = error {
+                UIViewController.alert(title:"Something has gone wrong while adding a Request", message:"\(error)")
+            } else {
+                
+                UIViewController.alert(title:"Successfully saved a Request", message:"")
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: NSNotification.Name("Added a New Request"), object: request)
+                    UIViewController.alert(title: "Added a New Request", message:"")
+                }
+            }
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Added a New Request"),
+                                            object: nil)
+        }
+    }
+    
+    func deleteRequest(request:Request){
+        Custodian.publicDatabase.delete(withRecordID: request.record.recordID) {
+            (record, error) in
+            if let error = error {
+                UIViewController.alert(title:"Something has gone wrong while deleting a Request", message:"\(error)")
+            } else {
+                UIViewController.alert(title:"Successfully deleted a Request", message:"")
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: NSNotification.Name("Deleted a Request"), object: request)
+                    UIViewController.alert(title: "Deleted a Request", message:"")
+                }
+            }
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Deleted a Request"),
+                                            object: nil)
         }
     }
 }
@@ -154,17 +265,10 @@ class GetAllOwnerOfBooksFetchHelper{
         self.ownerIDs = ownerIDs
         fetchAllOwnerOfABook()
     }
-    func append(user: CKRecord){
-        self.resultQueue.async(flags:.barrier) {
-            self.result.append(User(record: user))
-        }
-    }
     func increment(){
         self.counterQueue.async(flags:.barrier) {
             self.count += 1
-        }
-        self.counterQueue.sync {
-            if count == ownerIDs.count {
+            if self.count == self.ownerIDs.count {
                 Model.shared.ownerOfABook = self.result
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllOwnerOfABook Fetched"),
                                                 object: nil)
@@ -176,10 +280,11 @@ class GetAllOwnerOfBooksFetchHelper{
         for owner in ownerIDs{
             Custodian.publicDatabase.fetch(withRecordID: owner, completionHandler: {
                 (userRecord, error) in
-                if let error = error {
+                if error != nil {
+                    self.increment()
                     return
                 }
-                self.append(user: userRecord!)
+                self.result.append(User(record: userRecord!))
                 self.increment()
             })
         }

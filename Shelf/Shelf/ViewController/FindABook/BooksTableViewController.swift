@@ -42,7 +42,7 @@ class BooksTableViewController: UITableViewController, UISearchBarDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        Book.getAllBooksOfCategory(category: category)
+        Model.shared.getAllBooksOfCategory(category: category)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
