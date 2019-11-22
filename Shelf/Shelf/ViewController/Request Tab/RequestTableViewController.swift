@@ -114,9 +114,11 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
             {
             case 0:
                 Model.shared.deleteRequest(index: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .fade)
+                tableView.reloadData()
                 break
             case 1:
+                Model.shared.deleteReceivedRequest(index: indexPath.row)
+                tableView.reloadData()
                 break
             default:
                 break
@@ -134,7 +136,9 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
         Model.shared.fetchRequest = GetAllRequestsOfLoggedInUserFetchHelper()
     }
     @objc func reload(){
-        self.tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     @objc func showRequestUserView(){
         let RequestRecievedInfoVCNavCon = storyboard?.instantiateViewController(withIdentifier: "RequestRecievedInfoVCNavCon") as! UINavigationController

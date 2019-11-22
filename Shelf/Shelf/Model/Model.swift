@@ -82,6 +82,10 @@ class Model {
         Model.shared.deleteRequest(request: myRequests[index])
         myRequests.remove(at: index)
     }
+    func deleteReceivedRequest(index:Int) {
+        Model.shared.deleteRequest(request: requestsRecieved[index])
+        requestsRecieved.remove(at: index)
+    }
     func numBooks() -> Int {
         return booksOfACategory.count
     }
@@ -259,7 +263,6 @@ class GetAllOwnerOfBooksFetchHelper{
     var count:Int = 0
     var result:[User] = []
     private let counterQueue = DispatchQueue(label: "AtomicCounterQueue", attributes: .concurrent)
-    private let resultQueue = DispatchQueue(label: "AtomicResultQueue", attributes: .concurrent)
     
     init(ownerIDs:[CKRecord.ID]) {
         self.ownerIDs = ownerIDs
@@ -305,9 +308,10 @@ class GetAllRequestsOfLoggedInUserFetchHelper{
     func increment(){
         self.counterQueue.async(flags:.barrier) {
             self.count += 1
-        }
-        self.counterQueue.sync {
-            if count == 2{
+            if self.count == 1{
+                self.fetchAllRequestsOfLoggedInUser()
+            }
+            else if self.count == 3{
                 NotificationCenter.default.post(name: NSNotification.Name("Fetched allData"),
                 object: nil)
             }
@@ -319,18 +323,17 @@ class GetAllRequestsOfLoggedInUserFetchHelper{
         let bookQuery = CKQuery(recordType: "Book_Shelf", predicate: bookPredicate)
         Custodian.publicDatabase.perform(bookQuery, inZoneWith: nil){
             (bookR, error) in
-            if let error = error {
-                UIViewController.alert(title: "Problem getting a Book", message:"\(error)")
+            if error != nil {
+                self.increment()
                 return
             }
             Model.shared.myBooks = []
             if let bookR = bookR {
                 for bookRecord in bookR {
-                    let book = Book(record:bookRecord)
-                    Model.shared.myBooks.append(book)
+                    Model.shared.myBooks.append(Book(record:bookRecord))
                 }
             }
-            self.fetchAllRequestsOfLoggedInUser()
+            self.increment()
         }
     }
     
@@ -340,8 +343,8 @@ class GetAllRequestsOfLoggedInUserFetchHelper{
         let getAllRequestQuery = CKQuery(recordType: "Request_Shelf", predicate: getAllRequestPredicate)
         Custodian.publicDatabase.perform(getAllRequestQuery, inZoneWith: nil){
             (requestRecords, error) in
-            if let error = error {
-                UIViewController.alert(title: "Problem getting a Request", message:"\(error)")
+            if error != nil {
+                self.increment()
                 return
             }
             if let requestRecords = requestRecords {
@@ -365,8 +368,8 @@ class GetAllRequestsOfLoggedInUserFetchHelper{
         let myRequestsQuery = CKQuery(recordType: "Request_Shelf", predicate: myRequestsPredicate)
         Custodian.publicDatabase.perform(myRequestsQuery, inZoneWith: nil){
             (requestRecords, error) in
-            if let error = error {
-                UIViewController.alert(title: "Problem getting a Request", message:"\(error)")
+            if error != nil {
+                self.increment()
                 return
             }
             if let requestRecords = requestRecords {
