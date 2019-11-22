@@ -61,7 +61,7 @@ class Model {
     public var booksOfAUser:[String:Book] = [:]
     public var booksOfACategory:[String:Book] = [:]
     
-    var fetchOwner:FetchHelper? = nil
+    var fetchOwner:GetAllOwnerOfBooksFetchHelper? = nil
     
     public var ownerOfABook:[User] = []
     
@@ -495,7 +495,7 @@ class Book : Equatable, CKRecordValueProtocol{
                 owner.append(book.owner.recordID)
             }
         }
-        Model.shared.fetchOwner = FetchHelper(ownerIDs: owner)
+        Model.shared.fetchOwner = GetAllOwnerOfBooksFetchHelper(ownerIDs: owner)
     }
 }
 
@@ -724,7 +724,7 @@ class Request : Equatable, CKRecordValueProtocol{
     }
 }
 
-class FetchHelper{
+class GetAllOwnerOfBooksFetchHelper{
     var ownerIDs:[CKRecord.ID]
     var count:Int = 0
     var result:[User] = []
@@ -736,7 +736,7 @@ class FetchHelper{
         fetchAllOwnerOfABook()
     }
     func append(user: CKRecord){
-        self.counterQueue.async(flags:.barrier) {
+        self.resultQueue.async(flags:.barrier) {
             self.result.append(User(record: user))
         }
     }
@@ -746,7 +746,7 @@ class FetchHelper{
         }
         self.counterQueue.sync {
             if count == ownerIDs.count {
-                Model.shared.ownerOfABook = result
+                Model.shared.ownerOfABook = self.result
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AllOwnerOfABook Fetched"),
                                                 object: nil)
             }

@@ -132,9 +132,9 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        Book.getAllBooksOfUser(user: Model.shared.LoggedInUser!)
         Request.getAllRequestsForAnOwner(owner: Model.shared.LoggedInUser!)
         Request.getAllRequestsOfAOwner(owner: Model.shared.LoggedInUser!)
-        Book.getAllBooksOfUser(user: Model.shared.LoggedInUser!)
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Fetched allData"),
         object: nil)
     }
