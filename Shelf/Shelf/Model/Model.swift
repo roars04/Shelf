@@ -62,6 +62,7 @@ class Model {
     public var booksOfACategory:[String:Book] = [:]
     
     var fetchOwner:GetAllOwnerOfBooksFetchHelper? = nil
+    var fetchRequest:GetAllRequestsOfLoggedInUserFetchHelper? = nil
     
     public var ownerOfABook:[User] = []
     
@@ -437,7 +438,7 @@ class Book : Equatable, CKRecordValueProtocol{
         Custodian.publicDatabase.perform(query, inZoneWith: nil){
             (bookR, error) in
             if let error = error {
-                UIViewController.alert(title: "fetchAllBooksOfACategory() problem getting a Book", message:"\(error)")
+                UIViewController.alert(title: "Problem getting a Book", message:"\(error)")
                 return
             }
             Model.shared.myBooks = []
@@ -466,7 +467,7 @@ class Book : Equatable, CKRecordValueProtocol{
         Custodian.publicDatabase.perform(query, inZoneWith: nil){
             (bookRecords, error) in
             if let error = error {
-                UIViewController.alert(title: "fetchAllBooksOfACategory() problem getting a Book", message:"\(error)")
+                UIViewController.alert(title: "Problem getting a Book", message:"\(error)")
                 return
             }
             Model.shared.books = []
@@ -642,7 +643,6 @@ class Request : Equatable, CKRecordValueProtocol{
             if let error = error {
                 UIViewController.alert(title:"Something has gone wrong while deleting a Request", message:"\(error)")
             } else {
-                
                 UIViewController.alert(title:"Successfully deleted a Request", message:"")
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: NSNotification.Name("Deleted a Request"), object: request)
@@ -676,11 +676,9 @@ class Request : Equatable, CKRecordValueProtocol{
         Custodian.publicDatabase.perform(query, inZoneWith: nil){
             (requestRecords, error) in
             if let error = error {
-                UIViewController.alert(title: "fetchAllRequestsOfAOwner() problem getting a Request", message:"\(error)")
+                UIViewController.alert(title: "Problem getting a Request", message:"\(error)")
                 return
             }
-            Model.shared.booksOfACategory = [:]
-            //Model.shared.myRequests = []
             if let requestRecords = requestRecords {
                 for requestRecord in requestRecords {
                     let request = Request(record:requestRecord)
@@ -699,11 +697,9 @@ class Request : Equatable, CKRecordValueProtocol{
         Custodian.publicDatabase.perform(query, inZoneWith: nil){
             (requestRecords, error) in
             if let error = error {
-                UIViewController.alert(title: "fetchAllRequestsForAnOwner() problem getting a Request", message:"\(error)")
+                UIViewController.alert(title: "Problem getting a Request", message:"\(error)")
                 return
             }
-            Model.shared.booksOfACategory = [:]
-            //Model.shared.requestsRecieved = []
             if let requestRecords = requestRecords {
                 for requestRecord in requestRecords {
                     let request = Request(record:requestRecord)
@@ -765,5 +761,91 @@ class GetAllOwnerOfBooksFetchHelper{
             })
         }
         
+    }
+}
+
+class GetAllRequestsOfLoggedInUserFetchHelper{
+    var count:Int = 0
+    private let counterQueue = DispatchQueue(label: "AtomicCounterQueue", attributes: .concurrent)
+    
+    init() {
+        fetchAllBooksOfLoggedInUser()
+    }
+
+    func increment(){
+        self.counterQueue.async(flags:.barrier) {
+            self.count += 1
+        }
+        self.counterQueue.sync {
+            if count == 2{
+                NotificationCenter.default.post(name: NSNotification.Name("Fetched allData"),
+                object: nil)
+            }
+        }
+    }
+    
+    func fetchAllBooksOfLoggedInUser(){
+        let bookPredicate = NSPredicate(format: "owner == %@", Model.shared.LoggedInUser!.record.recordID)
+        let bookQuery = CKQuery(recordType: "Book_Shelf", predicate: bookPredicate)
+        Custodian.publicDatabase.perform(bookQuery, inZoneWith: nil){
+            (bookR, error) in
+            if let error = error {
+                UIViewController.alert(title: "Problem getting a Book", message:"\(error)")
+                return
+            }
+            Model.shared.myBooks = []
+            if let bookR = bookR {
+                for bookRecord in bookR {
+                    let book = Book(record:bookRecord)
+                    Model.shared.myBooks.append(book)
+                }
+            }
+            self.fetchAllRequestsOfLoggedInUser()
+        }
+    }
+    
+    func fetchAllRequestsOfLoggedInUser(){
+        Model.shared.requestsRecieved = []
+        let getAllRequestPredicate = NSPredicate(value:true)
+        let getAllRequestQuery = CKQuery(recordType: "Request_Shelf", predicate: getAllRequestPredicate)
+        Custodian.publicDatabase.perform(getAllRequestQuery, inZoneWith: nil){
+            (requestRecords, error) in
+            if let error = error {
+                UIViewController.alert(title: "Problem getting a Request", message:"\(error)")
+                return
+            }
+            if let requestRecords = requestRecords {
+                for requestRecord in requestRecords {
+                    let request = Request(record:requestRecord)
+                    for book in Model.shared.myBooks {
+                        if book.isbn == request.isbn {
+                            if request.owner == Model.shared.LoggedInUser.record.recordID {
+                                
+                            } else {
+                                Model.shared.requestsRecieved.append(request)
+                            }
+                        }
+                    }
+                }
+            }
+            self.increment()
+        }
+        Model.shared.myRequests = []
+        let myRequestsPredicate = NSPredicate(format: "owner == %@", Model.shared.LoggedInUser!.record.recordID)
+        let myRequestsQuery = CKQuery(recordType: "Request_Shelf", predicate: myRequestsPredicate)
+        Custodian.publicDatabase.perform(myRequestsQuery, inZoneWith: nil){
+            (requestRecords, error) in
+            if let error = error {
+                UIViewController.alert(title: "Problem getting a Request", message:"\(error)")
+                return
+            }
+            if let requestRecords = requestRecords {
+                for requestRecord in requestRecords {
+                    let request = Request(record:requestRecord)
+                    Model.shared.myRequests.append(request)
+                }
+            }
+            self.increment()
+        }
     }
 }

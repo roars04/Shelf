@@ -127,16 +127,11 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        
         return 1
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        Book.getAllBooksOfUser(user: Model.shared.LoggedInUser!)
-        Request.getAllRequestsForAnOwner(owner: Model.shared.LoggedInUser!)
-        Request.getAllRequestsOfAOwner(owner: Model.shared.LoggedInUser!)
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Fetched allData"),
-        object: nil)
+        Model.shared.fetchRequest = GetAllRequestsOfLoggedInUserFetchHelper()
     }
     @objc func reload(){
         self.tableView.reloadData()
