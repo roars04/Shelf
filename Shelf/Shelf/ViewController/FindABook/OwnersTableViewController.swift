@@ -96,26 +96,26 @@ class OwnersTableViewController: UITableViewController, UISearchBarDelegate {
         return cell
     }
     
-
-    
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
-    override func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
-        let more = UITableViewRowAction(style: .normal, title: "Send Book Request") { action, index in
+    
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let action = UIContextualAction(style: .normal,
+        title: "Send a Request!") { (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
             var decidedBook:Book? = nil
             for book in Model.shared.books {
-                if book.owner.recordID == self.filteredTableData[editActionsForRowAt.row].record.recordID && book.isbn == self.isbn{
+                if book.owner.recordID == self.filteredTableData[indexPath.row].record.recordID && book.isbn == self.isbn{
                     decidedBook = book
                 }
             }
             let request = Request(owner: CKRecord.Reference(recordID: Model.shared.LoggedInUser.record.recordID, action: .none), requestForBook: CKRecord.Reference(recordID: decidedBook!.record.recordID, action: .none), bookTitle: decidedBook!.title, isbn: decidedBook!.isbn ,location: Model.shared.LoggedInUser.street , city: Model.shared.LoggedInUser.city, state: Model.shared.LoggedInUser.state)
             Request.add(request: request)
         }
-        more.backgroundColor = .lightGray
-        return [more]
+        let swipeConfig = UISwipeActionsConfiguration(actions: [action])
+        return swipeConfig
     }
 
     /*
