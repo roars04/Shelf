@@ -275,16 +275,22 @@ class Model {
 }
 
 
+/// a class to fetch all owner of several books
 class GetAllOwnerOfBooksFetchHelper{
     var ownerIDs:[CKRecord.ID]
     var count:Int = 0
     var result:[User] = []
     private let counterQueue = DispatchQueue(label: "AtomicCounterQueue", attributes: .concurrent)
     
+    /// One and only Initialzer
+    ///  Initialze the array of owner IDs and starts the logic to fetch all owner of several books
+    /// - Parameter ownerIDs: <#ownerIDs description#>
     init(ownerIDs:[CKRecord.ID]) {
         self.ownerIDs = ownerIDs
         fetchAllOwnerOfABook()
     }
+    /// increments thread safe the counter for every single owner and
+    /// sends a notification when all owner are fetched from the backend
     func increment(){
         self.counterQueue.async(flags:.barrier) {
             self.count += 1
@@ -296,6 +302,7 @@ class GetAllOwnerOfBooksFetchHelper{
         }
     }
     
+    /// starts a loop and fetches all owner
     func fetchAllOwnerOfABook(){
         for owner in ownerIDs{
             Custodian.publicDatabase.fetch(withRecordID: owner, completionHandler: {
@@ -314,14 +321,17 @@ class GetAllOwnerOfBooksFetchHelper{
 
 
 
+/// A class to fetch all Requests for and of the logged in user
 class GetAllRequestsOfLoggedInUserFetchHelper{
     var count:Int = 0
     private let counterQueue = DispatchQueue(label: "AtomicCounterQueue", attributes: .concurrent)
     
+    /// starts the sequence of function to fetch all requests
     init() {
         fetchAllBooksOfLoggedInUser()
     }
-
+    
+    /// increments thread safe the counter and starts the sequence functions
     func increment(){
         self.counterQueue.async(flags:.barrier) {
             self.count += 1
@@ -335,6 +345,7 @@ class GetAllRequestsOfLoggedInUserFetchHelper{
         }
     }
     
+    /// function to get all books of a owner
     func fetchAllBooksOfLoggedInUser(){
         let bookPredicate = NSPredicate(format: "owner == %@", Model.shared.LoggedInUser!.record.recordID)
         let bookQuery = CKQuery(recordType: "Book_Shelf", predicate: bookPredicate)
@@ -354,6 +365,7 @@ class GetAllRequestsOfLoggedInUserFetchHelper{
         }
     }
     
+    /// function to get all Request of and for the logged in user
     func fetchAllRequestsOfLoggedInUser(){
         Model.shared.requestsRecieved = []
         let getAllRequestPredicate = NSPredicate(value:true)
