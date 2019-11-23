@@ -66,14 +66,21 @@ class AddBookViewController: UIViewController, UIPickerViewDelegate,UIPickerView
             return
         }
         if isbnTF.text! == "" {
-            let ac = UIAlertController(title: "Pages is not numeric", message: nil, preferredStyle: .alert)
+            let ac = UIAlertController(title: "No new Book without a ISBN", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            ac.addAction(okAction)
+            present(ac, animated: true, completion: nil)
+            return
+        }
+        if titleTF.text == "" {
+            let ac = UIAlertController(title: "No new Book without a Title", message: nil, preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             ac.addAction(okAction)
             present(ac, animated: true, completion: nil)
             return
         }
         
-        Book.add(book: Book(owner: CKRecord.Reference(recordID: Model.shared.LoggedInUser.record.recordID, action: .none), isbn: isbnTF.text!, title: titleTF.text!, description: descriptionTF.text!, author: authorTF.text!, illustrator: illustratorTF.text!, coverArtist: coverArtistTF.text!, country: countryTF.text!, language: languageTF.text!, category: self.selectedCategory, publisher: publisherTF.text!, publicationDate: Date(), pages: pages))
+        Model.shared.addABook(book: Book(owner: CKRecord.Reference(recordID: Model.shared.LoggedInUser.record.recordID, action: .none), isbn: isbnTF.text!, title: titleTF.text!, description: descriptionTF.text!, author: authorTF.text!, illustrator: illustratorTF.text!, coverArtist: coverArtistTF.text!, country: countryTF.text!, language: languageTF.text!, category: self.selectedCategory, publisher: publisherTF.text!, publicationDate: Date(), pages: pages))
     }
     
     @objc func addedBook(){

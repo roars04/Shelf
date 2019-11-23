@@ -36,14 +36,15 @@ class MyBooksTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        Book.getAllBooksOfUser(user: Model.shared.LoggedInUser!)
+        Model.shared.getAllBooksOfUser(user: Model.shared.LoggedInUser!)
     }
     
     @objc func Back(){
         
-        let navCon = storyboard?.instantiateViewController(withIdentifier: "TabBarController") as! UITabBarController
-        
-        self.present(navCon, animated: true, completion: nil)
+//        let navCon = storyboard?.instantiateViewController(withIdentifier: "TabBarController") as! UITabBarController
+//
+//        self.present(navCon, animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
     
     // MARK: - Table view data source
@@ -77,17 +78,21 @@ class MyBooksTableViewController: UITableViewController {
      }
      */
     
-    /*
+    
      // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
      if editingStyle == .delete {
      // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
+        let bookToBeDeleted = filteredTableData[indexPath.row]
+        filteredTableData.remove(at: indexPath.row)
+        Model.shared.deleteBook(book: bookToBeDeleted)
+        //tableView.reloadData()
+        tableView.deleteRows(at: [indexPath], with: .fade)
      } else if editingStyle == .insert {
      // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
      }
      }
-     */
+    
     
     /*
      // Override to support rearranging the table view.

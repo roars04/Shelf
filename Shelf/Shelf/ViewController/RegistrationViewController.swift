@@ -25,6 +25,7 @@ class RegistrationViewController: UIViewController {
         
         navigationItem.title = "Registration"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title:"Save",style:.plain, target: self, action: #selector(SaveUser))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(Back))
     }
     
     
@@ -32,9 +33,15 @@ class RegistrationViewController: UIViewController {
         let userdata = User(email: EmailTF.text!, password: PasswordTF.text!, lastName: LastNameTF.text!, firstName: FirstNameTF.text!, city: CityTF.text!, street: StreetTF.text!
             , state: StateTF.text!, postal: PostalTF.text!, phone: PhoneTF.text!)
         
-        Model.shared.add(user: userdata)
+        Model.shared.addAUser(user: userdata)
         
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func Back(){
+        let navCon = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! UINavigationController
+        
+        self.present(navCon, animated: true, completion: nil)
     }
     /*
      // MARK: - Navigation

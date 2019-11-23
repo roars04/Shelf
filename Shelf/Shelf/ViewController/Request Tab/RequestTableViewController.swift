@@ -18,9 +18,13 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
         switch segmentedControl.selectedSegmentIndex
         {
         case 0:
+            tableView.reloadData()
             index = 0
+            break
         case 1:
+            tableView.reloadData()
             index = 1
+            break
         default:
             break
         }
@@ -32,6 +36,9 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableView.dataSource = self
         navigationItem.title = "Request"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add))
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(showRequestUserView), name: NSNotification.Name("Fetched RequestUserInfo"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reload), name: NSNotification.Name("Fetched allData"), object: nil)
     }
     
     @objc func add() {
@@ -39,38 +46,106 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.present(AddNewRequestVCNavCon, animated: true, completion: nil)
     }
     
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "requests", for: indexPath)
-        if index == 0 {
+        cell.selectionStyle = .none;
+        let cell2 = tableView.dequeueReusableCell(withIdentifier: "recieved", for: indexPath)
+        switch segmentedControl.selectedSegmentIndex
+        {
+        case 0:
             let request = Model.shared.myRequests[indexPath.row]
             cell.textLabel?.text = request.bookTitle
-            cell.detailTextLabel?.text = request.city
-            
-        } else if index == 1 {
+            cell.detailTextLabel?.text = "\(request.location), \(request.city), \(request.state)"
+            return cell
+        case 1:
             let request = Model.shared.requestsRecieved[indexPath.row]
-            cell.textLabel?.text = request.bookTitle
-            cell.detailTextLabel?.text = request.city
+            cell2.textLabel?.text = request.bookTitle
+            cell2.detailTextLabel?.text = "\(request.location), \(request.city), \(request.state)"
+            return cell2
+        default:
+            break
         }
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch segmentedControl.selectedSegmentIndex
+        {
+        case 0:
+            break
+        case 1:
+            let ownerID = Model.shared.requestsRecieved[indexPath.row].owner.recordID
+            Custodian.publicDatabase.fetch(withRecordID: ownerID, completionHandler: { (userRecord, error) in
+                if error != nil {
+                    return
+                }
+                Model.shared.userOfRequest = User(record: userRecord!)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Fetched RequestUserInfo"),
+                object: nil)
+            })
+            break
+        default:
+            break
+        }
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var num = 0
-        if index == 0 {
+        switch segmentedControl.selectedSegmentIndex
+        {
+        case 0:
             num = Model.shared.numMyRequests()
-        } else if index == 1 {
+            break
+        case 1:
             num = Model.shared.numRequestsRecieved()
+            break
+        default:
+            break
         }
         return num
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            switch segmentedControl.selectedSegmentIndex
+            {
+            case 0:
+                Model.shared.deleteRequest(index: indexPath.row)
+                tableView.reloadData()
+                break
+            case 1:
+                Model.shared.deleteReceivedRequest(index: indexPath.row)
+                tableView.reloadData()
+                break
+            default:
+                break
+            }
+        } else if editingStyle == .insert {
+            
+        }
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
-        
         return 1
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.tableView.reloadData()
+        Model.shared.fetchRequest = GetAllRequestsOfLoggedInUserFetchHelper()
+    }
+    @objc func reload(){
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    @objc func showRequestUserView(){
+        DispatchQueue.main.async {
+            let RequestRecievedInfoVCNavCon = self.storyboard?.instantiateViewController(withIdentifier: "RequestRecievedInfoVCNavCon") as! UINavigationController
+            self.present(RequestRecievedInfoVCNavCon, animated: true, completion: nil)
+        }
     }
     
     /*
@@ -78,18 +153,6 @@ class RequestViewController: UIViewController, UITableViewDelegate, UITableViewD
      override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
      // Return false if you do not want the specified item to be editable.
      return true
-     }
-     */
-    
-    /*
-     // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     } else if editingStyle == .insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
      }
      */
     

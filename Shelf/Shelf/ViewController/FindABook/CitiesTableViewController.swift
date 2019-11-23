@@ -47,12 +47,15 @@ class CitiesTableViewController: UITableViewController, UISearchBarDelegate {
         DispatchQueue.main.async {
             self.city = self.toUniqueCityArray(Model.shared.ownerOfABook)
             self.filteredTableData = self.toUniqueCityArray(Model.shared.ownerOfABook)
+            self.filteredTableData.sort { (firstCity, secondCity) -> Bool in
+                firstCity < secondCity
+            }
             self.tableView.reloadData()
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        Book.getAllOwnerOfABook(isbn: book!.isbn)
+        Model.shared.getAllOwnerOfABook(isbn: book!.isbn)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
