@@ -255,6 +255,23 @@ class Model {
                                             object: nil)
         }
     }
+    
+    func deleteBook(book:Book){
+        Custodian.publicDatabase.delete(withRecordID: book.record.recordID) {
+            (record, error) in
+            if let error = error {
+                UIViewController.alert(title:"Something has gone wrong while deleting a Book", message:"\(error)")
+            } else {
+                UIViewController.alert(title:"Successfully deleted a Book", message:"")
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: NSNotification.Name("Deleted a Book"), object: book)
+                    UIViewController.alert(title: "Deleted a Book", message:"")
+                }
+            }
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Deleted a Book"),
+                                            object: nil)
+        }
+    }
 }
 
 
