@@ -95,30 +95,34 @@ class Model {
         return Data(hash)
     }
     
+    /// Login  Request when user and password
+    /// - Parameters:
+    ///   - username: username is the registerd email
+    ///   - Password: password property
     func Login(username:String, Password:String) -> Void {
         
         let predicate = NSPredicate(format:"email = %@ AND password = %@",username,Password)
         let query = CKQuery(recordType: "User_Shelf", predicate: predicate)
         // this gets *all * teachers
-        var isValid = false;
+        //var isValid = false;
         Custodian.publicDatabase.perform(query, inZoneWith: nil){
             (userrecord, error) in
             if let error = error {
                 //self.alert(title: "Disaster while fetching all teachers:", message: "\(error)")
                 UIViewController.alert(title: "Invalid Credentials", message:"\(error)")
-                isValid = false;
+              //  isValid = false;
             } else {
                 // note the studentRecord -> student
                 if(userrecord!.count>0){
                     let userDetails = User(record: userrecord![0])
                     self.LoggedInUser = userDetails
-                    isValid = true;
+                        //  isValid = true;
                     
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue:"Login Sucess"), object: nil)
                 }
                 else{
                     UIViewController.alert(title: "Invalid Credentials", message:"Please enter valid Credentials")
-                    isValid = false;
+                   // isValid = false;
                 }
             }
         }
@@ -143,6 +147,9 @@ class Model {
             }
         }
     }
+    
+    /// Adding a book  to the user
+    /// - Parameter book: Book object
     func addABook(book:Book){
         Custodian.publicDatabase.save(book.record){
             (record, error) in
@@ -154,6 +161,9 @@ class Model {
         }
     }
     
+    
+    /// Fetches all the books that are added by the user
+    /// - Parameter user: Logged in User Object
     func getAllBooksOfUser(user:User){
         
         let predicate = NSPredicate(format: "owner == %@", Model.shared.LoggedInUser!.record.recordID)
@@ -183,6 +193,10 @@ class Model {
         }
     }
     
+    
+    
+    /// Fetches all books in a particular category
+    /// - Parameter category: Category name
     func getAllBooksOfCategory(category:String){
         //here we need something like group by
         let predicate = NSPredicate(format: "category == %@", category)
@@ -212,6 +226,9 @@ class Model {
         }
     }
     
+    
+    /// Fetches owner of a book based on the owner reference to the book
+    /// - Parameter isbn: isbn of the book
     func getAllOwnerOfABook(isbn:String){
         var owner:[CKRecord.ID] = []
         for book in Model.shared.books{
@@ -221,6 +238,7 @@ class Model {
         }
         Model.shared.fetchOwner = GetAllOwnerOfBooksFetchHelper(ownerIDs: owner)
     }
+    //Adding a request object
     func addARequest(request:Request){
         Custodian.publicDatabase.save(request.record){
             (record, error) in
@@ -238,7 +256,7 @@ class Model {
                                             object: nil)
         }
     }
-    
+    //Delete a request
     func deleteRequest(request:Request){
         Custodian.publicDatabase.delete(withRecordID: request.record.recordID) {
             (record, error) in
@@ -256,6 +274,8 @@ class Model {
         }
     }
     
+    /// Delete a book that user added
+    /// - Parameter book: book to be deleted
     func deleteBook(book:Book){
         Custodian.publicDatabase.delete(withRecordID: book.record.recordID) {
             (record, error) in
@@ -274,7 +294,7 @@ class Model {
     }
 }
 
-
+//
 class GetAllOwnerOfBooksFetchHelper{
     var ownerIDs:[CKRecord.ID]
     var count:Int = 0
